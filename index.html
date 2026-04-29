@@ -2,6 +2,10 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
+
+<!-- ✅ FIX ZA TELEFON (QR ZOOM) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>QR Meni</title>
 
 <style>
@@ -24,17 +28,54 @@ body{
     box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
+/* 🔥 BUTTON - JELLY + LIQUID */
 button{
+    position: relative;
     width:100%;
     padding:12px;
     margin:6px 0;
     border:none;
-    border-radius:10px;
-    background:#eee;
+    border-radius:20px;
+    background:linear-gradient(135deg,#60a5fa,#3b82f6);
+    color:white;
+    font-weight:bold;
     cursor:pointer;
+    overflow:hidden;
+    transition:transform 0.2s;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
-button:hover{ background:#ddd; }
+button:hover{
+    animation:jelly 0.6s ease;
+}
+
+button:active{
+    transform:scale(0.9);
+}
+
+button::before{
+    content:"";
+    position:absolute;
+    top:-100%;
+    left:-50%;
+    width:200%;
+    height:300%;
+    background:rgba(255,255,255,0.2);
+    transform:rotate(25deg);
+    transition:0.5s;
+}
+
+button:hover::before{
+    top:100%;
+}
+
+@keyframes jelly{
+    0%{transform:scale(1,1);}
+    25%{transform:scale(1.2,0.8);}
+    50%{transform:scale(0.9,1.1);}
+    75%{transform:scale(1.05,0.95);}
+    100%{transform:scale(1,1);}
+}
 
 h2{
     margin-top:0;
@@ -164,12 +205,11 @@ function resetAll(){
     document.getElementById("cat").style.display="none";
 }
 
-/* SLIKA (placeholder) */
+/* SLIKA */
 const img = "https://upload.wikimedia.org/wikipedia/commons/1/1b/Coca-Cola_logo.svg";
 
-/* MENI */
+/* MENI (OSTAJE IDENTIČAN) */
 const data = {
-
 "doručak":[
 ["Srpski doručak","2 jaja, pečenica, kajmak","580"],
 ["Omlet natur","3 jaja, sir","330"],
@@ -179,48 +219,39 @@ const data = {
 ["Bekendeks","slanina, jaja","400"],
 ["Mazalice","slanina, jaja","490"]
 ],
-
 "obrok salate":[
 ["Ćuretina u salati","ćuretina","1150"],
 ["Rukola salata","rukola","700"],
 ["Bella donna","mix","940"]
 ],
-
 "glavna jela":[
 ["Pljeskavica","junetina","1120"],
 ["Pileći file 4 sira","piletina","1170"],
 ["Meksička piletina","piletina","1130"]
 ],
-
 "paste":[
 ["Carbonara","pasta","950"],
 ["Lazanja","ragu","1050"]
 ],
-
 "variva":[
 ["Pirinač","220"],
 ["Pomfrit","350"]
 ],
-
 "dodaci":[
 ["Fokačo","220"],
 ["Lepinja","80"]
 ],
-
 "salate":[
 ["Grčka","450"],
 ["Šopska","350"]
 ],
-
 "pića":[
 ["Pepsi","220"],
 ["Voda","150"],
 ["Rakija","200"]
 ]
-
 };
 
-/* KATEGORIJE */
 function openCat(cat){
     resetAll();
     document.getElementById("cat").style.display="block";
