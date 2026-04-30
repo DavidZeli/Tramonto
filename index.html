@@ -1,283 +1,209 @@
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-<meta charset="UTF-8">
+<!DOCTYPE html> 
+<html lang="sr"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Smart Menu Premium - Lav Kraljevo</title> 
 
-<!-- ✅ FIX ZA TELEFON (QR ZOOM) -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>QR Meni</title>
-
-<style>
-body{
-    margin:0;
-    font-family: Arial;
-    background:#f2f2f2;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+<style> 
+:root {
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --accent: #d4af37; /* Zlatna boja lava */
+    --glass: rgba(255, 255, 255, 0.88);
+    --shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
-.screen{
-    width:360px;
-    background:white;
-    border-radius:20px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-}
+body{ 
+    margin:0; 
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; 
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    color: #1d1d1f;
+} 
 
-/* 🔥 BUTTON - JELLY + LIQUID */
-button{
-    position: relative;
-    width:100%;
-    padding:12px;
-    margin:6px 0;
-    border:none;
-    border-radius:20px;
-    background:linear-gradient(135deg,#60a5fa,#3b82f6);
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    overflow:hidden;
-    transition:transform 0.2s;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-}
+.screen{ 
+    width:100%; max-width:420px; margin:auto; min-height:100vh; 
+    background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding: 30px 20px; box-sizing:border-box; display:none; 
+    animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+} 
 
-button:hover{
-    animation:jelly 0.6s ease;
-}
+h2{ margin:0 0 25px 0; font-size:30px; font-weight: 700; letter-spacing: -1px; } 
 
-button:active{
-    transform:scale(0.9);
-}
+button{ 
+    width:100%; padding:20px 24px; margin:12px 0; border:none; border-radius:24px; 
+    background: white; font-weight:600; font-size: 17px; text-align:left; 
+    cursor:pointer; box-shadow: var(--shadow); transition: 0.3s;
+    display: flex; justify-content: space-between; align-items: center;
+} 
 
-button::before{
-    content:"";
-    position:absolute;
-    top:-100%;
-    left:-50%;
-    width:200%;
-    height:300%;
-    background:rgba(255,255,255,0.2);
-    transform:rotate(25deg);
-    transition:0.5s;
-}
+button:hover { transform: translateY(-3px); }
+button:active { transform: scale(0.97); }
 
-button:hover::before{
-    top:100%;
-}
+.item{ 
+    display:flex; justify-content:space-between; align-items:center; 
+    padding:16px; margin-bottom:12px; border-radius:24px; 
+    background: white; box-shadow: var(--shadow);
+} 
 
-@keyframes jelly{
-    0%{transform:scale(1,1);}
-    25%{transform:scale(1.2,0.8);}
-    50%{transform:scale(0.9,1.1);}
-    75%{transform:scale(1.05,0.95);}
-    100%{transform:scale(1,1);}
-}
+.left{ display:flex; align-items:center; gap:16px; } 
+.item img{ width:70px; height:70px; border-radius:18px; object-fit:cover; } 
+.price{ font-weight:800; color: #111; font-size: 16px; background: #f1f1f1; padding: 6px 12px; border-radius: 12px; } 
 
-h2{
-    margin-top:0;
-    text-transform:uppercase;
-}
+.back{ 
+    margin-top:25px; background: #111; color:white; 
+    justify-content: center; text-transform: uppercase; font-size: 13px; letter-spacing: 1.5px;
+} 
 
-/* ITEM */
-.item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px;
-    border-bottom:1px solid #eee;
-    text-align:left;
-}
+.footer{ text-align:center; font-size:11px; color:#86868b; padding:30px; line-height: 1.6; } 
 
-.left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+@keyframes slideUp{ from{ opacity:0; transform: translateY(30px); } to{ opacity:1; transform: translateY(0); } } 
+</style> 
+</head> 
 
-.item img{
-    width:35px;
-    height:35px;
-    border-radius:8px;
-    object-fit:cover;
-}
+<body> 
 
-.price{
-    font-weight:bold;
-}
+<div id="lang" class="screen" style="display:block; text-align: center;"> 
+    <div style="margin-top: 60px;">
+        <div style="font-size: 50px; margin-bottom: 20px;">🦁</div>
+        <h2 style="margin-bottom: 40px;">Select Language</h2> 
+        <button onclick="setLang('sr')">🇷🇸 Srpski <span>→</span></button> 
+        <button onclick="setLang('en')">🇬🇧 English <span>→</span></button> 
+        <button onclick="setLang('ru')">🇷🇺 Русский <span>→</span></button> 
+    </div>
+</div> 
 
-/* FOOTER */
-.footer{
-    position:fixed;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:12px;
-    color:gray;
-    text-align:center;
-}
-</style>
-</head>
+<div id="home" class="screen"> 
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 id="home-title" style="margin:0"></h2>
+        <span style="font-size: 24px;">🦁</span>
+    </div>
+    <button id="btn-menu" onclick="openMenu()"></button> 
+    <button id="btn-waiter" onclick="handleWaiter()"></button> 
+    <button id="btn-res" onclick="handleRes()"></button> 
+    <button id="btn-review" style="border: 2px solid var(--accent);" onclick="openReviews()"></button> 
+    <button class="back btn-back" onclick="backLang()"></button> 
+</div> 
 
-<body>
+<div id="menu" class="screen"> 
+    <h2 id="menu-title"></h2> 
+    <div id="menu-categories-list"></div> 
+    <button class="back btn-back" onclick="backHome()"></button> 
+</div> 
 
-<!-- JEZIK -->
-<div id="lang" class="screen">
-    <h2>Izaberi jezik</h2>
-    <button onclick="openHome()">🇷🇸 Srpski</button>
-    <button onclick="openHome()">🇬🇧 English</button>
-</div>
+<div id="cat" class="screen"> 
+    <h2 id="title"></h2> 
+    <div id="list"></div> 
+    <button class="back btn-back" onclick="backMenu()"></button> 
+</div> 
 
-<!-- HOME -->
-<div id="home" class="screen" style="display:none;">
-    <h2>Dobrodošli</h2>
+<div class="footer"> 
+    <b>SMART MENU PREMIUM</b><br>
+    zeli.dvd@gmail.com | @smart_menu_hub 
+</div> 
 
-    <button onclick="openMenu()">📋 Meni</button>
-    <button onclick="alert('Konobar pozvan')">🧑‍🍳 Konobar</button>
-    <button onclick="alert('Rezervacija stola')">🪑 Rezervacija</button>
-    <button onclick="alert('Knjiga utisaka')">📖 Knjiga utisaka</button>
+<script> 
+let currentLang = 'sr';
 
-    <button onclick="backLang()">Nazad</button>
-</div>
-
-<!-- MENI -->
-<div id="menu" class="screen" style="display:none;">
-    <h2>Meni</h2>
-
-    <button onclick="openCat('doručak')">Doručak</button>
-    <button onclick="openCat('obrok salate')">Obrok salate</button>
-    <button onclick="openCat('glavna jela')">Glavna jela</button>
-    <button onclick="openCat('paste')">Paste</button>
-    <button onclick="openCat('variva')">Variva</button>
-    <button onclick="openCat('dodaci')">Dodaci</button>
-    <button onclick="openCat('salate')">Salate</button>
-    <button onclick="openCat('pića')">Pića</button>
-
-    <button onclick="backHome()">Nazad</button>
-</div>
-
-<!-- KATEGORIJA -->
-<div id="cat" class="screen" style="display:none;">
-    <h2 id="title"></h2>
-    <div id="list"></div>
-    <button onclick="backMenu()">Nazad</button>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-    📧 zeli.dvd@gmail.com | 📷 smart_menu_hub
-</div>
-
-<script>
-
-function openHome(){
-    document.getElementById("lang").style.display="none";
-    document.getElementById("home").style.display="block";
-}
-
-function backLang(){
-    resetAll();
-    document.getElementById("lang").style.display="block";
-}
-
-function openMenu(){
-    resetAll();
-    document.getElementById("menu").style.display="block";
-}
-
-function backHome(){
-    resetAll();
-    document.getElementById("home").style.display="block";
-}
-
-function backMenu(){
-    resetAll();
-    document.getElementById("menu").style.display="block";
-}
-
-function resetAll(){
-    document.getElementById("lang").style.display="none";
-    document.getElementById("home").style.display="none";
-    document.getElementById("menu").style.display="none";
-    document.getElementById("cat").style.display="none";
-}
-
-/* SLIKA */
-const img = "https://upload.wikimedia.org/wikipedia/commons/1/1b/Coca-Cola_logo.svg";
-
-/* MENI (OSTAJE IDENTIČAN) */
-const data = {
-"doručak":[
-["Srpski doručak","2 jaja, pečenica, kajmak","580"],
-["Omlet natur","3 jaja, sir","330"],
-["Omlet sa šunkom","šunka, jaja","380"],
-["Omlet sa pančetom","pančeta, jaja","400"],
-["Jaja na oko","3 jaja","330"],
-["Bekendeks","slanina, jaja","400"],
-["Mazalice","slanina, jaja","490"]
-],
-"obrok salate":[
-["Ćuretina u salati","ćuretina","1150"],
-["Rukola salata","rukola","700"],
-["Bella donna","mix","940"]
-],
-"glavna jela":[
-["Pljeskavica","junetina","1120"],
-["Pileći file 4 sira","piletina","1170"],
-["Meksička piletina","piletina","1130"]
-],
-"paste":[
-["Carbonara","pasta","950"],
-["Lazanja","ragu","1050"]
-],
-"variva":[
-["Pirinač","220"],
-["Pomfrit","350"]
-],
-"dodaci":[
-["Fokačo","220"],
-["Lepinja","80"]
-],
-"salate":[
-["Grčka","450"],
-["Šopska","350"]
-],
-"pića":[
-["Pepsi","220"],
-["Voda","150"],
-["Rakija","200"]
-]
+const ui = {
+    sr: { welcome: "Dobrodošli", menu: "📋 Meni", waiter: "🧑‍🍳 Pozovi konobara", res: "🪑 Rezervacija", review: "⭐ Oceni nas na Google-u", back: "Nazad", menuTitle: "Izaberi kategoriju", alertW: "Konobar je pozvan!", alertR: "Za rezervaciju nas pozovite na 036..." },
+    en: { welcome: "Welcome", menu: "📋 Menu", waiter: "🧑‍🍳 Call Waiter", res: "🪑 Reservation", review: "⭐ Review us on Google", back: "Back", menuTitle: "Select Category", alertW: "Waiter is on his way!", alertR: "Call us for reservation: 036..." },
+    ru: { welcome: "Добро пожаловать", menu: "📋 Меню", waiter: "🧑‍🍳 Вызвать официанта", res: "🪑 Бронь", review: "⭐ Оценить в Google", back: "Назад", menuTitle: "Выберите категорию", alertW: "Официант скоро подойдет!", alertR: "Для бронирования звоните: 036..." }
 };
 
-function openCat(cat){
-    resetAll();
-    document.getElementById("cat").style.display="block";
-    document.getElementById("title").innerText = cat;
+const data = {
+    "doručak": {
+        name: { sr: "🍳 Doručak", en: "🍳 Breakfast", ru: "🍳 Завтрак" },
+        items: [
+            { sr: ["Srpski doručak","2 jaja, pečenica, kajmak"], en: ["Serbian Breakfast","2 eggs, ham, cream"], ru: ["Сербский завтрак","2 яйца, каймак"], price: "580" },
+            { sr: ["Omlet natur","3 jaja, sir"], en: ["Plain Omelette","3 eggs, cheese"], ru: ["Омлет","3 яйца, сыр"], price: "330" },
+            { sr: ["Omlet sa šunkom","šunka, jaja"], en: ["Ham Omelette","ham, eggs"], price: "380" },
+            { sr: ["Bekendeks","slanina, jaja"], en: ["Bacon and Eggs","bacon, eggs"], price: "400" }
+        ]
+    },
+    "obrok salate": {
+        name: { sr: "🥗 Obrok salate", en: "🥗 Meal Salads", ru: "🥗 Салаты" },
+        items: [
+            { sr: ["Ćuretina u salati","ćuretina, mix salata"], en: ["Turkey Salad","turkey, mixed salad"], price: "1150" },
+            { sr: ["Cezar salata","piletina, slanina, parmezan"], en: ["Caesar Salad","chicken, bacon"], price: "700" }
+        ]
+    },
+    "glavna jela": {
+        name: { sr: "🍽️ Glavna jela", en: "🍽️ Main Courses", ru: "🍽️ Основные блюда" },
+        items: [
+            { sr: ["Pljeskavica","100% junetina, pomfrit"], en: ["Pljeskavica","100% beef, fries"], price: "1120" },
+            { sr: ["Karađorđeva šnicla","tradicionalno jelo"], en: ["Karadjordjeva","traditional dish"], price: "950" }
+        ]
+    },
+    "paste": {
+        name: { sr: "🍝 Paste", en: "🍝 Pasta", ru: "🍝 Паста" },
+        items: [
+            { sr: ["Carbonara","slanina, pavlaka, jaje"], en: ["Carbonara","bacon, cream, egg"], price: "950" },
+            { sr: ["Lazanja Bolonjeze","ragu sos, sir"], en: ["Lasagna","ragu, cheese"], price: "1050" }
+        ]
+    },
+    "pića": {
+        name: { sr: "🥤 Pića", en: "🥤 Drinks", ru: "🥤 Напитки" },
+        items: [
+            { sr: ["Pepsi 0.33","hladno piće"], en: ["Pepsi 0.33","cold drink"], price: "220" },
+            { sr: ["Domaća kafa","sa ratlukom"], en: ["Serbian Coffee","traditional"], price: "180" }
+        ]
+    }
+};
 
-    let html="";
+function resetAll(){ document.querySelectorAll('.screen').forEach(s => s.style.display="none"); } 
+function setLang(lang){ currentLang = lang; updateUI(); openHome(); }
 
-    data[cat].forEach(i=>{
-        html+=`
-        <div class="item">
-            <div class="left">
-                <img src="${img}">
-                <div>
-                    <b>${i[0]}</b><br>
-                    <small>${i[1] || ""}</small>
-                </div>
-            </div>
-            <div class="price">${i[2]} RSD</div>
-        </div>
-        `;
-    });
-
-    document.getElementById("list").innerHTML = html;
+function updateUI(){
+    const l = ui[currentLang];
+    document.getElementById("home-title").innerText = l.welcome;
+    document.getElementById("btn-menu").innerText = l.menu;
+    document.getElementById("btn-waiter").innerText = l.waiter;
+    document.getElementById("btn-res").innerText = l.res;
+    document.getElementById("btn-review").innerText = l.review;
+    document.getElementById("menu-title").innerText = l.menuTitle;
+    document.querySelectorAll(".btn-back").forEach(btn => btn.innerText = l.back);
 }
 
-</script>
+function openHome(){ resetAll(); document.getElementById("home").style.display="block"; } 
+function backLang(){ resetAll(); document.getElementById("lang").style.display="block"; }
+function backHome(){ openHome(); }
+function backMenu(){ openMenu(); }
 
-</body>
+function openMenu(){ 
+    resetAll(); 
+    document.getElementById("menu").style.display="block"; 
+    let menuHtml = "";
+    for(let key in data){
+        menuHtml += `<button onclick="openCat('${key}')">${data[key].name[currentLang]} <span>→</span></button>`;
+    }
+    document.getElementById("menu-categories-list").innerHTML = menuHtml;
+} 
+
+function openCat(catKey){ 
+    resetAll(); 
+    document.getElementById("cat").style.display="block"; 
+    const category = data[catKey];
+    document.getElementById("title").innerText = category.name[currentLang]; 
+    let html=""; 
+    category.items.forEach(i=>{ 
+        let itemData = i[currentLang] || i["sr"];
+        html+=`<div class="item"><div class="left"><img src="https://picsum.photos/seed/${itemData[0]}/150"><div><b>${itemData[0]}</b><br><small style="color:#86868b">${itemData[1]}</small></div></div><div class="price">${i.price} RSD</div></div>`; 
+    }); 
+    document.getElementById("list").innerHTML = html; 
+} 
+
+function openReviews(){
+    // Link za Kafe Lav Kraljevo - direktno za ocenu
+    const googleLink = "https://search.google.com/local/writereview?placeid=ChIJu-x4zS8fW0cR_K_6XNf_Hk0";
+    window.open(googleLink, '_blank');
+}
+
+function handleWaiter(){ alert(ui[currentLang].alertW); }
+function handleRes(){ alert(ui[currentLang].alertR); }
+
+</script> 
+</body> 
 </html>
+
+Tvoj interfejs je sada potpuno spreman za korišćenje u Kraljevu. Slobodno baci pogled na prezentaciju i javi mi ako želiš još neki detalj da podesimo!
