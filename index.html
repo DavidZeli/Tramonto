@@ -1,168 +1,1293 @@
- <!DOCTYPE html>
-<html lang="sr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kafana Stari Koš - Premium Menu</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #c5a059;
-            --dark: #0a0a0a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(197, 160, 89, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: var(--dark); 
-            color: #fff; 
-            font-family: 'Montserrat', sans-serif;
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; }
-        .screen { display: none; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        .logo-area { text-align: center; padding: 40px 0; }
-        .logo-area h1 { font-family: 'Playfair Display', serif; font-size: 45px; color: var(--gold); letter-spacing: -1px; }
-        .logo-area p { text-transform: uppercase; letter-spacing: 5px; font-size: 10px; color: #888; }
-
-        /* Dugmad glavna */
-        .btn {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border: 1px solid var(--border); padding: 20px; border-radius: 15px;
-            width: 100%; color: #fff; display: flex; align-items: center; margin-bottom: 12px;
-            cursor: pointer; transition: 0.3s; text-decoration: none;
-        }
-        .btn:active { background: rgba(197, 160, 89, 0.2); }
-        .btn i { font-size: 20px; margin-right: 15px; color: var(--gold); }
-        .btn-txt b { display: block; font-size: 16px; font-weight: 600; }
-        .btn-txt span { font-size: 10px; color: #aaa; text-transform: uppercase; }
-
-        /* Stavke menija */
-        .item-row { 
-            display: flex; justify-content: space-between; padding: 12px 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .item-info h4 { font-size: 14px; font-weight: 400; margin-bottom: 2px; color: #eee; }
-        .item-info p { font-size: 11px; color: #777; }
-        .item-price { color: var(--gold); font-weight: 600; font-size: 14px; }
-
-        .cat-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); text-align: center; margin-bottom: 25px; }
-
-        .back-fixed {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--gold); color: #000; padding: 12px 35px; border-radius: 50px;
-            font-weight: 700; font-size: 12px; text-transform: uppercase; border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-
-        .lang-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div id="scr-lang" class="screen" style="display: block;">
-        <div class="logo-area"><h1>Stari Koš</h1><p>Kraljevo</p></div>
-        <div class="lang-grid">
-            <button class="btn" onclick="setL('sr')"><i style="font-style:normal">🇷🇸</i><div class="btn-txt"><b>Srpski</b><span>Izaberi jezik</span></div></button>
-            <button class="btn" onclick="setL('en')"><i style="font-style:normal">🇬🇧</i><div class="btn-txt"><b>English</b><span>Choose language</span></div></button>
-            <button class="btn" onclick="setL('ru')"><i style="font-style:normal">🇷🇺</i><div class="btn-txt"><b>Русский</b><span>Выберите язык</span></div></button>
-        </div>
-    </div>
-
-    <div id="scr-home" class="screen">
-        <div class="logo-area"><h1>Stari Koš</h1><p id="h-sub"></p></div>
-        <button class="btn" onclick="showCats()"><i>🍴</i><div class="btn-txt"><b id="m-t">Meni</b><span id="m-s">Hrana i Piće</span></div></button>
-        <button class="btn" onclick="window.location.href='tel:+381365101414'"><i>📞</i><div class="btn-txt"><b id="r-t">Rezervacije</b><span id="r-s">036 5101414</span></div></button>
-        <button class="btn" onclick="window.open('https://g.page/r/YOUR_GOOGLE_ID/review','_blank')"><i>⭐</i><div class="btn-txt"><b id="g-t">Oceni nas</b><span id="g-s">Google Maps</span></div></button>
-        <button class="back-fixed" onclick="goL()" id="b-l">Jezik</button>
-    </div>
-
-    <div id="scr-cats" class="screen">
-        <h2 class="cat-title" id="c-title">Meni</h2>
-        <div id="cats-box"></div>
-        <button class="back-fixed" onclick="goH()" id="b-h">Nazad</button>
-    </div>
-
-    <div id="scr-items" class="screen">
-        <h2 class="cat-title" id="i-title"></h2>
-        <div id="items-box"></div>
-        <button class="back-fixed" onclick="showCats()" id="b-c">Meni</button>
-    </div>
-</div>
-
 <script>
-let lang = 'sr';
-const ui = {
-    sr: { h: "Tradicija ukusa", m: "Meni", ms: "Hrana i Piće", r: "Rezervacije", g: "Oceni nas", bl: "Jezik", bh: "Nazad" },
-    en: { h: "Tradition of Taste", m: "Menu", ms: "Food & Drinks", r: "Reservations", g: "Review us", bl: "Language", bh: "Back" },
-    ru: { h: "Традиция вкуса", m: "Меню", ms: "Еда и напитки", r: "Бронирование", g: "Оцените нас", bl: "Язык", bh: "Назад" }
-};
+  let lang = 'sr';
+  let currentCategoryKey = null;
 
-const data = {
-    kafe: { t: {sr:"Kafe", en:"Coffee", ru:"Кофе"}, items: [
-        {n:"Espresso kafa", p:"190"}, {n:"Espresso sa šlagom", p:"230"}, {n:"Espresso sa mlekom", p:"210"}, {n:"Kapućino", p:"210"}, {n:"Late macchiato", p:"230"}, {n:"Domaća kafa", p:"140"}, {n:"Domaća sa mlekom", p:"170"}
-    ]},
-    napici: { t: {sr:"Topli i hladni napici", en:"Drinks", ru:"Напитки"}, items: [
-        {n:"Kakao", p:"190"}, {n:"Nesquik", p:"220"}, {n:"Topla čokolada gusta", p:"290"}, {n:"Kuvano vino", p:"290"}, {n:"Plazma šejk", p:"350"}
-    ]},
-    bezalkoholna: { t: {sr:"Sokovi i Vode", en:"Soft Drinks", ru:"Соки и Вода"}, items: [
-        {n:"Coca Cola / Zero 0.25", p:"260"}, {n:"Schweppes Bitter/Tonic", p:"330/320"}, {n:"Next (svi ukusi) 0.2", p:"260"}, {n:"Cedevita 0.2", p:"220"}, {n:"Limunada 0.4", p:"230"}, {n:"Ceđeni mix 0.2", p:"410"}, {n:"Rosa 0.33/0.75", p:"160/320"}
-    ]},
-    dorucak: { t: {sr:"Doručak", en:"Breakfast", ru:"Завтрак"}, items: [
-        {n:"Jaje na oko 3 kom", p:"200"}, {n:"Omlet po izboru", p:"200"}, {n:"Jaja sa kobasicom i kačkavaljem", p:"450"}, {n:"Prženice Koš punjene 4 kom", p:"650"}, {n:"Kačamak (sir i kajmak) 300g", p:"300"}, {n:"Koš doručak za dvoje", p:"1650"}
-    ]},
-    rostilj: { t: {sr:"Roštilj", en:"Grill", ru:"Гриль"}, items: [
-        {n:"Ćevapi 5 kom / 10 kom", p:"650/1050"}, {n:"Ćevapi na kajmaku 400g", p:"1250"}, {n:"Punjeni ćevap 400g", p:"1350"}, {n:"Pljeskavica 350g", p:"1050"}, {n:"Gurmanska pljeskavica", p:"1150"}, {n:"Dimljena vešalica 350g", p:"1320"}, {n:"Mešano meso 1.2kg", p:"2900"}
-    ]},
-    daske: { t: {sr:"Daske", en:"Platters", ru:"Доски"}, items: [
-        {n:"Daska Koš", p:"1700"}, {n:"Daska uz pivo", p:"2100"}, {n:"Daska uz vino", p:"1210"}, {n:"Pohovana daska", p:"1650"}
-    ]},
-    alkohol: { t: {sr:"Rakije i Žestina", en:"Spirits", ru:"Алкоголь"}, items: [
-        {n:"Dremina Šljiva/Dunja 0.03", p:"260/290"}, {n:"Kraljevski Božur 0.03", p:"220"}, {n:"Gorki list 0.03", p:"220"}, {n:"Chivas Regal 12yo", p:"470"}, {n:"Jack Daniel's", p:"420"}
-    ]}
-};
-
-function setL(l) {
-    lang = l;
-    document.getElementById('h-sub').innerText = ui[l].h;
-    document.getElementById('m-t').innerText = ui[l].m;
-    document.getElementById('m-s').innerText = ui[l].ms;
-    document.getElementById('r-t').innerText = ui[l].r;
-    document.getElementById('g-t').innerText = ui[l].g;
-    document.getElementById('b-l').innerText = ui[l].bl;
-    document.getElementById('b-h').innerText = ui[l].bh;
-    goH();
-}
-
-function showCats() {
-    hS(); const b = document.getElementById('cats-box'); b.innerHTML = '';
-    for(let k in data) {
-        b.innerHTML += `<button class="btn" onclick="showI('${k}')"><i>→</i><div class="btn-txt"><b>${data[k].t[lang]}</b><span>Vidi ponudu</span></div></button>`;
+  const ui = {
+    sr: {
+      home: 'Tradicija ukusa',
+      menu: 'Meni', menuSub: 'Hrana i piće',
+      res: 'Rezervacije', resSub: 'Pozovite nas',
+      rev: 'Oceni nas', revSub: 'Google recenzije',
+      backLang: 'Jezik', backHome: 'Nazad', backMenu: 'Meni',
+      catsTitle: 'Meni',
+      catsSearch: 'Pretraži kategorije...',
+      itemsSearch: 'Pretraži stavke...',
+      view: 'Pogledaj ponudu',
+      noResults: 'Nema rezultata'
+    },
+    en: {
+      home: 'Tradition of Taste',
+      menu: 'Menu', menuSub: 'Food & Drinks',
+      res: 'Reservations', resSub: 'Call us',
+      rev: 'Review us', revSub: 'Google reviews',
+      backLang: 'Language', backHome: 'Back', backMenu: 'Menu',
+      catsTitle: 'Menu',
+      catsSearch: 'Search categories...',
+      itemsSearch: 'Search items...',
+      view: 'View selection',
+      noResults: 'No results'
+    },
+    ru: {
+      home: 'Традиция вкуса',
+      menu: 'Меню', menuSub: 'Еда и напитки',
+      res: 'Бронирование', resSub: 'Позвоните нам',
+      rev: 'Оцените нас', revSub: 'Отзывы Google',
+      backLang: 'Язык', backHome: 'Назад', backMenu: 'Меню',
+      catsTitle: 'Меню',
+      catsSearch: 'Поиск категорий...',
+      itemsSearch: 'Поиск позиций...',
+      view: 'Посмотреть',
+      noResults: 'Ничего не найдено'
     }
-    document.getElementById('scr-cats').style.display = 'block';
-}
+  };
 
-function showI(k) {
-    hS(); document.getElementById('i-title').innerText = data[k].t[lang];
-    const b = document.getElementById('items-box'); b.innerHTML = '';
-    data[k].items.forEach(i => {
-        b.innerHTML += `<div class="item-row"><div class="item-info"><h4>${i.n}</h4></div><div class="item-price">${i.p} RSD</div></div>`;
+  const exactItemTranslations = {
+    en: {
+      'Karadjordjeva šnicla 400 gr': "Karađorđe's schnitzel 400 g",
+      'Koš lopte 350 gr': 'Koš meatballs 350 g',
+      'Plava traka 350 gr': 'Blue ribbon 350 g',
+      'Koš sendvič 300 gr': 'Koš sandwich 300 g',
+      'Koš doručak za dve osobe': 'Koš breakfast for two',
+      'Daska Koš': 'Koš platter',
+      'Daska uz pivo': 'Platter with beer',
+      'Daska uz vino': 'Platter with wine',
+      'Pohovana daska': 'Breaded platter',
+      'Teletina Koš 1 kg': 'Koš veal 1 kg',
+      'Kraljevački sir': 'Kraljevo-style cheese',
+      'Kraljevački kajmak': 'Kraljevo-style kajmak',
+      'Kraljevački sir 50 gr': 'Kraljevo-style cheese 50 g',
+      'Kraljevački kajmak 50 gr': 'Kraljevo-style kajmak 50 g',
+      'Pohovana palačinka': 'Breaded pancake',
+      'Pohovani kajmak i sir': 'Breaded kajmak and cheese',
+      'Grilovani kozji sir': 'Grilled goat cheese',
+      'Belolučana paprika': 'Belolučana pepper',
+      'Šopska salata': 'Shopska salad',
+      'Srpska salata': 'Serbian salad',
+      'Grčka salata': 'Greek salad',
+      'Cezar salata': 'Caesar salad',
+      'Tuna salata': 'Tuna salad',
+      'Pileća supa sa domaćim rezancima': 'Chicken soup with homemade noodles',
+      'Teleća čorba': 'Veal soup',
+      'Mađarska čorba': 'Hungarian soup',
+      'Šampinjoni na žaru 250 gr': 'Grilled mushrooms 250 g',
+      'Grilovani šampinjoni 100 gr': 'Grilled mushrooms 100 g',
+      'Bareni pirinač 100 gr': 'Boiled rice 100 g',
+      'Dalmatinsko varivo 100 gr': 'Dalmatian stew 100 g',
+      'Rosa gazirana flašica 0.2': 'Rosa sparkling bottle 0.2',
+      'Rosa negazirana flašica 0.2': 'Rosa still bottle 0.2',
+      'Rosa gazirana flaša 0.75': 'Rosa sparkling bottle 0.75',
+      'Rosa negazirana flaša 0.75': 'Rosa still bottle 0.75',
+      'Ceđeni mix 0.2': 'Fresh mixed juice 0.2',
+      'Ceđena pomorandža 0.2': 'Fresh orange juice 0.2',
+      'Ceđeni grejp 0.2': 'Fresh grapefruit juice 0.2',
+      'Limunada 0.2': 'Lemonade 0.2',
+      'Espresso kafa': 'Espresso coffee',
+      'Espresso kafa sa šlagom': 'Espresso coffee with whipped cream',
+      'Espresso kafa sa mlekom': 'Espresso coffee with milk',
+      'Kapućino': 'Cappuccino',
+      'Late macchiato': 'Latte macchiato',
+      'Domaća kafa': 'Homemade coffee',
+      'Domaća kafa sa mlekom': 'Homemade coffee with milk',
+      'Topla čokolada gusta': 'Thick hot chocolate',
+      'Kuvano vino': 'Mulled wine',
+      'Plazma šejk': 'Plazma shake',
+      'Jaje na oko 3 kom': 'Fried eggs 3 pcs',
+      'Jaja na oko sa slaninom 3 kom': 'Fried eggs with bacon 3 pcs',
+      'Jaja sa šunkom 3 kom': 'Eggs with ham 3 pcs',
+      'Omlet po izboru 3 kom': 'Omelette of choice 3 pcs',
+      'Jaja sa kobasicom i kačkavaljem': 'Eggs with sausage and kashkaval',
+      'Jaja sa roštiljskom kobasicom': 'Eggs with grill sausage',
+      'Jaja sa ljutom kobasicom': 'Eggs with spicy sausage',
+      'Uštipci po izboru 200 gr': 'Fritters of choice 200 g',
+      'Prženice po izboru 200 gr': 'French toast of choice 200 g',
+      'Prženice Koš punjene 4 kom': 'Koš stuffed French toast 4 pcs',
+      'Kačamak (sir i kajmak) 300 gr': 'Polenta (cheese and kajmak) 300 g',
+      'Jogurt u čaši 2 dcl': 'Yogurt in a glass 2 dl',
+      'Mleko 2 dcl': 'Milk 2 dl',
+      'Hleb 2 kom': 'Bread 2 pcs',
+      'Proja 2 kom': 'Cornbread 2 pcs',
+      'Svinjska pečenica 50 gr': 'Pork loin 50 g',
+      'Goveđa pršuta 50 gr': 'Beef prosciutto 50 g',
+      'Šunka 50 gr': 'Ham 50 g',
+      'Pančeta 50 gr': 'Pancetta 50 g',
+      'Povrće 50 gr': 'Vegetables 50 g',
+      'Sendvič sa pohovanom piletinom 300 gr': 'Sandwich with breaded chicken 300 g',
+      'Sendvič sa suvim vratom 300 gr': 'Sandwich with cured pork neck 300 g',
+      'Tortilja sa šunkom i kačkavaljem 300 gr': 'Tortilla with ham and kashkaval 300 g',
+      'Tortilja sa pohovanom piletinom 300 gr': 'Tortilla with breaded chicken 300 g',
+      'Pileća ćufta u sosu od parmezana 400 gr': 'Chicken meatball in parmesan sauce 400 g',
+      'Svinjska rebra 350 gr': 'Pork ribs 350 g',
+      'Šnicla u sosu sa njeguškom pršutom 350 gr': 'Schnitzel in sauce with Njeguški prosciutto 350 g',
+      'Pileći stapić sa susamom 350 gr': 'Chicken stick with sesame 350 g',
+      'Punjena rolovana piletina 450 gr': 'Stuffed rolled chicken 450 g',
+      'Svinjski ražnjić 350 gr': 'Pork skewer 350 g',
+      'Svinjski file 350 gr': 'Pork fillet 350 g',
+      'Pileće belo na roštilju 350 gr': 'Grilled chicken breast 350 g',
+      'Pileći ražnjić 350 gr': 'Chicken skewer 350 g',
+      'Dimljeni batak 350 gr': 'Smoked chicken drumstick 350 g',
+      'Roštiljska kobasica 350 gr': 'Grill sausage 350 g',
+      'Kobasica sa kačkavaljem 350 gr': 'Sausage with kashkaval 350 g',
+      'Domaća ljuta kobasica 350 gr': 'Homemade spicy sausage 350 g',
+      'Mešano meso 1.2 kg': 'Mixed meat 1.2 kg',
+      'File smuđa 1 kg': 'Pike-perch fillet 1 kg',
+      'File dimljene pastrmke 400 g': 'Smoked trout fillet 400 g',
+      'Lignje na žaru 400 g': 'Grilled squid 400 g',
+      'Ćevapi 5 kom': 'Ćevapi 5 pcs',
+      'Ćevapi 10 kom': 'Ćevapi 10 pcs',
+      'Ćevapi sa kajmakom 400 gr': 'Ćevapi with kajmak 400 g',
+      'Mlinarski ćevap 400 gr': 'Miller-style ćevap 400 g',
+      'Punjeni ćevap 400 gr': 'Stuffed ćevap 400 g',
+      'Pljeskavica 350 gr': 'Burger 350 g',
+      'Gurmanska pljeskavica 350 gr': 'Gourmet burger 350 g',
+      'Pljeskavica sa kozjim sirom 400 gr': 'Burger with goat cheese 400 g',
+      'Dimljena vešalica 350 gr': 'Smoked vešalica 350 g',
+      'Bela vešalica 350 gr': 'White vešalica 350 g',
+      'Punjena bela vešalica sa slaninom 400 gr': 'Stuffed white vešalica with bacon 400 g',
+      'Dimljeni svinjski vrat 350 gr': 'Smoked pork neck 350 g',
+      'Krompir Koš 250 gr': 'Koš potatoes 250 g',
+      'Pomfrit 250 gr': 'French fries 250 g',
+      'Grilovano povrće 250 gr': 'Grilled vegetables 250 g',
+      'Pomfrit 100 gr': 'French fries 100 g',
+      'Krompir Koš 100 gr': 'Koš potatoes 100 g',
+      'Grilovano povrće 100 gr': 'Grilled vegetables 100 g',
+      'Senf 30 gr': 'Mustard 30 g',
+      'Kečap 30 gr': 'Ketchup 30 g',
+      'Majonez 30 gr': 'Mayonnaise 30 g',
+      'Baklava': 'Baklava',
+      'Trileće': 'Trileçe',
+      'Cheesecake': 'Cheesecake',
+      'Nugat bela čokolada': 'Nougat white chocolate',
+      'Plazma torta': 'Plazma cake',
+      'Palačinke sa kremom': 'Pancakes with cream',
+      'Palačinke sa kremom i plazmom': 'Pancakes with cream and Plazma',
+      'Palačinke sa džemom': 'Pancakes with jam',
+      'Palačinke sa šećerom': 'Pancakes with sugar',
+      'Krem': 'Cream',
+      'Džem': 'Jam',
+      'Plazma': 'Plazma',
+      'Dremina šljiva 0.03': 'Dremina plum rakija 0.03',
+      'Dremina dunja 0.03': 'Dremina quince rakija 0.03',
+      'Dremina kajsija 0.03': 'Dremina apricot rakija 0.03',
+      'Dremina kruška viljamovka 0.03': 'Dremina Williams pear rakija 0.03',
+      'Kraljevski Božur - šljiva 0.03': 'Royal Božur plum rakija 0.03',
+      'Đurović rakija od šljive 0.03': 'Đurović plum rakija 0.03',
+      'Đurović rakija od dunje 0.03': 'Đurović quince rakija 0.03',
+      'Đurović rakija od dunje barik 0.03': 'Đurović barrel-aged quince rakija 0.03',
+      'Đurović rakija od kajsije 0.03': 'Đurović apricot rakija 0.03',
+      'Đurović rakija od kruške viljamovke 0.03': 'Đurović Williams pear rakija 0.03',
+      'Đurović rakija od maline 0.03': 'Đurović raspberry rakija 0.03',
+      'Đurović rakija medovina 0.03': 'Đurović mead rakija 0.03',
+      'Jegermeister 0.03': 'Jägermeister 0.03',
+      'Absinthe 0.03': 'Absinthe 0.03',
+      'Gorki list 0.03': 'Gorki list 0.03',
+      'Vermut 0.03': 'Vermouth 0.03',
+      'Vinjak Specijal 5 0.03': 'Vinjak Special 5 0.03',
+      'Vinjak 0.03': 'Vinjak 0.03',
+      'London Dry gin 0.03': 'London Dry gin 0.03',
+      'Beefeater 0.03': 'Beefeater 0.03',
+      'Baileys 0.03': 'Baileys 0.03',
+      'Martini Bianco 0.03': 'Martini Bianco 0.03',
+      'Campari 0.03': 'Campari 0.03',
+      'Absolut vodka 0.03': 'Absolut vodka 0.03',
+      'Vodka 0.03': 'Vodka 0.03',
+      'Olmeca Blanko 0.03': 'Olmeca Blanco 0.03',
+      'Stock 84 0.03': 'Stock 84 0.03',
+      'Chivas Regal 12yo 0.03': 'Chivas Regal 12yo 0.03',
+      "Jack Danijel's 0.03": "Jack Daniel's 0.03",
+      "Ballantine's 0.03": "Ballantine's 0.03",
+      'Jameson 0.03': 'Jameson 0.03',
+      'Courvoiser 0.03': 'Courvoisier 0.03',
+      'Martell vs Cognac 0.03': 'Martell VS cognac 0.03',
+      'Calvadren vs 0.03': 'Calvadren VS 0.03',
+      'Cornus vsop 0.03': 'Cornus VSOP 0.03',
+      'Havana Club 0.03': 'Havana Club 0.03',
+      'Aleksić Žuti cvet 0.187 flašica': 'Aleksić Yellow Flower 0.187 bottle',
+      'Plantaže 13. jul Chardonnay 0.187 flašica': 'Plantaže 13. jul Chardonnay 0.187 bottle',
+      'Plantaže 13. jul Vranac 0.187 flašica': 'Plantaže 13. jul Vranac 0.187 bottle',
+      'Aleksić Žuti cvet 0.75': 'Aleksić Yellow Flower 0.75',
+      'Dremina Tamjanika 0.75': 'Dremina Tamjanika 0.75',
+      'Aleksić Bonaca 0.75': 'Aleksić Bonaca 0.75',
+      'Kovačević Chardonnay 0.75': 'Kovačević Chardonnay 0.75',
+      'Drasković Chardonnay 0.75': 'Drasković Chardonnay 0.75',
+      'Tikveš Alexandria belo Classic 0.75': 'Tikveš Alexandria White Classic 0.75',
+      'Radovanović Rizling rajnski 0.75': 'Radovanović Rhine Riesling 0.75',
+      'Dremina Blanc Coupage 0.75': 'Dremina Blanc Cuvée 0.75',
+      'Drašković beli Pinot 0.75': 'Drašković White Pinot 0.75',
+      'Drašković ruža Vetrova – Muskat Otonel 0.75': 'Drašković Wind Rose – Muscat Ottonel 0.75',
+      'Plantaže 13. jul Novi dan Moscato Bianco 0.75': 'Plantaže 13. jul New Day Moscato Bianco 0.75',
+      'Plantaže 13. jul Malvazija 0.75': 'Plantaže 13. jul Malvasia 0.75',
+      'Plantaže 13. jul Chardonnay 0.75': 'Plantaže 13. jul Chardonnay 0.75',
+      'Plantaže 13. jul Val Brut 0.75': 'Plantaže 13. jul Val Brut 0.75',
+      'Prosecco 0.75': 'Prosecco 0.75',
+      'Plantaže 13. jul Vranac 0.187 flašica': 'Plantaže 13. jul Vranac 0.187 bottle',
+      'Aleksić Kardaš 0.75': 'Aleksić Kardaš 0.75',
+      'Radovanović Cabernet Sauvignon Classic 0.75': 'Radovanović Cabernet Sauvignon Classic 0.75',
+      'Dremina Cabernet Sauvignon 0.75': 'Dremina Cabernet Sauvignon 0.75',
+      'Tikveš Alexandria crveno Classic 0.75': 'Tikveš Alexandria Red Classic 0.75',
+      'Plantaže 13. jul Vranac 0.75': 'Plantaže 13. jul Vranac 0.75',
+      'Plantaže 13. jul Vladika Cabernet Merlot 0.75': 'Plantaže 13. jul Vladika Cabernet Merlot 0.75',
+      'Plantaže 13. jul Jedne noći Cabernet Merlot 0.75': 'Plantaže 13. jul One Night Cabernet Merlot 0.75',
+      'Dremina Prokupac 0.75': 'Dremina Prokupac 0.75',
+      'Drasković Mahago 0.75': 'Drasković Mahago 0.75',
+      'Drasković Frankovka 0.75': 'Drasković Frankovka 0.75',
+      'Plantaže 13. jul Rose 0.187 flašica': 'Plantaže 13. jul Rosé 0.187 bottle',
+      'Dremina Rose 0.75': 'Dremina Rosé 0.75',
+      'Aleksić Barbara 0.75': 'Aleksić Barbara 0.75',
+      'Drašković Rose 0.75': 'Drašković Rosé 0.75',
+      'Drašković Divlja ruža 0.75': 'Drašković Wild Rose 0.75',
+      'Radovanović Rose 0.75': 'Radovanović Rosé 0.75',
+      'Plantaže 13. jul U svitanje Cabernet 0.75': 'Plantaže 13. jul At Dawn Cabernet 0.75',
+      'Plantaže 13. jul Rose 0.75': 'Plantaže 13. jul Rosé 0.75',
+      'Lav pivo 0.33': 'Lav beer 0.33',
+      'Tuborg pivo 0.33': 'Tuborg beer 0.33',
+      'Carlsberg pivo 0.25': 'Carlsberg beer 0.25',
+      'Budweiser pivo 0.33': 'Budweiser beer 0.33',
+      'Erdinger pivo 0.33': 'Erdinger beer 0.33',
+      'Kronenbourg pivo 0.33': 'Kronenbourg beer 0.33',
+      'San Miguel Fresca pivo 0.33': 'San Miguel Fresca beer 0.33',
+      'Tuborg pivo točeno 0.33': 'Tuborg draft beer 0.33',
+      'Tuborg pivo točeno 0.5': 'Tuborg draft beer 0.5',
+      'Carlsberg pivo točeno 0.33': 'Carlsberg draft beer 0.33',
+      'Carlsberg pivo točeno 0.5': 'Carlsberg draft beer 0.5',
+      'Somersby 0.33': 'Somersby 0.33'
+    },
+    ru: {
+      'Karadjordjeva šnicla 400 gr': 'Шницель Караджорджев 400 г',
+      'Koš lopte 350 gr': 'Фрикадельки Koš 350 г',
+      'Plava traka 350 gr': 'Синяя лента 350 г',
+      'Koš sendvič 300 gr': 'Сэндвич Koš 300 г',
+      'Koš doručak za dve osobe': 'Завтрак Koš на двоих',
+      'Daska Koš': 'Доска Koš',
+      'Daska uz pivo': 'Доска к пиву',
+      'Daska uz vino': 'Доска к вину',
+      'Pohovana daska': 'Панированная доска',
+      'Teletina Koš 1 kg': 'Телятина Koš 1 кг',
+      'Kraljevački sir': 'Кралевский сыр',
+      'Kraljevački kajmak': 'Кралевский каймак',
+      'Kraljevački sir 50 gr': 'Кралевский сыр 50 г',
+      'Kraljevački kajmak 50 gr': 'Кралевский каймак 50 г',
+      'Pohovana palačinka': 'Панированный блинчик',
+      'Pohovani kajmak i sir': 'Панированный каймак и сыр',
+      'Grilovani kozji sir': 'Сыр из козьего молока на гриле',
+      'Belolučana paprika': 'Белолуканский перец',
+      'Šopska salata': 'Шопский салат',
+      'Srpska salata': 'Сербский салат',
+      'Grčka salata': 'Греческий салат',
+      'Cezar salata': 'Салат Цезарь',
+      'Tuna salata': 'Салат с тунцом',
+      'Pileća supa sa domaćim rezancima': 'Куриный суп с домашней лапшой',
+      'Teleća čorba': 'Телячья чорба',
+      'Mađarska čorba': 'Венгерская чорба',
+      'Šampinjoni na žaru 250 gr': 'Шампиньоны на гриле 250 г',
+      'Grilovani šampinjoni 100 gr': 'Шампиньоны на гриле 100 г',
+      'Bareni pirinač 100 gr': 'Отварной рис 100 г',
+      'Dalmatinsko varivo 100 gr': 'Далматинское рагу 100 г',
+      'Rosa gazirana flašica 0.2': 'Rosa газированная бутылка 0.2',
+      'Rosa negazirana flašica 0.2': 'Rosa негазированная бутылка 0.2',
+      'Rosa gazirana flaša 0.75': 'Rosa газированная бутылка 0.75',
+      'Rosa negazirana flaša 0.75': 'Rosa негазированная бутылка 0.75',
+      'Ceđeni mix 0.2': 'Свежий микс 0.2',
+      'Ceđena pomorandža 0.2': 'Свежевыжатый апельсиновый сок 0.2',
+      'Ceđeni grejp 0.2': 'Свежевыжатый грейпфрутовый сок 0.2',
+      'Limunada 0.2': 'Лимонад 0.2',
+      'Espresso kafa': 'Эспрессо',
+      'Espresso kafa sa šlagom': 'Эспрессо со взбитыми сливками',
+      'Espresso kafa sa mlekom': 'Эспрессо с молоком',
+      'Kapućino': 'Капучино',
+      'Late macchiato': 'Латте макиато',
+      'Domaća kafa': 'Домашний кофе',
+      'Domaća kafa sa mlekom': 'Домашний кофе с молоком',
+      'Topla čokolada gusta': 'Густой горячий шоколад',
+      'Kuvano vino': 'Глинтвейн',
+      'Plazma šejk': 'Шейк с Plazma',
+      'Jaje na oko 3 kom': 'Яичница 3 шт.',
+      'Jaja na oko sa slaninom 3 kom': 'Яичница с беконом 3 шт.',
+      'Jaja sa šunkom 3 kom': 'Яйца с ветчиной 3 шт.',
+      'Omlet po izboru 3 kom': 'Омлет на выбор 3 шт.',
+      'Jaja sa kobasicom i kačkavaljem': 'Яйца с колбасой и кашкавалом',
+      'Jaja sa roštiljskom kobasicom': 'Яйца с гриль-колбасой',
+      'Jaja sa ljutom kobasicom': 'Яйца с острой колбасой',
+      'Uštipci po izboru 200 gr': 'Уштипцы на выбор 200 г',
+      'Prženice po izboru 200 gr': 'Жареный хлеб на выбор 200 г',
+      'Prženice Koš punjene 4 kom': 'Фаршированные гренки Koš 4 шт.',
+      'Kačamak (sir i kajmak) 300 gr': 'Качамак (сыр и каймак) 300 г',
+      'Jogurt u čaši 2 dcl': 'Йогурт в стакане 2 дл',
+      'Mleko 2 dcl': 'Молоко 2 дл',
+      'Hleb 2 kom': 'Хлеб 2 шт.',
+      'Proja 2 kom': 'Проя 2 шт.',
+      'Svinjska pečenica 50 gr': 'Свиная печеница 50 г',
+      'Goveđa pršuta 50 gr': 'Говяжья пршут 50 г',
+      'Šunka 50 gr': 'Ветчина 50 г',
+      'Pančeta 50 gr': 'Панчетта 50 г',
+      'Povrće 50 gr': 'Овощи 50 г',
+      'Sendvič sa pohovanom piletinom 300 gr': 'Сэндвич с панированной курицей 300 г',
+      'Sendvič sa suvim vratom 300 gr': 'Сэндвич с копчёной шеей 300 г',
+      'Tortilja sa šunkom i kačkavaljem 300 gr': 'Тортилья с ветчиной и кашкавалом 300 г',
+      'Tortilja sa pohovanom piletinom 300 gr': 'Тортилья с панированной курицей 300 г',
+      'Pileća ćufta u sosu od parmezana 400 gr': 'Куриная котлета в соусе из пармезана 400 г',
+      'Svinjska rebra 350 gr': 'Свиные ребра 350 г',
+      'Šnicla u sosu sa njeguškom pršutom 350 gr': 'Шницель в соусе с негушской пршутой 350 г',
+      'Pileći stapić sa susamom 350 gr': 'Куриная палочка с кунжутом 350 г',
+      'Punjena rolovana piletina 450 gr': 'Фаршированная рулетная курица 450 г',
+      'Svinjski ražnjić 350 gr': 'Свиная шашлычка 350 г',
+      'Svinjski file 350 gr': 'Свиное филе 350 г',
+      'Pileće belo na roštilju 350 gr': 'Куриная грудка на гриле 350 г',
+      'Pileći ražnjić 350 gr': 'Куриная шашлычка 350 г',
+      'Dimljeni batak 350 gr': 'Копчёный окорочок 350 г',
+      'Roštiljska kobasica 350 gr': 'Гриль-колбаса 350 г',
+      'Kobasica sa kačkavaljem 350 gr': 'Колбаса с кашкавалом 350 г',
+      'Domaća ljuta kobasica 350 gr': 'Домашняя острая колбаса 350 г',
+      'Mešano meso 1.2 kg': 'Смешанное мясо 1.2 кг',
+      'File smuđa 1 kg': 'Филе судака 1 кг',
+      'File dimljene pastrmke 400 g': 'Филе копчёной форели 400 г',
+      'Lignje na žaru 400 g': 'Кальмары на гриле 400 г',
+      'Ćevapi 5 kom': 'Чевапи 5 шт.',
+      'Ćevapi 10 kom': 'Чевапи 10 шт.',
+      'Ćevapi sa kajmakom 400 gr': 'Чевапи с каймаком 400 г',
+      'Mlinarski ćevap 400 gr': 'Чевап по-млинарски 400 г',
+      'Punjeni ćevap 400 gr': 'Фаршированный чевап 400 г',
+      'Pljeskavica 350 gr': 'Плескавица 350 г',
+      'Gurmanska pljeskavica 350 gr': 'Гурманская плескавица 350 г',
+      'Pljeskavica sa kozjim sirom 400 gr': 'Плескавица с козьим сыром 400 г',
+      'Dimljena vešalica 350 gr': 'Копчёная вешалица 350 г',
+      'Bela vešalica 350 gr': 'Белая вешалица 350 г',
+      'Punjena bela vešalica sa slaninom 400 gr': 'Фаршированная белая вешалица с беконом 400 г',
+      'Dimljeni svinjski vrat 350 gr': 'Копчёная свиная шея 350 г',
+      'Krompir Koš 250 gr': 'Картофель Koš 250 г',
+      'Pomfrit 250 gr': 'Картофель фри 250 г',
+      'Grilovano povrće 250 gr': 'Овощи на гриле 250 г',
+      'Pomfrit 100 gr': 'Картофель фри 100 г',
+      'Krompir Koš 100 gr': 'Картофель Koš 100 г',
+      'Grilovano povrće 100 gr': 'Овощи на гриле 100 г',
+      'Senf 30 gr': 'Горчица 30 г',
+      'Kečap 30 gr': 'Кетчуп 30 г',
+      'Majonez 30 gr': 'Майонез 30 г',
+      'Baklava': 'Баклава',
+      'Trileće': 'Трилече',
+      'Cheesecake': 'Чизкейк',
+      'Nugat bela čokolada': 'Нуга с белым шоколадом',
+      'Plazma torta': 'Торт Plazma',
+      'Palačinke sa kremom': 'Блинчики с кремом',
+      'Palačinke sa kremom i plazmom': 'Блинчики с кремом и Plazma',
+      'Palačinke sa džemom': 'Блинчики с джемом',
+      'Palačinke sa šećerom': 'Блинчики с сахаром',
+      'Krem': 'Крем',
+      'Džem': 'Джем',
+      'Plazma': 'Plazma',
+      'Dremina šljiva 0.03': 'Ракия Dremina из сливы 0.03',
+      'Dremina dunja 0.03': 'Ракия Dremina из айвы 0.03',
+      'Dremina kajsija 0.03': 'Ракия Dremina из абрикоса 0.03',
+      'Dremina kruška viljamovka 0.03': 'Ракия Dremina из груши Williams 0.03',
+      'Kraljevski Božur - šljiva 0.03': 'Королевский Božur — слива 0.03',
+      'Đurović rakija od šljive 0.03': 'Ракия Đurović из сливы 0.03',
+      'Đurović rakija od dunje 0.03': 'Ракия Đurović из айвы 0.03',
+      'Đurović rakija od dunje barik 0.03': 'Бочковая ракия Đurović из айвы 0.03',
+      'Đurović rakija od kajsije 0.03': 'Ракия Đurović из абрикоса 0.03',
+      'Đurović rakija od kruške viljamovke 0.03': 'Ракия Đurović из груши Williams 0.03',
+      'Đurović rakija od maline 0.03': 'Ракия Đurović из малины 0.03',
+      'Đurović rakija medovina 0.03': 'Ракия Đurović медовуха 0.03',
+      'Jegermeister 0.03': 'Jägermeister 0.03',
+      'Absinthe 0.03': 'Абсент 0.03',
+      'Gorki list 0.03': 'Gorki list 0.03',
+      'Vermut 0.03': 'Вермут 0.03',
+      'Vinjak Specijal 5 0.03': 'Виньяк Special 5 0.03',
+      'Vinjak 0.03': 'Виньяк 0.03',
+      'London Dry gin 0.03': 'London Dry gin 0.03',
+      'Beefeater 0.03': 'Beefeater 0.03',
+      'Baileys 0.03': 'Baileys 0.03',
+      'Martini Bianco 0.03': 'Martini Bianco 0.03',
+      'Campari 0.03': 'Campari 0.03',
+      'Absolut vodka 0.03': 'Абсолют водка 0.03',
+      'Vodka 0.03': 'Водка 0.03',
+      'Olmeca Blanko 0.03': 'Olmeca Blanco 0.03',
+      'Stock 84 0.03': 'Stock 84 0.03',
+      'Chivas Regal 12yo 0.03': 'Chivas Regal 12 лет 0.03',
+      "Jack Danijel's 0.03": "Jack Daniel's 0.03",
+      "Ballantine's 0.03": "Ballantine's 0.03",
+      'Jameson 0.03': 'Jameson 0.03',
+      'Courvoiser 0.03': 'Courvoisier 0.03',
+      'Martell vs Cognac 0.03': 'Martell VS коньяк 0.03',
+      'Calvadren vs 0.03': 'Calvadren VS 0.03',
+      'Cornus vsop 0.03': 'Cornus VSOP 0.03',
+      'Havana Club 0.03': 'Havana Club 0.03',
+      'Aleksić Žuti cvet 0.187 flašica': 'Aleksić Yellow Flower 0.187 бутылка',
+      'Plantaže 13. jul Chardonnay 0.187 flašica': 'Plantaže 13. jul Chardonnay 0.187 бутылка',
+      'Aleksić Žuti cvet 0.75': 'Aleksić Yellow Flower 0.75',
+      'Dremina Tamjanika 0.75': 'Dremina Tamjanika 0.75',
+      'Aleksić Bonaca 0.75': 'Aleksić Bonaca 0.75',
+      'Kovačević Chardonnay 0.75': 'Kovačević Chardonnay 0.75',
+      'Drasković Chardonnay 0.75': 'Drasković Chardonnay 0.75',
+      'Tikveš Alexandria belo Classic 0.75': 'Tikveš Alexandria White Classic 0.75',
+      'Radovanović Rizling rajnski 0.75': 'Radovanović Rhine Riesling 0.75',
+      'Dremina Blanc Coupage 0.75': 'Dremina Blanc Cuvée 0.75',
+      'Drašković beli Pinot 0.75': 'Drašković White Pinot 0.75',
+      'Drašković ruža Vetrova – Muskat Otonel 0.75': 'Drašković Wind Rose – Muscat Ottonel 0.75',
+      'Plantaže 13. jul Novi dan Moscato Bianco 0.75': 'Plantaže 13. jul New Day Moscato Bianco 0.75',
+      'Plantaže 13. jul Malvazija 0.75': 'Plantaže 13. jul Malvasia 0.75',
+      'Plantaže 13. jul Chardonnay 0.75': 'Plantaže 13. jul Chardonnay 0.75',
+      'Plantaže 13. jul Val Brut 0.75': 'Plantaže 13. jul Val Brut 0.75',
+      'Prosecco 0.75': 'Prosecco 0.75',
+      'Plantaže 13. jul Vranac 0.187 flašica': 'Plantaže 13. jul Vranac 0.187 bottle',
+      'Aleksić Kardaš 0.75': 'Aleksić Kardaš 0.75',
+      'Radovanović Cabernet Sauvignon Classic 0.75': 'Radovanović Cabernet Sauvignon Classic 0.75',
+      'Dremina Cabernet Sauvignon 0.75': 'Dremina Cabernet Sauvignon 0.75',
+      'Tikveš Alexandria crveno Classic 0.75': 'Tikveš Alexandria Red Classic 0.75',
+      'Plantaže 13. jul Vranac 0.75': 'Plantaže 13. jul Vranac 0.75',
+      'Plantaže 13. jul Vladika Cabernet Merlot 0.75': 'Plantaže 13. jul Vladika Cabernet Merlot 0.75',
+      'Plantaže 13. jul Jedne noći Cabernet Merlot 0.75': 'Plantaže 13. jul One Night Cabernet Merlot 0.75',
+      'Dremina Prokupac 0.75': 'Dremina Prokupac 0.75',
+      'Drasković Mahago 0.75': 'Drasković Mahago 0.75',
+      'Drasković Frankovka 0.75': 'Drasković Frankovka 0.75',
+      'Plantaže 13. jul Rose 0.187 flašica': 'Plantaže 13. jul Rosé 0.187 bottle',
+      'Dremina Rose 0.75': 'Dremina Rosé 0.75',
+      'Aleksić Barbara 0.75': 'Aleksić Barbara 0.75',
+      'Drašković Rose 0.75': 'Drašković Rosé 0.75',
+      'Drašković Divlja ruža 0.75': 'Drašković Wild Rose 0.75',
+      'Radovanović Rose 0.75': 'Radovanović Rosé 0.75',
+      'Plantaže 13. jul U svitanje Cabernet 0.75': 'Plantaže 13. jul At Dawn Cabernet 0.75',
+      'Plantaže 13. jul Rose 0.75': 'Plantaže 13. jul Rosé 0.75',
+      'Lav pivo 0.33': 'Lav beer 0.33',
+      'Tuborg pivo 0.33': 'Tuborg beer 0.33',
+      'Carlsberg pivo 0.25': 'Carlsberg beer 0.25',
+      'Budweiser pivo 0.33': 'Budweiser beer 0.33',
+      'Erdinger pivo 0.33': 'Erdinger beer 0.33',
+      'Kronenbourg pivo 0.33': 'Kronenbourg beer 0.33',
+      'San Miguel Fresca pivo 0.33': 'San Miguel Fresca beer 0.33',
+      'Tuborg pivo točeno 0.33': 'Tuborg draft beer 0.33',
+      'Tuborg pivo točeno 0.5': 'Tuborg draft beer 0.5',
+      'Carlsberg pivo točeno 0.33': 'Carlsberg draft beer 0.33',
+      'Carlsberg pivo točeno 0.5': 'Carlsberg draft beer 0.5',
+      'Somersby 0.33': 'Somersby 0.33'
+    }
+  };
+
+  const categoryExact = {
+    en: {
+      'Bezalkoholna pića': 'Soft Drinks',
+      'Kafe i topli napici': 'Coffee & Hot Drinks',
+      'Vode': 'Waters',
+      'Doručak': 'Breakfast',
+      'Dodaci za doručak': 'Breakfast Extras',
+      'Sendviči i tortilje': 'Sandwiches & Tortillas',
+      'Daske': 'Platters',
+      'Salate': 'Salads',
+      'Dodaci i specijaliteti': 'Extras & Specialties',
+      'Supe i čorbe': 'Soups & Stews',
+      'Glavna jela': 'Main Courses',
+      'Prilozi': 'Side Dishes',
+      'Dezerti': 'Desserts',
+      'Roštilj': 'Grill',
+      'Riba i morski specijaliteti': 'Fish & Seafood',
+      'Rakije': 'Rakija',
+      'Žestina i likeri': 'Spirits & Liqueurs',
+      'Bela vina': 'White Wines',
+      'Crvena vina': 'Red Wines',
+      'Rose vina': 'Rosé Wines',
+      'Piva': 'Beer'
+    },
+    ru: {
+      'Bezalkoholna pića': 'Безалкогольные напитки',
+      'Kafe i topli napici': 'Кофе и горячие напитки',
+      'Vode': 'Воды',
+      'Doručak': 'Завтрак',
+      'Dodaci za doručak': 'Добавки к завтраку',
+      'Sendviči i tortilje': 'Сэндвичи и тортильи',
+      'Daske': 'Доски',
+      'Salate': 'Салаты',
+      'Dodaci i specijaliteti': 'Добавки и специалитеты',
+      'Supe i čorbe': 'Супы и чорбы',
+      'Glavna jela': 'Основные блюда',
+      'Prilozi': 'Гарниры',
+      'Dezerti': 'Десерты',
+      'Roštilj': 'Гриль',
+      'Riba i morski specijaliteti': 'Рыба и морепродукты',
+      'Rakije': 'Ракии',
+      'Žestina i likeri': 'Крепкий алкоголь и ликёры',
+      'Bela vina': 'Белые вина',
+      'Crvena vina': 'Красные вина',
+      'Rose vina': 'Розовые вина',
+      'Piva': 'Пиво'
+    }
+  };
+
+  const order = [
+    'sokovi', 'kafa', 'vode', 'dorucak', 'dodaci_dorucak', 'sendvici', 'daske',
+    'salate', 'posebne_salate', 'supe', 'glavna', 'prilozi', 'dezerti', 'rostilj',
+    'riba', 'rakije', 'zestina', 'bela_vina', 'crvena_vina', 'rose', 'piva'
+  ];
+
+  const data = {
+      sokovi: {
+        title: { sr: 'Bezalkoholna pića', en: 'Soft Drinks', ru: 'Безалкогольные напитки' },
+        items: [
+          { n: 'Coca Cola 0.25', p: '190' },
+          { n: 'Coca Cola Zero 0.25', p: '220' },
+          { n: 'Fanta 0.25', p: '220' },
+          { n: 'Sprite 0.25', p: '220' },
+          { n: 'Schweppes Bitter Lemon 0.25', p: '220' },
+          { n: 'Schweppes Tonic Water 0.25', p: '220' },
+          { n: 'Cedevita 0.2', p: '220' },
+          { n: 'Next flašica Narandža 0.2', p: '220' },
+          { n: 'Next flašica Jabuka 0.2', p: '220' },
+          { n: 'Next flašica Borovnica 0.2', p: '220' },
+          { n: 'Next flašica Jagoda 0.2', p: '220' },
+          { n: 'Next flašica Breskva 0.2', p: '220' },
+          { n: 'Next flašica Ananas 0.2', p: '220' },
+          { n: 'Red Bull 0.25', p: '400' },
+          { n: 'Ultra Energy 0.25', p: '230' },
+          { n: 'Ceđeni mix 0.2', p: '370' },
+          { n: 'Ceđena pomorandža 0.2', p: '340' },
+          { n: 'Ceđeni grejp 0.2', p: '350' },
+          { n: 'Limunada 0.2', p: '210' }
+        ]
+      },
+      kafa: {
+        title: { sr: 'Kafe i topli napici', en: 'Coffee & Hot Drinks', ru: 'Кофе и горячие напитки' },
+        items: [
+          { n: 'Espresso kafa', p: '160' },
+          { n: 'Espresso kafa sa šlagom', p: '200' },
+          { n: 'Espresso kafa sa mlekom', p: '170' },
+          { n: 'Kapućino', p: '180' },
+          { n: 'Late macchiato', p: '210' },
+          { n: 'Nescafe classic', p: '190' },
+          { n: 'Domaća kafa', p: '120' },
+          { n: 'Domaća kafa sa mlekom', p: '130' },
+          { n: 'Kakao', p: '150' },
+          { n: 'Čaj', p: '170' },
+          { n: 'Nesquik', p: '190' },
+          { n: 'Topla čokolada gusta', p: '240' },
+          { n: 'Kuvano vino', p: '240' },
+          { n: 'Plazma šejk', p: '350' },
+          { n: 'Mleko', p: '60' },
+          { n: 'Šlag', p: '100' },
+          { n: 'Sojino mleko', p: '100' }
+        ]
+      },
+      vode: {
+        title: { sr: 'Vode', en: 'Waters', ru: 'Воды' },
+        items: [
+          { n: 'Rosa gazirana flašica 0.2', p: '150' },
+          { n: 'Rosa negazirana flašica 0.2', p: '150' },
+          { n: 'Romerquelle lemon grass 0.2', p: '190' },
+          { n: 'Romerquelle melisa 0.2', p: '190' },
+          { n: 'Rosa gazirana flaša 0.75', p: '290' },
+          { n: 'Rosa negazirana flaša 0.75', p: '290' }
+        ]
+      },
+      dorucak: {
+        title: { sr: 'Doručak', en: 'Breakfast', ru: 'Завтрак' },
+        items: [
+          { n: 'Jaje na oko 3 kom', p: '160' },
+          { n: 'Jaja na oko sa slaninom 3 kom', p: '360' },
+          { n: 'Jaja sa šunkom 3 kom', p: '280' },
+          { n: 'Omlet po izboru 3 kom', p: '160' },
+          { n: 'Jaja sa kobasicom i kačkavaljem', p: '390' },
+          { n: 'Jaja sa roštiljskom kobasicom', p: '390' },
+          { n: 'Jaja sa ljutom kobasicom', p: '390' },
+          { n: 'Uštipci po izboru 200 gr', p: '220' },
+          { n: 'Prženice po izboru 200 gr', p: '210' },
+          { n: 'Prženice Koš punjene 4 kom', p: '550' },
+          { n: 'Kačamak (sir i kajmak) 300 gr', p: '200' },
+          { n: 'Koš doručak za dve osobe', p: '860' },
+          { n: 'Tortilja Koš', p: '550' }
+        ]
+      },
+      dodaci_dorucak: {
+        title: { sr: 'Dodaci za doručak', en: 'Breakfast Extras', ru: 'Добавки к завтраку' },
+        items: [
+          { n: 'Jogurt u čaši 2 dcl', p: '90' },
+          { n: 'Mleko 2 dcl', p: '90' },
+          { n: 'Hleb 2 kom', p: '40' },
+          { n: 'Proja 2 kom', p: '40' },
+          { n: 'Svinjska pečenica 50 gr', p: '150' },
+          { n: 'Goveđa pršuta 50 gr', p: '250' },
+          { n: 'Šunka 50 gr', p: '100' },
+          { n: 'Pančeta 50 gr', p: '120' },
+          { n: 'Kraljevački sir 50 gr', p: '120' },
+          { n: 'Kraljevački kajmak 50 gr', p: '150' },
+          { n: 'Povrće 50 gr', p: '150' }
+        ]
+      },
+      sendvici: {
+        title: { sr: 'Sendviči i tortilje', en: 'Sandwiches & Tortillas', ru: 'Сэндвичи и тортильи' },
+        items: [
+          { n: 'Koš sendvič 300 gr', p: '450' },
+          { n: 'Sendvič sa pohovanom piletinom 300 gr', p: '420' },
+          { n: 'Sendvič sa suvim vratom 300 gr', p: '380' },
+          { n: 'Tortilja sa šunkom i kačkavaljem 300 gr', p: '410' },
+          { n: 'Tortilja sa pohovanom piletinom 300 gr', p: '410' }
+        ]
+      },
+      daske: {
+        title: { sr: 'Daske', en: 'Platters', ru: 'Доски' },
+        items: [
+          { n: 'Daska Koš', p: '1700' },
+          { n: 'Daska uz pivo', p: '1950' },
+          { n: 'Daska uz vino', p: '1010' },
+          { n: 'Pohovana daska', p: '5500' }
+        ]
+      },
+      salate: {
+        title: { sr: 'Salate', en: 'Salads', ru: 'Салаты' },
+        items: [
+          { n: 'Paradajz salata', p: '260' },
+          { n: 'Krastavac salata', p: '260' },
+          { n: 'Kupus salata', p: '260' },
+          { n: 'Zelena salata', p: '260' },
+          { n: 'Mladi luk', p: '260' },
+          { n: 'Ljuta papričica', p: '120' },
+          { n: 'Ljuta papričica u ulju', p: '120' },
+          { n: 'Kiseli kupus', p: '260' },
+          { n: 'Turšija', p: '260' },
+          { n: 'Šopska salata', p: '290' },
+          { n: 'Srpska salata', p: '270' },
+          { n: 'Grčka salata', p: '420' },
+          { n: 'Belolučana paprika', p: '260' },
+          { n: 'Cezar salata', p: '650' },
+          { n: 'Tuna salata', p: '590' }
+        ]
+      },
+      posebne_salate: {
+        title: { sr: 'Dodaci i specijaliteti', en: 'Extras & Specialties', ru: 'Добавки и специалитеты' },
+        items: [
+          { n: 'Kraljevački sir', p: '200' },
+          { n: 'Kraljevački kajmak', p: '250' },
+          { n: 'Paprika u pavlaci', p: '250' },
+          { n: 'Urnebes salata', p: '200' },
+          { n: 'Paprika na kajmaku', p: '480' },
+          { n: 'Pohovana paprika', p: '350' },
+          { n: 'Pohovani kačkavalj', p: '550' },
+          { n: 'Pohovana palačinka', p: '480' },
+          { n: 'Pohovani kajmak i sir', p: '630' },
+          { n: 'Grilovani kozji sir', p: '450' }
+        ]
+      },
+      supe: {
+        title: { sr: 'Supe i čorbe', en: 'Soups & Stews', ru: 'Супы и чорбы' },
+        items: [
+          { n: 'Pileća supa sa domaćim rezancima', p: '260' },
+          { n: 'Teleća čorba', p: '310' },
+          { n: 'Mađarska čorba', p: '320' }
+        ]
+      },
+      glavna: {
+        title: { sr: 'Glavna jela', en: 'Main Courses', ru: 'Основные блюда' },
+        items: [
+          { n: 'Koš lopte 350 gr', p: '750' },
+          { n: 'Plava traka 350 gr', p: '720' },
+          { n: 'Pileći stapić sa susamom 350 gr', p: '650' },
+          { n: 'Punjena rolovana piletina 450 gr', p: '1200' },
+          { n: 'Pileća ćufta u sosu od parmezana 400 gr', p: '1090' },
+          { n: 'Karadjordjeva šnicla 400 gr', p: '980' },
+          { n: 'Bečka šnicla 350 gr', p: '720' },
+          { n: 'Svinjska rebra 350 gr', p: '850' },
+          { n: 'Šnicla u sosu sa njeguškom pršutom 350 gr', p: '1450' },
+          { n: 'Teletina Koš 1 kg', p: '5500' }
+        ]
+      },
+      prilozi: {
+        title: { sr: 'Prilozi', en: 'Side Dishes', ru: 'Гарниры' },
+        items: [
+          { n: 'Krompir Koš 250 gr', p: '200' },
+          { n: 'Pomfrit 250 gr', p: '260' },
+          { n: 'Grilovano povrće 250 gr', p: '240' },
+          { n: 'Šampinjoni na žaru 250 gr', p: '260' },
+          { n: 'Pirinač 250 gr', p: '220' },
+          { n: 'Pomfrit 100 gr', p: '150' },
+          { n: 'Krompir Koš 100 gr', p: '120' },
+          { n: 'Grilovano povrće 100 gr', p: '140' },
+          { n: 'Grilovani šampinjoni 100 gr', p: '150' },
+          { n: 'Bareni pirinač 100 gr', p: '130' },
+          { n: 'Dalmatinsko varivo 100 gr', p: '130' },
+          { n: 'Senf 30 gr', p: '30' },
+          { n: 'Kečap 30 gr', p: '30' },
+          { n: 'Majonez 30 gr', p: '30' }
+        ]
+      },
+      dezerti: {
+        title: { sr: 'Dezerti', en: 'Desserts', ru: 'Десерты' },
+        items: [
+          { n: 'Baklava', p: '250' },
+          { n: 'Trileće', p: '200' },
+          { n: 'Cheesecake', p: '240' },
+          { n: 'Nugat bela čokolada', p: '170' },
+          { n: 'Plazma torta', p: '150' },
+          { n: 'Palačinke sa kremom', p: '250' },
+          { n: 'Palačinke sa kremom i plazmom', p: '250' },
+          { n: 'Palačinke sa džemom', p: '250' },
+          { n: 'Palačinke sa šećerom', p: '250' },
+          { n: 'Krem', p: '40' },
+          { n: 'Džem', p: '30' },
+          { n: 'Plazma', p: '30' }
+        ]
+      },
+      rostilj: {
+        title: { sr: 'Roštilj', en: 'Grill', ru: 'Гриль' },
+        items: [
+          { n: 'Ćevapi 5 kom', p: '500' },
+          { n: 'Ćevapi 10 kom', p: '950' },
+          { n: 'Ćevapi sa kajmakom 400 gr', p: '1090' },
+          { n: 'Mlinarski ćevap 400 gr', p: '720' },
+          { n: 'Punjeni ćevap 400 gr', p: '1002' },
+          { n: 'Pljeskavica 350 gr', p: '1095' },
+          { n: 'Gurmanska pljeskavica 350 gr', p: '1010' },
+          { n: 'Pljeskavica sa kozjim sirom 400 gr', p: '1120' },
+          { n: 'Dimljena vešalica 350 gr', p: '1130' },
+          { n: 'Bela vešalica 350 gr', p: '1000' },
+          { n: 'Punjena bela vešalica sa slaninom 400 gr', p: '950' },
+          { n: 'Dimljeni svinjski vrat 350 gr', p: '1040' },
+          { n: 'Svinjski ražnjić 350 gr', p: '1000' },
+          { n: 'Svinjski file 350 gr', p: '1080' },
+          { n: 'Pileće belo na roštilju 350 gr', p: '670' },
+          { n: 'Pileći ražnjić 350 gr', p: '710' },
+          { n: 'Dimljeni batak 350 gr', p: '780' },
+          { n: 'Roštiljska kobasica 350 gr', p: '920' },
+          { n: 'Kobasica sa kačkavaljem 350 gr', p: '890' },
+          { n: 'Domaća ljuta kobasica 350 gr', p: '950' },
+          { n: 'Mešano meso 1.2 kg', p: '2790' }
+        ]
+      },
+      riba: {
+        title: { sr: 'Riba i morski specijaliteti', en: 'Fish & Seafood', ru: 'Рыба и морепродукты' },
+        items: [
+          { n: 'File smuđa 1 kg', p: '5700' },
+          { n: 'File dimljene pastrmke 400 g', p: '1600' },
+          { n: 'Lignje na žaru 400 g', p: '1900' }
+        ]
+      },
+      rakije: {
+        title: { sr: 'Rakije', en: 'Rakija', ru: 'Ракии' },
+        items: [
+          { n: 'Dremina šljiva 0.03', p: '210' },
+          { n: 'Dremina dunja 0.03', p: '250' },
+          { n: 'Dremina kajsija 0.03', p: '230' },
+          { n: 'Dremina kruška viljamovka 0.03', p: '230' },
+          { n: 'Kraljevski Božur - šljiva 0.03', p: '180' },
+          { n: 'Đurović rakija od šljive 0.03', p: '230' },
+          { n: 'Đurović rakija od dunje 0.03', p: '250' },
+          { n: 'Đurović rakija od dunje barik 0.03', p: '260' },
+          { n: 'Đurović rakija od kajsije 0.03', p: '250' },
+          { n: 'Đurović rakija od kruške viljamovke 0.03', p: '230' },
+          { n: 'Đurović rakija od maline 0.03', p: '230' },
+          { n: 'Đurović rakija medovina 0.03', p: '230' },
+          { n: 'Loza', p: '180' },
+          { n: 'Meduška', p: '210' }
+        ]
+      },
+      zestina: {
+        title: { sr: 'Žestina i likeri', en: 'Spirits & Liqueurs', ru: 'Крепкий алкоголь и ликёры' },
+        items: [
+          { n: 'Jegermeister 0.03', p: '250' },
+          { n: 'Absinthe 0.03', p: '180' },
+          { n: 'Gorki list 0.03', p: '190' },
+          { n: 'Vermut 0.03', p: '150' },
+          { n: 'Vinjak Specijal 5 0.03', p: '190' },
+          { n: 'Vinjak 0.03', p: '160' },
+          { n: 'London Dry gin 0.03', p: '160' },
+          { n: 'Beefeater 0.03', p: '210' },
+          { n: 'Baileys 0.03', p: '220' },
+          { n: 'Martini Bianco 0.03', p: '170' },
+          { n: 'Campari 0.03', p: '240' },
+          { n: 'Absolut vodka 0.03', p: '240' },
+          { n: 'Vodka 0.03', p: '160' },
+          { n: 'Olmeca Blanko 0.03', p: '250' },
+          { n: 'Stock 84 0.03', p: '250' },
+          { n: 'Chivas Regal 12yo 0.03', p: '450' },
+          { n: "Jack Danijel's 0.03", p: '340' },
+          { n: "Ballantine's 0.03", p: '250' },
+          { n: 'Jameson 0.03', p: '290' },
+          { n: 'Courvoiser 0.03', p: '350' },
+          { n: 'Martell vs Cognac 0.03', p: '330' },
+          { n: 'Calvadren vs 0.03', p: '470' },
+          { n: 'Cornus vsop 0.03', p: '550' },
+          { n: 'Havana Club 0.03', p: '210' }
+        ]
+      },
+      bela_vina: {
+        title: { sr: 'Bela vina', en: 'White Wines', ru: 'Белые вина' },
+        items: [
+          { n: 'Aleksić Žuti cvet 0.187 flašica', p: '360' },
+          { n: 'Plantaže 13. jul Chardonnay 0.187 flašica', p: '340' },
+          { n: 'Aleksić Žuti cvet 0.75', p: '2050' },
+          { n: 'Dremina Tamjanika 0.75', p: '2500' },
+          { n: 'Aleksić Bonaca 0.75', p: '1850' },
+          { n: 'Kovačević Chardonnay 0.75', p: '2600' },
+          { n: 'Drasković Chardonnay 0.75', p: '1100' },
+          { n: 'Tikveš Alexandria belo Classic 0.75', p: '1200' },
+          { n: 'Radovanović Rizling rajnski 0.75', p: '2050' },
+          { n: 'Dremina Blanc Coupage 0.75', p: '2500' },
+          { n: 'Drašković beli Pinot 0.75', p: '2200' },
+          { n: 'Drašković ruža Vetrova – Muskat Otonel 0.75', p: '1900' },
+          { n: 'Plantaže 13. jul Novi dan Moscato Bianco 0.75', p: '2500' },
+          { n: 'Plantaže 13. jul Malvazija 0.75', p: '2150' },
+          { n: 'Plantaže 13. jul Chardonnay 0.75', p: '1100' },
+          { n: 'Plantaže 13. jul Val Brut 0.75', p: '2950' },
+          { n: 'Prosecco 0.75', p: '2400' }
+        ]
+      },
+      crvena_vina: {
+        title: { sr: 'Crvena vina', en: 'Red Wines', ru: 'Красные вина' },
+        items: [
+          { n: 'Plantaže 13. jul Vranac 0.187 flašica', p: '340' },
+          { n: 'Aleksić Kardaš 0.75', p: '1850' },
+          { n: 'Radovanović Cabernet Sauvignon Classic 0.75', p: '2500' },
+          { n: 'Dremina Cabernet Sauvignon 0.75', p: '3300' },
+          { n: 'Tikveš Alexandria crveno Classic 0.75', p: '1200' },
+          { n: 'Plantaže 13. jul Vranac 0.75', p: '1200' },
+          { n: 'Plantaže 13. jul Vladika Cabernet Merlot 0.75', p: '3000' },
+          { n: 'Plantaže 13. jul Jedne noći Cabernet Merlot 0.75', p: '2500' },
+          { n: 'Dremina Prokupac 0.75', p: '3100' },
+          { n: 'Drasković Mahago 0.75', p: '1900' },
+          { n: 'Drasković Frankovka 0.75', p: '1200' }
+        ]
+      },
+      rose: {
+        title: { sr: 'Rose vina', en: 'Rosé Wines', ru: 'Розовые вина' },
+        items: [
+          { n: 'Plantaže 13. jul Rose 0.187 flašica', p: '330' },
+          { n: 'Dremina Rose 0.75', p: '2400' },
+          { n: 'Aleksić Barbara 0.75', p: '1600' },
+          { n: 'Drašković Rose 0.75', p: '1200' },
+          { n: 'Drašković Divlja ruža 0.75', p: '1800' },
+          { n: 'Radovanović Rose 0.75', p: '1900' },
+          { n: 'Plantaže 13. jul U svitanje Cabernet 0.75', p: '2500' },
+          { n: 'Plantaže 13. jul Rose 0.75', p: '1200' }
+        ]
+      },
+      piva: {
+        title: { sr: 'Piva', en: 'Beer', ru: 'Пиво' },
+        items: [
+          { n: 'Lav pivo 0.33', p: '220' },
+          { n: 'Tuborg pivo 0.33', p: '270' },
+          { n: 'Carlsberg pivo 0.25', p: '320' },
+          { n: 'Budweiser pivo 0.33', p: '330' },
+          { n: 'Erdinger pivo 0.33', p: '510' },
+          { n: 'Kronenbourg pivo 0.33', p: '340' },
+          { n: 'San Miguel Fresca pivo 0.33', p: '440' },
+          { n: 'Tuborg pivo točeno 0.33', p: '230' },
+          { n: 'Tuborg pivo točeno 0.5', p: '270' },
+          { n: 'Carlsberg pivo točeno 0.33', p: '260' },
+          { n: 'Carlsberg pivo točeno 0.5', p: '300' },
+          { n: 'Somersby 0.33', p: '330' }
+        ]
+      }
+  };
+
+  function hideAll() {
+    document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+    window.scrollTo(0, 0);
+  }
+
+  function showLang() {
+    hideAll();
+    document.getElementById('screen-lang').style.display = 'block';
+  }
+
+  function goHome() {
+    hideAll();
+    document.getElementById('screen-home').style.display = 'block';
+  }
+
+  function applyRules(text, list) {
+    let out = String(text);
+    list.forEach(([pattern, replacement]) => {
+      out = out.replace(pattern, replacement);
     });
-    document.getElementById('scr-items').style.display = 'block';
-}
+    return out.replace(/\s+/g, ' ').trim();
+  }
 
-function goH() { hS(); document.getElementById('scr-home').style.display = 'block'; }
-function goL() { hS(); document.getElementById('scr-lang').style.display = 'block'; }
-function hS() { document.querySelectorAll('.screen').forEach(s => s.style.display='none'); window.scrollTo(0,0); }
+  function translateCategoryTitle(title) {
+    if (lang === 'sr') return title;
+    return (categoryExact[lang] && categoryExact[lang][title]) ? categoryExact[lang][title] : title;
+  }
+
+  function translateItemName(name) {
+    if (lang === 'sr') return String(name);
+
+    const exact = exactItemTranslations[lang] && exactItemTranslations[lang][name];
+    if (exact) return exact;
+
+    const rules = lang === 'en' ? [
+      [/\bBezalkoholna pića\b/gi, 'Soft Drinks'],
+      [/\bKafe i topli napici\b/gi, 'Coffee & Hot Drinks'],
+      [/\bVode\b/gi, 'Waters'],
+      [/\bDoručak\b/gi, 'Breakfast'],
+      [/\bDodaci za doručak\b/gi, 'Breakfast Extras'],
+      [/\bSendviči i tortilje\b/gi, 'Sandwiches & Tortillas'],
+      [/\bDaske\b/gi, 'Platters'],
+      [/\bSalate\b/gi, 'Salads'],
+      [/\bDodaci i specijaliteti\b/gi, 'Extras & Specialties'],
+      [/\bSupe i čorbe\b/gi, 'Soups & Stews'],
+      [/\bGlavna jela\b/gi, 'Main Courses'],
+      [/\bPrilozi\b/gi, 'Side Dishes'],
+      [/\bDezerti\b/gi, 'Desserts'],
+      [/\bRoštilj\b/gi, 'Grill'],
+      [/\bRiba i morski specijaliteti\b/gi, 'Fish & Seafood'],
+      [/\bRakije\b/gi, 'Rakija'],
+      [/\bŽestina i likeri\b/gi, 'Spirits & Liqueurs'],
+      [/\bBela vina\b/gi, 'White Wines'],
+      [/\bCrvena vina\b/gi, 'Red Wines'],
+      [/\bRose vina\b/gi, 'Rosé Wines'],
+      [/\bPiva\b/gi, 'Beer'],
+      [/\bJaje\b/gi, 'Egg'],
+      [/\bJaja\b/gi, 'Eggs'],
+      [/\bKafa\b/gi, 'Coffee'],
+      [/\bKafe\b/gi, 'Coffee'],
+      [/\bČaj\b/gi, 'Tea'],
+      [/\bKakao\b/gi, 'Cocoa'],
+      [/\bKuvano vino\b/gi, 'Mulled wine'],
+      [/\bLimunada\b/gi, 'Lemonade'],
+      [/\bCeđena\b/gi, 'Fresh'],
+      [/\bCeđeni\b/gi, 'Fresh'],
+      [/\bNarandža\b/gi, 'Orange'],
+      [/\bJabuka\b/gi, 'Apple'],
+      [/\bBorovnica\b/gi, 'Blueberry'],
+      [/\bJagoda\b/gi, 'Strawberry'],
+      [/\bBreskva\b/gi, 'Peach'],
+      [/\bAnanas\b/gi, 'Pineapple'],
+      [/\bGrejp\b/gi, 'Grapefruit'],
+      [/\bsa\b/gi, 'with'],
+      [/\bi\b/gi, 'and'],
+      [/\bpo izboru\b/gi, 'of choice'],
+      [/\bpohovana\b/gi, 'breaded'],
+      [/\bpohovani\b/gi, 'breaded'],
+      [/\bpunjena\b/gi, 'stuffed'],
+      [/\bpunjeni\b/gi, 'stuffed'],
+      [/\bdimljena\b/gi, 'smoked'],
+      [/\bdimljeni\b/gi, 'smoked'],
+      [/\bgrilovana\b/gi, 'grilled'],
+      [/\bgrilovano\b/gi, 'grilled'],
+      [/\bgrilovani\b/gi, 'grilled'],
+      [/\bbela\b/gi, 'white'],
+      [/\bbeli\b/gi, 'white'],
+      [/\bbelo\b/gi, 'white'],
+      [/\bcrvena\b/gi, 'red'],
+      [/\bcrveni\b/gi, 'red'],
+      [/\bcrveno\b/gi, 'red'],
+      [/\bsvinjska\b/gi, 'pork'],
+      [/\bsvinjski\b/gi, 'pork'],
+      [/\bpileća\b/gi, 'chicken'],
+      [/\bpileći\b/gi, 'chicken'],
+      [/\bpileće\b/gi, 'chicken'],
+      [/\bteleća\b/gi, 'veal'],
+      [/\bteleći\b/gi, 'veal'],
+      [/\bgoveđa\b/gi, 'beef'],
+      [/\bgoveđi\b/gi, 'beef'],
+      [/\bšunka\b/gi, 'ham'],
+      [/\bslanina\b/gi, 'bacon'],
+      [/\bpančeta\b/gi, 'pancetta'],
+      [/\bkačkavalj\b/gi, 'kashkaval'],
+      [/\bkačkavaljem\b/gi, 'kashkaval'],
+      [/\bsir\b/gi, 'cheese'],
+      [/\bkajmak\b/gi, 'kajmak'],
+      [/\bkobasica\b/gi, 'sausage'],
+      [/\bkobasice\b/gi, 'sausages'],
+      [/\bšampinjoni\b/gi, 'mushrooms'],
+      [/\bpovrće\b/gi, 'vegetables'],
+      [/\bparadajz\b/gi, 'tomato'],
+      [/\bkrastavac\b/gi, 'cucumber'],
+      [/\bkupus\b/gi, 'cabbage'],
+      [/\bzelena\b/gi, 'green'],
+      [/\bmladi luk\b/gi, 'spring onion'],
+      [/\bljuta papričica\b/gi, 'hot pepper'],
+      [/\bkiseli kupus\b/gi, 'sauerkraut'],
+      [/\bturšija\b/gi, 'pickles'],
+      [/\bšopska\b/gi, 'shopska'],
+      [/\bsrpska\b/gi, 'serbian'],
+      [/\bgrčka\b/gi, 'greek'],
+      [/\bcezar\b/gi, 'caesar'],
+      [/\btuna\b/gi, 'tuna'],
+      [/\bkrem\b/gi, 'cream'],
+      [/\bdžem\b/gi, 'jam'],
+      [/\bplazma\b/gi, 'Plazma'],
+      [/\busht?ipci\b/gi, 'fritters'],
+      [/\bprženice\b/gi, 'French toast'],
+      [/\bkačamak\b/gi, 'polenta'],
+      [/\btortilja\b/gi, 'tortilla'],
+      [/\bsendvič\b/gi, 'sandwich'],
+      [/\bdaska\b/gi, 'platter'],
+      [/\bsupa\b/gi, 'soup'],
+      [/\bsupe\b/gi, 'soups'],
+      [/\bčorba\b/gi, 'stew'],
+      [/\bčorbe\b/gi, 'stews'],
+      [/\bražnjić\b/gi, 'skewer'],
+      [/\brašnjić\b/gi, 'skewer'],
+      [/\bšnicla\b/gi, 'schnitzel'],
+      [/\bćevapi\b/gi, 'ćevapi'],
+      [/\bćevap\b/gi, 'ćevap'],
+      [/\bpljeskavica\b/gi, 'burger'],
+      [/\bvešalica\b/gi, 'vesalica'],
+      [/\bfile\b/gi, 'fillet'],
+      [/\bšlag\b/gi, 'whipped cream'],
+      [/\bmleko\b/gi, 'milk'],
+      [/\bflašica\b/gi, 'bottle'],
+      [/\bflaša\b/gi, 'bottle'],
+      [/\bkom\b/gi, 'pcs'],
+      [/\bgr\b/gi, 'g'],
+      [/\bdcl\b/gi, 'dl']
+    ] : [
+      [/\bBezalkoholna pića\b/gi, 'Безалкогольные напитки'],
+      [/\bKafe i topli napici\b/gi, 'Кофе и горячие напитки'],
+      [/\bVode\b/gi, 'Воды'],
+      [/\bDoručak\b/gi, 'Завтрак'],
+      [/\bDodaci za doručak\b/gi, 'Добавки к завтраку'],
+      [/\bSendviči i tortilje\b/gi, 'Сэндвичи и тортильи'],
+      [/\bDaske\b/gi, 'Доски'],
+      [/\bSalate\b/gi, 'Салаты'],
+      [/\bDodaci i specijaliteti\b/gi, 'Добавки и специалитеты'],
+      [/\bSupe i čorbe\b/gi, 'Супы и чорбы'],
+      [/\bGlavna jela\b/gi, 'Основные блюда'],
+      [/\bPrilozi\b/gi, 'Гарниры'],
+      [/\bDezerti\b/gi, 'Десерты'],
+      [/\bRoštilj\b/gi, 'Гриль'],
+      [/\bRiba i morski specijaliteti\b/gi, 'Рыба и морепродукты'],
+      [/\bRakije\b/gi, 'Ракии'],
+      [/\bŽestina i likeri\b/gi, 'Крепкий алкоголь и ликёры'],
+      [/\bBela vina\b/gi, 'Белые вина'],
+      [/\bCrvena vina\b/gi, 'Красные вина'],
+      [/\bRose vina\b/gi, 'Розовые вина'],
+      [/\bPiva\b/gi, 'Пиво'],
+      [/\bJaje\b/gi, 'яйцо'],
+      [/\bJaja\b/gi, 'яйца'],
+      [/\bKafa\b/gi, 'кофе'],
+      [/\bKafe\b/gi, 'кофе'],
+      [/\bČaj\b/gi, 'чай'],
+      [/\bKakao\b/gi, 'какао'],
+      [/\bKuvano vino\b/gi, 'глинтвейн'],
+      [/\bLimunada\b/gi, 'лимонад'],
+      [/\bCeđena\b/gi, 'свежевыжатый'],
+      [/\bCeđeni\b/gi, 'свежевыжатый'],
+      [/\bNarandža\b/gi, 'апельсин'],
+      [/\bJabuka\b/gi, 'яблоко'],
+      [/\bBorovnica\b/gi, 'черника'],
+      [/\bJagoda\b/gi, 'клубника'],
+      [/\bBreskva\b/gi, 'персик'],
+      [/\bAnanas\b/gi, 'ананас'],
+      [/\bGrejp\b/gi, 'грейпфрут'],
+      [/\bsa\b/gi, 'с'],
+      [/\bi\b/gi, 'и'],
+      [/\bpo izboru\b/gi, 'на выбор'],
+      [/\bpohovana\b/gi, 'панированная'],
+      [/\bpohovani\b/gi, 'панированный'],
+      [/\bpunjena\b/gi, 'фаршированная'],
+      [/\bpunjeni\b/gi, 'фаршированный'],
+      [/\bdimljena\b/gi, 'копчёная'],
+      [/\bdimljeni\b/gi, 'копчёный'],
+      [/\bgrilovana\b/gi, 'на гриле'],
+      [/\bgrilovano\b/gi, 'на гриле'],
+      [/\bgrilovani\b/gi, 'на гриле'],
+      [/\bbela\b/gi, 'белая'],
+      [/\bbeli\b/gi, 'белый'],
+      [/\bbelo\b/gi, 'белое'],
+      [/\bcrvena\b/gi, 'красная'],
+      [/\bcrveni\b/gi, 'красный'],
+      [/\bcrveno\b/gi, 'красное'],
+      [/\bsvinjska\b/gi, 'свиная'],
+      [/\bsvinjski\b/gi, 'свиной'],
+      [/\bpileća\b/gi, 'куриная'],
+      [/\bpileći\b/gi, 'куриный'],
+      [/\bpileće\b/gi, 'куриное'],
+      [/\bteleća\b/gi, 'телячья'],
+      [/\bteleći\b/gi, 'телячий'],
+      [/\bgoveđa\b/gi, 'говяжья'],
+      [/\bgoveđi\b/gi, 'говяжий'],
+      [/\bšunka\b/gi, 'ветчина'],
+      [/\bslanina\b/gi, 'бекон'],
+      [/\bpančeta\b/gi, 'панчетта'],
+      [/\bkačkavalj\b/gi, 'кашкавал'],
+      [/\bkačkavaljem\b/gi, 'кашкавалом'],
+      [/\bsir\b/gi, 'сыр'],
+      [/\bkajmak\b/gi, 'каймак'],
+      [/\bkobasica\b/gi, 'колбаса'],
+      [/\bkobasice\b/gi, 'колбасы'],
+      [/\bšampinjoni\b/gi, 'шампиньоны'],
+      [/\bpovrće\b/gi, 'овощи'],
+      [/\bparadajz\b/gi, 'помидор'],
+      [/\bkrastavac\b/gi, 'огурец'],
+      [/\bkupus\b/gi, 'капуста'],
+      [/\bzelena\b/gi, 'зелёная'],
+      [/\bmladi luk\b/gi, 'зелёный лук'],
+      [/\bljuta papričica\b/gi, 'острый перец'],
+      [/\bkiseli kupus\b/gi, 'квашеная капуста'],
+      [/\bturšija\b/gi, 'маринады'],
+      [/\bšopska\b/gi, 'шопская'],
+      [/\bsrpska\b/gi, 'сербская'],
+      [/\bgrčka\b/gi, 'греческая'],
+      [/\bcezar\b/gi, 'цезарь'],
+      [/\btuna\b/gi, 'тунец'],
+      [/\bkrem\b/gi, 'крем'],
+      [/\bdžem\b/gi, 'джем'],
+      [/\bplazma\b/gi, 'Plazma'],
+      [/\busht?ipci\b/gi, 'уштипцы'],
+      [/\bprženice\b/gi, 'жареный хлеб'],
+      [/\bkačamak\b/gi, 'качамак'],
+      [/\btortilja\b/gi, 'тортилья'],
+      [/\bsendvič\b/gi, 'сэндвич'],
+      [/\bdaska\b/gi, 'доска'],
+      [/\bsupa\b/gi, 'суп'],
+      [/\bsupe\b/gi, 'супы'],
+      [/\bčorba\b/gi, 'чорба'],
+      [/\bčorbe\b/gi, 'чорбы'],
+      [/\bražnjić\b/gi, 'шашлычок'],
+      [/\brašnjić\b/gi, 'шашлычок'],
+      [/\bšnicla\b/gi, 'шницель'],
+      [/\bćevapi\b/gi, 'чевапи'],
+      [/\bćevap\b/gi, 'чевап'],
+      [/\bpljeskavica\b/gi, 'плескавица'],
+      [/\bvešalica\b/gi, 'вешалица'],
+      [/\bfile\b/gi, 'филе'],
+      [/\bšlag\b/gi, 'взбитые сливки'],
+      [/\bmleko\b/gi, 'молоко'],
+      [/\bflašica\b/gi, 'бутылочка'],
+      [/\bflaša\b/gi, 'бутылка'],
+      [/\bkom\b/gi, 'шт.'],
+      [/\bgr\b/gi, 'г'],
+      [/\bdcl\b/gi, 'дл']
+    ];
+
+    return applyRules(name, rules);
+  }
+
+  function normalizeDisplayText(value) {
+    return (value == null ? '' : String(value)).trim();
+  }
+
+  function setLang(l) {
+    lang = l;
+
+    document.getElementById('home-sub').innerText = ui[l].home;
+    document.getElementById('menu-t').innerText = ui[l].menu;
+    document.getElementById('menu-s').innerText = ui[l].menuSub;
+    document.getElementById('res-t').innerText = ui[l].res;
+    document.getElementById('res-s').innerText = ui[l].resSub;
+    document.getElementById('rev-t').innerText = ui[l].rev;
+    document.getElementById('rev-s').innerText = ui[l].revSub;
+    document.getElementById('back-lang').innerText = ui[l].backLang;
+    document.getElementById('back-home').innerText = ui[l].backHome;
+    document.getElementById('back-cats').innerText = ui[l].backMenu;
+    document.getElementById('cats-title').innerText = ui[l].catsTitle;
+    document.getElementById('cat-search').placeholder = ui[l].catsSearch;
+    document.getElementById('item-search').placeholder = ui[l].itemsSearch;
+
+    if (document.getElementById('screen-cats').style.display === 'block') renderCategories();
+    if (document.getElementById('screen-items').style.display === 'block') {
+      const cat = data[currentCategoryKey];
+      document.getElementById('items-title').innerText = cat ? translateCategoryTitle(cat.title.sr) : '';
+      renderItems();
+    }
+
+    goHome();
+  }
+
+  function callReservation(){ window.location.href = 'tel:+381365101414'; }
+  function openReview(){ window.open('https://www.google.com/search?q=restoran+kos+kraljevo+ocene', '_blank'); }
+
+  function initials(text){
+    const parts = String(text).trim().split(/\s+/).filter(Boolean);
+    if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  }
+
+  function svgThumb(label){
+    const safe = String(label || 'KOŠ')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const i = initials(label || 'Koš');
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3b2a1d"/>
+            <stop offset="100%" stop-color="#120e0b"/>
+          </linearGradient>
+          <radialGradient id="r" cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#f0d7a1" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#d4b06a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="220" height="220" rx="28" fill="url(#g)"/>
+        <rect x="14" y="14" width="192" height="192" rx="24" fill="none" stroke="rgba(212,176,106,.22)"/>
+        <circle cx="110" cy="86" r="42" fill="url(#r)"/>
+        <path d="M110 58c-17 14-27 32-27 47 0 18 13 32 27 32s27-14 27-32c0-15-10-33-27-47zm0 63c-10 0-18-9-18-18 0-10 7-20 18-29 11 9 18 19 18 29 0 9-8 18-18 18z" fill="#d4b06a" opacity=".9"/>
+        <text x="110" y="170" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#f6efe6" letter-spacing="2">${safe}</text>
+        <text x="110" y="192" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="10" fill="#d4b06a" letter-spacing="2">${i}</text>
+      </svg>`;
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+  }
+
+  function showCategories(){
+    hideAll();
+    document.getElementById('screen-cats').style.display='block';
+    renderCategories();
+  }
+
+  function renderCategories(){
+    const box = document.getElementById('cats-box');
+    const q = (document.getElementById('cat-search')?.value || '').toLowerCase().trim();
+    let html = '';
+
+    order.forEach(key => {
+      const cat = data[key];
+      const title = translateCategoryTitle(cat.title[lang] || cat.title.sr);
+      if(q && !title.toLowerCase().includes(q)) return;
+
+      html += `<button class="btn" onclick="showItems('${key}')"><div class="txt"><b>${title}</b><span>${ui[lang].view}</span></div><div class="icon">→</div></button>`;
+    });
+
+    box.innerHTML = html;
+  }
+
+  function showItems(key){
+    currentCategoryKey = key;
+    hideAll();
+    const cat = data[key];
+    document.getElementById('items-title').innerText = translateCategoryTitle(cat.title[lang] || cat.title.sr);
+    document.getElementById('item-search').value = '';
+    document.getElementById('screen-items').style.display='block';
+    renderItems();
+  }
+
+  function renderItems(){
+    const box = document.getElementById('items-box');
+    const q = (document.getElementById('item-search')?.value || '').toLowerCase().trim();
+    const cat = data[currentCategoryKey];
+    let html = '';
+
+    if(!cat || !cat.items){
+      box.innerHTML = '';
+      return;
+    }
+
+    cat.items.forEach(item => {
+      const raw = normalizeDisplayText(item.n);
+      const name = translateItemName(raw);
+      const searchBlob = `${raw} ${name} ${item.p}`.toLowerCase();
+      if(q && !searchBlob.includes(q)) return;
+
+      html += `
+        <div class="item">
+          <img class="thumb" src="${svgThumb(name)}" alt="${name}">
+          <div class="info"><h4>${name}</h4></div>
+          <div class="price">${item.p}<span>RSD</span></div>
+        </div>`;
+    });
+
+    box.innerHTML = html || `<div style="color:#b9afa3; text-align:center; padding:24px 10px;">${ui[lang].noResults}</div>`;
+  }
+
+  function filterCategories(){ renderCategories(); }
+  function filterItems(){ renderItems(); }
+
+  document.getElementById('home-sub').innerText = ui.sr.home;
+  document.getElementById('menu-t').innerText = ui.sr.menu;
+  document.getElementById('menu-s').innerText = ui.sr.menuSub;
+  document.getElementById('res-t').innerText = ui.sr.res;
+  document.getElementById('res-s').innerText = ui.sr.resSub;
+  document.getElementById('rev-t').innerText = ui.sr.rev;
+  document.getElementById('rev-s').innerText = ui.sr.revSub;
+  document.getElementById('back-lang').innerText = ui.sr.backLang;
+  document.getElementById('back-home').innerText = ui.sr.backHome;
+  document.getElementById('back-cats').innerText = ui.sr.backMenu;
+  document.getElementById('cats-title').innerText = ui.sr.catsTitle;
+  document.getElementById('cat-search').placeholder = ui.sr.catsSearch;
+  document.getElementById('item-search').placeholder = ui.sr.itemsSearch;
 </script>
-</body>
-</html>
