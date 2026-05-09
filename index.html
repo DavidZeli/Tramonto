@@ -1,798 +1,1848 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>  Koš | Premium Digitalni meni</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Restoran Koš — Luksuzni digitalni meni</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --gold:#d4b06a;
-      --gold-2:#f0d7a1;
-      --bg:#0e0b09;
-      --panel:rgba(22,17,14,.72);
-      --panel-2:rgba(34,25,19,.78);
-      --panel-3:rgba(15,12,10,.82);
-      --line:rgba(212,176,106,.16);
-      --text:#f6efe6;
-      --muted:#b9afa3;
-      --shadow:0 18px 50px rgba(0,0,0,.38);
-    }
+    <style>
+        :root {
+            --primary: #d8b27a;
+            --primary-soft: rgba(216, 178, 122, 0.18);
+            --primary-strong: #f0d1a0;
+            --dark: #120f0d;
+            --darker: #090807;
+            --card: rgba(255, 255, 255, 0.05);
+            --card-hover: rgba(255, 255, 255, 0.08);
+            --text: #f7f2ea;
+            --text-soft: rgba(247, 242, 234, 0.85);
+            --text-muted: rgba(247, 242, 234, 0.58);
+            --border: rgba(216, 178, 122, 0.18);
+            --border-strong: rgba(216, 178, 122, 0.34);
+            --shadow: 0 20px 55px rgba(0, 0, 0, 0.52);
+            --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.24);
+            --radius: 22px;
+            --pill: 999px;
+            --transition: 0.28s cubic-bezier(.2,.8,.2,1);
+        }
 
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{min-height:100%}
-    body{
-      min-height:100vh;
-      overflow-x:hidden;
-      color:var(--text);
-      font-family:'Montserrat',sans-serif;
-      background:
-        linear-gradient(rgba(8,6,5,.78), rgba(8,6,5,.88)),
-        url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=1600&auto=format&fit=crop');
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
-    }
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at top left, rgba(212,176,106,.12), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,.05), transparent 30%),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size:auto, auto, 42px 42px, 42px 42px;
-      opacity:.8;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .container{
-      width:100%; max-width:540px; margin:0 auto;
-      padding:18px 18px 130px; position:relative; z-index:1;
-    }
+        html, body {
+            min-height: 100%;
+        }
 
-    .screen{display:none; animation:fadeIn .45s ease}
-    @keyframes fadeIn{from{opacity:0; transform:translateY(10px); filter:blur(5px)} to{opacity:1; transform:translateY(0); filter:blur(0)}}
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            background:
+                linear-gradient(180deg, rgba(4,3,3,0.70), rgba(4,3,3,0.92)),
+                radial-gradient(circle at 50% 18%, rgba(216,178,122,0.16), transparent 30%),
+                url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1800&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            position: relative;
+        }
 
-    h1,h2,h3{font-family:'Playfair Display',serif; font-style:italic; letter-spacing:.3px}
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 12%, rgba(216,178,122,0.12), transparent 22%),
+                radial-gradient(circle at 82% 18%, rgba(255,255,255,0.06), transparent 16%),
+                radial-gradient(circle at 50% 85%, rgba(0,0,0,0.30), transparent 34%);
+        }
 
-    .hero{
-      text-align:center;
-      padding:18px 18px 14px;
-      margin-top:22px;
-    }
-    .hero .line{
-      width:96px; height:1px; margin:0 auto 18px;
-      background:linear-gradient(90deg, transparent, rgba(212,176,106,.9), transparent);
-    }
-    .hero h1{
-      font-size:46px; line-height:1.03;
-      color:var(--gold-2);
-      text-shadow:0 10px 28px rgba(0,0,0,.42);
-    }
-    .hero p{
-      margin-top:10px;
-      font-size:11px; text-transform:uppercase; letter-spacing:5px;
-      color:var(--muted);
-    }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 52px 52px;
+            opacity: 0.12;
+            mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
+        }
 
-    .panel{
-      background:linear-gradient(180deg, rgba(37,27,19,.72), rgba(15,12,10,.84));
-      border:1px solid var(--line);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      overflow:hidden;
-    }
-    .panel-pad{padding:22px}
+        .app-container {
+            width: 100%;
+            max-width: 540px;
+            min-height: 100vh;
+            padding: 18px 16px 120px;
+            position: relative;
+            z-index: 1;
+        }
 
-    .btn{
-      width:100%;
-      border:none;
-      border-radius:22px;
-      padding:18px 20px;
-      margin-bottom:14px;
-      background:linear-gradient(180deg, rgba(45,34,25,.82), rgba(22,17,13,.9));
-      color:var(--text);
-      display:flex; align-items:center; justify-content:space-between;
-      cursor:pointer;
-      transition:.25s ease;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(212,176,106,.14);
-    }
-    .btn:hover{transform:translateY(-2px); border-color:rgba(212,176,106,.42); background:linear-gradient(180deg, rgba(58,42,29,.92), rgba(25,19,14,.94))}
-    .btn:active{transform:scale(.98)}
-    .btn .txt{display:flex; flex-direction:column; text-align:left}
-    .btn .txt b{font-size:17px; font-weight:600; margin-bottom:4px; letter-spacing:.4px}
-    .btn .txt span{font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted)}
-    .btn .icon{color:var(--gold); font-size:20px; margin-left:10px}
+        .screen {
+            display: none;
+            animation: fadeUp 0.42s ease both;
+        }
 
-    #btn-review{
-      background:linear-gradient(180deg, rgba(49,35,24,.84), rgba(24,18,14,.94));
-      border-color:rgba(212,176,106,.32);
-    }
-    #btn-review .icon, #btn-review .txt b{color:var(--gold-2)}
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .cat-title{
-      text-align:center;
-      font-size:32px;
-      color:var(--gold-2);
-      margin:12px 0 24px;
-    }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
 
-    .item{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      padding:14px 0;
-      border-bottom:1px solid rgba(255,255,255,.07);
-    }
-    .thumb{
-      width:72px; height:72px; flex:0 0 72px;
-      border-radius:18px;
-      object-fit:cover;
-      border:1px solid rgba(212,176,106,.18);
-      box-shadow:0 10px 22px rgba(0,0,0,.25);
-      background:#221913;
-    }
-    .info{flex:1; min-width:0}
-    .info h4{font-size:16px; line-height:1.2; font-weight:500; margin-bottom:4px}
-    .info p{font-size:11px; line-height:1.35; color:var(--muted)}
-    .price{font-weight:700; font-size:16px; white-space:nowrap; color:var(--gold-2)}
-    .price span{display:block; font-size:9px; letter-spacing:1px; color:var(--gold)}
+        .hero-card {
+            background:
+                linear-gradient(145deg, rgba(255,255,255,0.115), rgba(255,255,255,0.025)),
+                rgba(10, 8, 6, 0.58);
+            border: 1px solid rgba(240, 209, 160, 0.24);
+            border-radius: 32px;
+            padding: 24px 20px 20px;
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.62),
+                inset 0 1px 0 rgba(255,255,255,0.10),
+                inset 0 -1px 0 rgba(216,178,122,0.08);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .lang-grid{display:grid; grid-template-columns:1fr; gap:10px}
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            border-radius: 31px;
+            background:
+                radial-gradient(circle at 22% 0%, rgba(240,209,160,0.16), transparent 34%),
+                linear-gradient(120deg, transparent, rgba(255,255,255,0.055), transparent);
+            pointer-events: none;
+        }
 
-    .back-fixed{
-      position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
-      z-index:100;
-      border:none;
-      padding:12px 30px;
-      border-radius:999px;
-      background:linear-gradient(180deg, #e4c785, #c99d4e);
-      color:#16110c;
-      font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:1px;
-      box-shadow:0 14px 28px rgba(212,176,106,.28);
-      cursor:pointer;
-    }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: clamp(44px, 8vw, 68px);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            text-shadow: 0 16px 40px rgba(0,0,0,0.78);
+            margin-top: 2px;
+            line-height: .92;
+            position: relative;
+            z-index: 1;
+            text-transform: none;
+            font-style: normal;
+        }
 
-    .footer{
-      text-align:center;
-      margin-top:42px;
-      padding-bottom:10px;
-    }
-    .footer .small{font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase}
-    .footer .brand{font-size:11px; color:var(--gold); letter-spacing:1px; margin-top:6px}
+        .hero-title span {
+            color: var(--primary);
+        }
 
-    .lang-top{
-      text-align:center;
-      margin-top:84px;
-    }
-    .lang-top h2{font-size:32px; color:var(--text)}
-    .lang-top p{color:var(--muted); margin-bottom:28px}
+        .hero-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3.2px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
 
-    .section-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .section-head .mini{
-      color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:2px;
-    }
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 16px 0;
+            opacity: 0.75;
+            position: relative;
+            z-index: 1;
+        }
 
-    .search-wrap{
-      margin:12px 0 18px;
-      position:relative;
-    }
-    .search-wrap input{
-      width:100%;
-      padding:15px 18px;
-      border-radius:18px;
-      border:1px solid rgba(212,176,106,.16);
-      outline:none;
-      background:rgba(13,10,8,.55);
-      color:var(--text);
-      font-family:inherit;
-      box-shadow:var(--shadow);
-    }
-    .search-wrap input::placeholder{color:#9d927f}
+        .ornament span {
+            width: 54px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(216,178,122,.95), transparent);
+        }
 
-    @media (max-width:420px){
-      .hero h1{font-size:38px}
-      .cat-title{font-size:28px}
-      .btn .txt b{font-size:16px}
-    }
-  </style>
+        .ornament i {
+            color: var(--primary);
+            font-size: 8px;
+            text-shadow: 0 0 12px rgba(216,178,122,.35);
+        }
+
+        .luxury-btn {
+            width: 100%;
+            padding: 19px 20px;
+            margin-bottom: 14px;
+            border-radius: 24px;
+            border: 1px solid rgba(240, 209, 160, 0.30);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.135), rgba(255,255,255,0.035)),
+                rgba(10, 8, 6, 0.50);
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease, background .24s ease;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow:
+                0 16px 42px rgba(0,0,0,0.34),
+                inset 0 1px 0 rgba(255,255,255,0.12),
+                inset 0 -1px 0 rgba(216,178,122,0.10);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .luxury-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, transparent 0%, rgba(240,209,160,0.22) 48%, transparent 100%);
+            transform: translateX(-120%);
+            transition: transform .7s ease;
+            pointer-events: none;
+        }
+
+        .luxury-btn:hover::before {
+            transform: translateX(110%);
+        }
+
+        .luxury-btn:active {
+            transform: scale(0.982);
+            border-color: rgba(240,209,160,0.70);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.055)),
+                rgba(15,12,9,0.66);
+            box-shadow:
+                0 0 24px rgba(216,178,122,0.18),
+                0 8px 26px rgba(0,0,0,0.36),
+                inset 0 1px 0 rgba(255,255,255,0.14);
+        }
+
+        .luxury-btn .btn-label {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .luxury-btn .btn-label strong {
+            font-family: 'Playfair Display', serif;
+            font-size: 23px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            line-height: 1.05;
+            text-transform: none;
+        }
+
+        .luxury-btn .btn-label span {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            color: rgba(247,242,234,0.56);
+            text-transform: uppercase;
+            letter-spacing: 2.1px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .luxury-btn .btn-icon {
+            font-size: 19px;
+            color: var(--primary);
+            opacity: 0.98;
+            text-shadow: 0 0 16px rgba(216,178,122,0.36);
+            position: relative;
+            z-index: 1;
+        }
+
+        .gold-btn {
+            border-color: rgba(240, 209, 160, 0.72) !important;
+            background:
+                linear-gradient(135deg, rgba(240,209,160,0.34), rgba(184,138,78,0.16)),
+                rgba(18,14,10,0.62) !important;
+            box-shadow:
+                0 0 0 1px rgba(240,209,160,0.10),
+                0 0 22px rgba(216,178,122,0.32),
+                0 14px 36px rgba(0,0,0,0.36),
+                inset 0 1px 0 rgba(255,255,255,0.16) !important;
+        }
+
+        .gold-btn .btn-icon,
+        .gold-btn .btn-label strong {
+            color: #ffe3ad;
+            text-shadow: 0 0 16px rgba(240,209,160,0.48);
+        }
+
+        .search-container {
+            margin: 18px 0 18px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 18px 15px 48px;
+            border-radius: var(--pill);
+            border: 1px solid var(--border);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)),
+                rgba(20,18,16,0.82);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .search-input::placeholder {
+            color: rgba(247,242,234,0.42);
+            letter-spacing: 0.8px;
+        }
+
+        .search-input:focus {
+            border-color: var(--border-strong);
+            box-shadow: 0 0 0 4px rgba(216,178,122,0.08), var(--shadow-soft);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 15px;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .category-card {
+            min-height: 138px;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.72)),
+                rgba(24,22,20,0.88);
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(240,209,160,0.26);
+            border-radius: 26px;
+            padding: 18px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, filter .25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            box-shadow:
+                0 18px 45px rgba(0,0,0,0.38),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.72)),
+                radial-gradient(circle at 50% 0%, rgba(216,178,122,0.18), transparent 52%);
+            pointer-events: none;
+        }
+
+        .category-card:active {
+            transform: scale(0.972);
+            border-color: rgba(240,209,160,0.66);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.42), 0 0 22px rgba(216,178,122,0.16);
+        }
+
+        .category-icon {
+            display: none;
+        }
+
+        .category-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            font-size: 20px;
+            color: var(--text);
+            line-height: 1.15;
+            text-transform: none;
+            text-shadow: 0 3px 14px rgba(0,0,0,0.82);
+            position: relative;
+            z-index: 1;
+        }
+
+        #searchResults {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+                rgba(18,16,14,0.72);
+            border: 1px solid rgba(216,178,122,0.10);
+            border-radius: var(--radius);
+            padding: 10px 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .food-item {
+            display: grid;
+            grid-template-columns: 58px 1fr auto;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            letter-spacing: 0.2px;
+        }
+
+        .food-item:last-child {
+            border-bottom: none;
+        }
+
+        .food-item .item-name {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            color: var(--text-soft);
+            line-height: 1.35;
+            flex: 1;
+        }
+
+        .item-photo {
+            width: 58px;
+            height: 58px;
+            border-radius: 15px;
+            border: 1px solid rgba(216,178,122,0.18);
+            background:
+                linear-gradient(135deg, rgba(216,178,122,0.18), rgba(255,255,255,0.03)),
+                rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(216,178,122,0.88);
+            font-size: 22px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 8px 18px rgba(0,0,0,0.22);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .food-item .item-price {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 20px;
+            white-space: nowrap;
+            letter-spacing: 0.1px;
+        }
+
+        .back-fixed {
+            position: sticky;
+            top: 14px;
+            left: auto;
+            transform: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0 16px 0;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.035)),
+                rgba(12,10,8,0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(240,209,160,0.34);
+            color: var(--primary);
+            padding: 11px 18px;
+            border-radius: var(--pill);
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), color var(--transition);
+            z-index: 50;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .back-fixed:active {
+            transform: scale(0.97);
+            border-color: rgba(216,178,122,0.52);
+            color: #fff;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 46px;
+            padding-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 10px;
+            letter-spacing: 2px;
+            line-height: 1.7;
+        }
+
+        .footer-note strong {
+            color: rgba(240, 209, 160, 0.92);
+            font-weight: 700;
+        }
+
+        .menu-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin: 10px 0 2px;
+            font-size: 40px;
+            letter-spacing: 0.4px;
+            font-weight: 500;
+            text-transform: none;
+        }
+
+        .menu-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 420px) {
+            .back-fixed {
+                top: 10px;
+                margin-bottom: 12px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .app-container {
+                padding: 14px 12px 110px;
+            }
+
+            .category-grid {
+                gap: 10px;
+            }
+
+            .luxury-btn {
+                padding: 16px 16px;
+            }
+
+            .luxury-btn .btn-label strong {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 28px;
+                letter-spacing: 1.5px;
+            }
+        }
+    
+        /* ===== FINALNI SIGURNI PREMIUM FONT FIX =====
+           Ovo je namerno na kraju da pregazi sve prethodne greške u fontovima
+           i da ne dira bazu menija ni JavaScript. */
+
+        body,
+        button,
+        input,
+        .food-item .item-name,
+        .luxury-btn .btn-label span,
+        .hero-subtitle,
+        .menu-subtitle,
+        .footer-note {
+            font-family: Georgia, 'Times New Roman', serif !important;
+        }
+
+        .hero-title,
+        .menu-title,
+        h1,
+        h2,
+        h3,
+        .category-name,
+        .luxury-btn .btn-label strong,
+        .food-item .item-price {
+            font-family: Georgia, 'Times New Roman', serif !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.4px !important;
+            text-transform: none !important;
+        }
+
+        .hero-title {
+            font-size: clamp(42px, 8vw, 62px) !important;
+            line-height: 0.95 !important;
+        }
+
+        .luxury-btn {
+            border-radius: 22px !important;
+            border: 1px solid rgba(216, 178, 122, 0.32) !important;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035)),
+                rgba(12, 10, 8, 0.56) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        .gold-btn {
+            border-color: rgba(240, 209, 160, 0.78) !important;
+            box-shadow:
+                0 0 24px rgba(216,178,122,0.34),
+                0 14px 36px rgba(0,0,0,0.36),
+                inset 0 1px 0 rgba(255,255,255,0.16) !important;
+        }
+
+        .back-fixed {
+            position: sticky !important;
+            top: 12px !important;
+            left: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            margin-bottom: 14px !important;
+        }
+    
+        /* ===== KLIK NA JELO / PREMIUM MODAL ===== */
+        .food-item-btn {
+            width: 100%;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 16px;
+            transition: 0.25s ease;
+            color: inherit;
+        }
+
+        .food-item-btn:hover {
+            background: rgba(255,255,255,0.035);
+        }
+
+        .food-item-btn:active {
+            transform: scale(0.99);
+            background: rgba(255,255,255,0.055);
+        }
+
+        .food-item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .food-item-hint {
+            font-size: 9px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: rgba(247,242,234,0.45);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .item-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.74);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 18px;
+        }
+
+        .item-modal.show {
+            display: flex;
+        }
+
+        .item-modal-card {
+            width: 100%;
+            max-width: 440px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background:
+                linear-gradient(180deg, rgba(42,34,26,0.98), rgba(16,13,10,0.98));
+            border: 1px solid rgba(216,178,122,0.34);
+            border-radius: 26px;
+            box-shadow: 0 26px 70px rgba(0,0,0,0.68);
+            position: relative;
+            padding: 18px;
+        }
+
+        .item-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(216,178,122,0.35);
+            background: rgba(0,0,0,0.42);
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        }
+
+        .item-modal-image-wrap {
+            width: 100%;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(216,178,122,0.20);
+            margin-bottom: 18px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035), 0 16px 34px rgba(0,0,0,0.34);
+        }
+
+        .item-modal-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-modal-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .item-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            line-height: 1.12;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .item-modal-price {
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+            font-size: 25px;
+            margin-bottom: 14px;
+        }
+
+        .item-modal-desc {
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.7;
+            font-family: 'DM Sans', sans-serif;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div id="screen-lang" class="screen" style="display:block;">
-      <div class="panel panel-pad lang-top">
-        <div class="line" style="width:88px;height:1px;background:linear-gradient(90deg, transparent, rgba(212,176,106,.9), transparent); margin:0 auto 18px;"></div>
-        <h2>Koš</h2>
-        <p>Luksuz, tradicija i ukus</p>
+    <div class="app-container" id="appRoot">
+        <div id="screenLang" class="screen" style="display: block;">
+            <div class="hero-card" style="text-align:center; margin-top:34px;">
+                <div class="ornament"><span></span><i>◆</i><span></span></div>
+                <h1 class="hero-title">Restoran <span>Koš</span></h1>
+                <div class="ornament"><span></span><i>◆</i><span></span></div>
 
-        <div class="lang-grid">
-          <button class="btn" onclick="setLang('sr')"><div class="txt"><b>Srpski</b><span>Izaberi jezik</span></div><div class="icon">→</div></button>
-          <button class="btn" onclick="setLang('en')"><div class="txt"><b>English</b><span>Choose language</span></div><div class="icon">→</div></button>
-          <button class="btn" onclick="setLang('ru')"><div class="txt"><b>Русский</b><span>Выберите язык</span></div><div class="icon">→</div></button>
+                <button class="luxury-btn" type="button" data-lang="sr" onclick="setLang('sr')"><div class="btn-label"><strong>Srpski</strong><span>Srpski jezik</span></div><span class="btn-icon">→</span></button>
+                <button class="luxury-btn" type="button" data-lang="en" onclick="setLang('en')"><div class="btn-label"><strong>English</strong><span>English language</span></div><span class="btn-icon">→</span></button>
+                <button class="luxury-btn" type="button" data-lang="ru" onclick="setLang('ru')"><div class="btn-label"><strong>Русский</strong><span>Русский язык</span></div><span class="btn-icon">→</span></button>
+                <button class="luxury-btn" type="button" data-lang="tr" onclick="setLang('tr')"><div class="btn-label"><strong>Türkçe</strong><span>Türk dili</span></div><span class="btn-icon">→</span></button>
+                <button class="luxury-btn" type="button" data-lang="zh" onclick="setLang('zh')"><div class="btn-label"><strong>中文</strong><span>中文语言</span></div><span class="btn-icon">→</span></button>
+                <p style="margin-top:28px; font-size:9px; color:var(--text-muted); letter-spacing:3px; text-transform:uppercase;">Digitalni meni</p>
+            </div>
         </div>
-      </div>
+
+        <div id="screenHome" class="screen">
+            <div class="hero-card" style="margin-top:20px; text-align:center;">
+                <h1 class="hero-title" style="margin-top:10px;">Koš</h1>
+                <div class="ornament"><span></span><i>◆</i><span></span></div>
+                <p style="text-align:center; color:var(--text-muted); letter-spacing:3px; margin-bottom:30px;" id="homeSub"></p>
+
+                <button class="luxury-btn" onclick="openMenu()">
+                    <div class="btn-label"><strong id="btnMenu">Meni</strong><span id="btnMenuSub">Hrana & piće</span></div>
+                    <span class="btn-icon">☰</span>
+                </button>
+                <button class="luxury-btn" onclick="handleReservation()">
+                    <div class="btn-label"><strong id="btnRes">Rezervacije</strong><span id="btnResSub">Pozovite nas</span></div>
+                    <span class="btn-icon">☏</span>
+                </button>
+                <button class="luxury-btn gold-btn" onclick="openReviews()">
+                    <div class="btn-label"><strong id="btnRev">Ocenite nas</strong><span id="btnRevSub">Google recenzije</span></div>
+                    <span class="btn-icon">★</span>
+                </button>
+
+                <div class="footer-note">
+                    <p>DIGITALNI MENI IZRADIO</p>
+                    <p><strong>bitecraft8@gmail.com</strong></p>
+                    <p style="margin-top:6px;">Za više informacija o izradi Vašeg menija, pišite nam.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="screenMenu" class="screen">
+            <button class="back-fixed" id="backFromMenu" onclick="history.back()">← Nazad</button>
+            <div class="hero-card" style="margin-top:12px;">
+                <h2 class="menu-title">Restoran Koš</h2>
+                <div class="ornament"><span></span><i>◆</i><span></span></div>
+                <p class="menu-subtitle" id="menuSubtitle">Digitalni meni</p>
+
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Pretraži jela..." autocomplete="off">
+                </div>
+
+                <div class="category-grid" id="categoryGrid"></div>
+                <div id="searchResults" style="display:none; margin-top:10px;"></div>
+            </div>
+            
+        </div>
     </div>
 
-    <div id="screen-home" class="screen">
-      <div class="hero">
-        <div class="line"></div>
-        <h1>Koš</h1>
-        <p id="home-sub">Tradicija ukusa</p>
-      </div>
+    <script>
+        (function() {
+            let currentLang = 'sr';
+            const ui = {
+                sr: { homeSub: "Izaberite opciju", menu: "Meni", menuSub: "Hrana & piće", res: "Rezervacije", resSub: "Pozovite nas", rev: "Ocenite nas", revSub: "Google recenzije", back: "← Nazad", backHome: "← Početna", searchPlaceholder: "Pretraži jela...", allCat: "Sve kategorije", menuTitle: "Restoran Koš", menuSubtitle: "Digitalni meni" },
+                en: { homeSub: "Choose an option", menu: "Menu", menuSub: "Food & drinks", res: "Reservations", resSub: "Call us", rev: "Rate us", revSub: "Google reviews", back: "← Back", backHome: "← Home", searchPlaceholder: "Search dishes...", allCat: "All categories", menuTitle: "Restaurant Koš", menuSubtitle: "Digital menu" },
+                ru: { homeSub: "Выберите опцию", menu: "Меню", menuSub: "Еда и напитки", res: "Бронь", resSub: "Позвоните", rev: "Оцените", revSub: "Google отзывы", back: "← Назад", backHome: "← Главная", searchPlaceholder: "Поиск блюд...", allCat: "Все категории", menuTitle: "Ресторан Koš", menuSubtitle: "Цифровое меню" },
+                tr: { homeSub: "Seçenek seçin", menu: "Menü", menuSub: "Yiyecek & içecek", res: "Rezervasyon", resSub: "Bizi arayın", rev: "Değerlendir", revSub: "Google yorumları", back: "← Geri", backHome: "← Ana sayfa", searchPlaceholder: "Yemek ara...", allCat: "Tüm kategoriler", menuTitle: "Restoran Koš", menuSubtitle: "Dijital menü" },
+                zh: { homeSub: "选择一个选项", menu: "菜单", menuSub: "美食与饮品", res: "预订", resSub: "致电我们", rev: "评价我们", revSub: "谷歌评论", back: "← 返回", backHome: "← 首页", searchPlaceholder: "搜索菜肴...", allCat: "所有分类", menuTitle: "Koš 餐厅", menuSubtitle: "数字菜单" }
+            };
 
-      <button class="btn" onclick="showCategories()"><div class="txt"><b id="menu-t">Meni</b><span id="menu-s">Hrana i piće</span></div><div class="icon">→</div></button>
-      <button class="btn" onclick="callReservation()"><div class="txt"><b id="res-t">Rezervacije</b><span id="res-s">Pozovite nas</span></div><div class="icon">☏</div></button>
-      <button class="btn" id="btn-review" onclick="openReview()"><div class="txt"><b id="rev-t">Oceni nas</b><span id="rev-s">Google recenzije</span></div><div class="icon">★</div></button>
+            const menuData = [
+                // Kafe
+                { cat:"topli_napici", name:"Espresso kafa", price:160 },
+                { cat:"topli_napici", name:"Espresso kafa sa šlagom", price:200 },
+                { cat:"topli_napici", name:"Espresso kafa sa mlekom", price:170 },
+                { cat:"topli_napici", name:"Kapućino", price:180 },
+                { cat:"topli_napici", name:"Late macchiato", price:210 },
+                { cat:"topli_napici", name:"Nescafe classic", price:190 },
+                { cat:"topli_napici", name:"Domaća kafa", price:120 },
+                { cat:"topli_napici", name:"Domaća kafa sa mlekom", price:130 },
 
-      <div class="footer">
-        <div class="small">Premium digital menu</div>
-        <div class="brand">Created by David Želi</div>
-      </div>
+                // Topli napici i hladni napici
+                { cat:"topli_napici", name:"Kakao", price:150 },
+                { cat:"topli_napici", name:"Čaj", price:170 },
+                { cat:"topli_napici", name:"Nesquik", price:190 },
+                { cat:"topli_napici", name:"Topla čokolada gusta", price:240 },
+                { cat:"topli_napici", name:"Kuvano vino", price:240 },
+                { cat:"topli_napici", name:"Plazma šejk", price:350 },
 
-      <button class="back-fixed" id="back-lang" onclick="showLang()">Jezik</button>
+                // Dodaci
+                { cat:"topli_napici", name:"Mleko", price:60 },
+                { cat:"topli_napici", name:"Šlag", price:100 },
+                { cat:"topli_napici", name:"Sojino mleko", price:100 },
+
+                // Voda
+                { cat:"bezalkoholna", name:"Rosa gazirana flašica 0.2", price:150 },
+                { cat:"bezalkoholna", name:"Rosa negazirana flašica 0.2", price:150 },
+                { cat:"bezalkoholna", name:"Romerquelle lemon grass 0.2", price:190 },
+                { cat:"bezalkoholna", name:"Romerquelle melisa 0.2", price:190 },
+                { cat:"bezalkoholna", name:"Rosa gazirana flaša 0.75", price:290 },
+                { cat:"bezalkoholna", name:"Rosa negazirana flaša 0.75", price:290 },
+
+                // Gazirani sokovi
+                { cat:"bezalkoholna", name:"Coca Cola 0.25", price:220 },
+                { cat:"bezalkoholna", name:"Coca Cola Zero 0.25", price:220 },
+                { cat:"bezalkoholna", name:"Fanta 0.25", price:220 },
+                { cat:"bezalkoholna", name:"Sprite 0.25", price:220 },
+                { cat:"bezalkoholna", name:"Schweppes Bitter Lemon 0.25", price:220 },
+                { cat:"bezalkoholna", name:"Schweppes Tonic Water 0.25", price:220 },
+
+                // Negazirani sokovi
+                { cat:"bezalkoholna", name:"Cedevita 0.2", price:190 },
+                { cat:"bezalkoholna", name:"Next flašica Narandža 0.2", price:220 },
+                { cat:"bezalkoholna", name:"Next flašica Jabuka 0.2", price:220 },
+                { cat:"bezalkoholna", name:"Next flašica Borovnica 0.2", price:220 },
+                { cat:"bezalkoholna", name:"Next flašica Jagoda 0.2", price:220 },
+                { cat:"bezalkoholna", name:"Next flašica Breskva 0.2", price:220 },
+                { cat:"bezalkoholna", name:"Next flašica Ananas 0.2", price:220 },
+
+                // Energetska pića
+                { cat:"bezalkoholna", name:"Red Bull 0.25", price:400 },
+                { cat:"bezalkoholna", name:"Ultra Energy 0.25", price:230 },
+
+                // Prirodni sokovi
+                { cat:"bezalkoholna", name:"Ceđeni mix 0.2", price:370 },
+                { cat:"bezalkoholna", name:"Ceđena pomorandža 0.2", price:340 },
+                { cat:"bezalkoholna", name:"Ceđeni grejp 0.2", price:350 },
+                { cat:"bezalkoholna", name:"Limunada 0.2", price:210 },
+
+                // Alkoholna pića
+                { cat:"alkohol", name:"Jegermeister 0.03", price:250 },
+                { cat:"alkohol", name:"Absinthe 0.03", price:180 },
+                { cat:"alkohol", name:"Gorki list 0.03", price:190 },
+                { cat:"alkohol", name:"Vermut 0.03", price:150 },
+                { cat:"alkohol", name:"Vinjak Specijal 5 0.03", price:190 },
+                { cat:"alkohol", name:"Vinjak 0.03", price:160 },
+                { cat:"alkohol", name:"London Dry gin 0.03", price:160 },
+                { cat:"alkohol", name:"Beefeater 0.03", price:210 },
+                { cat:"alkohol", name:"Baileys 0.03", price:220 },
+                { cat:"alkohol", name:"Martini Bianco 0.03", price:170 },
+                { cat:"alkohol", name:"Campari 0.03", price:240 },
+                { cat:"alkohol", name:"Absolut vodka 0.03", price:240 },
+                { cat:"alkohol", name:"Vodka 0.03", price:160 },
+                { cat:"alkohol", name:"Olmeca Blanko 0.03", price:250 },
+                { cat:"alkohol", name:"Stock 84 0.03", price:250 },
+                { cat:"alkohol", name:"Chivas Regal 12yo 0.03", price:450 },
+                { cat:"alkohol", name:"Jack Danijel's 0.03", price:340 },
+                { cat:"alkohol", name:"Ballantine's 0.03", price:250 },
+                { cat:"alkohol", name:"Jameson 0.03", price:290 },
+                { cat:"alkohol", name:"Courvoiser 0.03", price:350 },
+                { cat:"alkohol", name:"Martell vs Cognac 0.03", price:330 },
+                { cat:"alkohol", name:"Calvadren vs 0.03", price:470 },
+                { cat:"alkohol", name:"Cornus vsop 0.03", price:550 },
+                { cat:"alkohol", name:"Havana Club 0.03", price:210 },
+
+                // Rakije
+                { cat:"rakija", name:"Dremina šljiva 0.03", price:250 },
+                { cat:"rakija", name:"Dremina dunja 0.03", price:230 },
+                { cat:"rakija", name:"Dremina kajsija 0.03", price:230 },
+                { cat:"rakija", name:"Dremina kruška viljamovka 0.03", price:180 },
+                { cat:"rakija", name:"Kraljevski Božur - šljiva 0.03", price:230 },
+                { cat:"rakija", name:"Đurović rakija od šljive 0.03", price:250 },
+                { cat:"rakija", name:"Đurović rakija od dunje 0.03", price:260 },
+                { cat:"rakija", name:"Đurović rakija od dunje barik 0.03", price:250 },
+                { cat:"rakija", name:"Đurović rakija od kajsije 0.03", price:230 },
+                { cat:"rakija", name:"Đurović rakija od kruške viljamovke 0.03", price:230 },
+                { cat:"rakija", name:"Đurović rakija od maline 0.03", price:230 },
+                { cat:"rakija", name:"Đurović rakija medovina 0.03", price:180 },
+                { cat:"rakija", name:"Loza", price:210 },
+                { cat:"rakija", name:"Meduška", price:220 },
+
+                // Piva
+                { cat:"pivo", name:"Lav pivo 0.33", price:220 },
+                { cat:"pivo", name:"Tuborg pivo 0.33", price:270 },
+                { cat:"pivo", name:"Carlsberg pivo 0.25", price:320 },
+                { cat:"pivo", name:"Budweiser pivo 0.33", price:330 },
+                { cat:"pivo", name:"Erdinger pivo 0.33", price:510 },
+                { cat:"pivo", name:"Kronenbourg pivo 0.33", price:340 },
+                { cat:"pivo", name:"San Miguel Fresca pivo 0.33", price:440 },
+                { cat:"pivo", name:"Tuborg pivo točeno 0.33", price:230 },
+                { cat:"pivo", name:"Tuborg pivo točeno 0.5", price:270 },
+                { cat:"pivo", name:"Carlsberg pivo točeno 0.33", price:260 },
+                { cat:"pivo", name:"Carlsberg pivo točeno 0.5", price:300 },
+                { cat:"pivo", name:"Somersby 0.33", price:330 },
+
+                // Bela vina
+                { cat:"vino", name:"Aleksić Žuti cvet 0.187 flašica", price:360 },
+                { cat:"vino", name:"Plantaže 13. jul Chardonnay 0.187 flašica", price:340 },
+                { cat:"vino", name:"Aleksić Žuti cvet 0.75", price:2050 },
+                { cat:"vino", name:"Dremina Tamjanika 0.75", price:2500 },
+                { cat:"vino", name:"Aleksić Bonaca 0.75", price:1850 },
+                { cat:"vino", name:"Kovačević Chardonnay 0.75", price:2600 },
+                { cat:"vino", name:"Drasković Chardonnay 0.75", price:1100 },
+                { cat:"vino", name:"Tikveš Alexandria belo Classic 0.75", price:1200 },
+                { cat:"vino", name:"Radovanović Rizling rajnski 0.75", price:2050 },
+                { cat:"vino", name:"DreminaBlanc Coupage 0.75", price:2500 },
+                { cat:"vino", name:"Drašković beli Pinot 0.75", price:2200 },
+                { cat:"vino", name:"Drašković ruža Vetrova–Muskat Otonel 0.75", price:1900 },
+                { cat:"vino", name:"Plantaže 13. jul Novi dan Moscato Bianco 0.75", price:2500 },
+                { cat:"vino", name:"Plantaže 13. jul Malvazija 0.75", price:2150 },
+                { cat:"vino", name:"Plantaže 13. jul Chardonnay 0.75", price:1100 },
+
+                // Penušava vina
+                { cat:"vino", name:"Plantaže 13. jul Val Brut 0.75", price:2950 },
+                { cat:"vino", name:"Prosecco 0.75", price:2400 },
+
+                // Crvena vina
+                { cat:"vino", name:"Plantaže 13. jul Vranac 0.187 flašica", price:340 },
+                { cat:"vino", name:"Aleksić Kardaš 0.75", price:1850 },
+                { cat:"vino", name:"Radovanović Cabernet Sauvignon Classic 0.75", price:2500 },
+                { cat:"vino", name:"Dremina Cabernet Sauvignon 0.75", price:3300 },
+                { cat:"vino", name:"Tikveš Alexandria crveno Classic 0.75", price:1200 },
+                { cat:"vino", name:"Plantaže 13. jul Vranac 0.75", price:1200 },
+                { cat:"vino", name:"Plantaže 13. jul Vladika Cabernet Merlot 0.75", price:3000 },
+                { cat:"vino", name:"Plantaže 13. jul Jedne noći Cabernet Merlot 0.75", price:2500 },
+                { cat:"vino", name:"Dremina Prokupac 0.75", price:3100 },
+                { cat:"vino", name:"Drasković Mahago 0.75", price:1900 },
+                { cat:"vino", name:"Drasković Frankovka 0.75", price:1200 },
+
+                // Roze vina
+                { cat:"vino", name:"Plantaže 13. jul Rose 0.187 flašica", price:330 },
+                { cat:"vino", name:"Dremina Rose 0.75", price:2400 },
+                { cat:"vino", name:"Aleksić Barbara 0.75", price:1600 },
+                { cat:"vino", name:"Drašković Rose 0.75", price:1200 },
+                { cat:"vino", name:"Drašković Divlja ruža 0.75", price:1800 },
+                { cat:"vino", name:"Radovanović Rose 0.75", price:1900 },
+                { cat:"vino", name:"Plantaže 13. jul U svitanje Cabernet 0.75", price:2500 },
+                { cat:"vino", name:"Plantaže 13. jul Rose 0.75", price:1200 },
+
+                // Doručak
+                { cat:"dorucak", name:"Jaje na oko 3 kom", price:160 },
+                { cat:"dorucak", name:"Jaja na oko sa slaninom 3 kom", price:360 },
+                { cat:"dorucak", name:"Jaja sa šunkom 3 kom", price:280 },
+                { cat:"dorucak", name:"Omlet po izboru 3 kom", price:160 },
+                { cat:"dorucak", name:"Jaja sa kobasicom i kačkavaljem", price:390 },
+                { cat:"dorucak", name:"Jaja sa roštiljskom kobasicom", price:390 },
+                { cat:"dorucak", name:"Jaja sa ljutom kobasicom", price:390 },
+                { cat:"dorucak", name:"Uštipci po izboru 200 gr", price:220 },
+                { cat:"dorucak", name:"Prženice po izboru 200 gr", price:210 },
+                { cat:"dorucak", name:"Prženice koš punjene 4 kom", price:550 },
+                { cat:"dorucak", name:"Kačamak (sir i kajmak) 300 gr", price:200 },
+                { cat:"dorucak", name:"Koš doručak za dve osobe", price:860 },
+                { cat:"dorucak", name:"Tortilja Koš", price:550 },
+
+                // Dodaci uz doručak
+                { cat:"predjela", name:"Jogurt u čaši 2 dcl", price:90 },
+                { cat:"predjela", name:"Mleko 2 dcl", price:90 },
+                { cat:"predjela", name:"Hleb 2 kom", price:40 },
+                { cat:"predjela", name:"Proja 2 kom", price:40 },
+                { cat:"predjela", name:"Svinjska pečenica 50 gr", price:150 },
+                { cat:"predjela", name:"Goveđa pršuta 50 gr", price:250 },
+                { cat:"predjela", name:"Šunka 50 gr", price:100 },
+                { cat:"predjela", name:"Pančeta 50 gr", price:120 },
+                { cat:"predjela", name:"Kraljevački sir 50 gr", price:120 },
+                { cat:"predjela", name:"Kraljevački kajmak 50 gr", price:150 },
+                { cat:"predjela", name:"Povrće 50 gr", price:150 },
+
+                // Sendviči
+                { cat:"predjela", name:"Koš sendvič 300 gr", price:450 },
+                { cat:"predjela", name:"Sendvič sa pohovanom piletinom 300 gr", price:420 },
+                { cat:"predjela", name:"Sendvič sa suvim vratom 300 gr", price:380 },
+
+                // Tortilje
+                { cat:"predjela", name:"Tortilja sa šunkom i kačkavaljem 300 gr", price:410 },
+                { cat:"predjela", name:"Tortilja sa pohovanom piletinom 300 gr", price:410 },
+
+                // Daske
+                { cat:"predjela", name:"Daska koš", price:1700 },
+                { cat:"predjela", name:"Daska uz pivo", price:1950 },
+                { cat:"predjela", name:"Daska uz vino", price:1010 },
+                { cat:"predjela", name:"Pohovana daska", price:5500 },
+
+                // Salate
+                { cat:"salate", name:"Paradajz salata", price:260 },
+                { cat:"salate", name:"Krastavac salata", price:260 },
+                { cat:"salate", name:"Kupus salata", price:260 },
+                { cat:"salate", name:"Zelena salata", price:260 },
+                { cat:"salate", name:"Mladi luk", price:260 },
+                { cat:"salate", name:"Ljuta papričica", price:120 },
+                { cat:"salate", name:"Ljuta papričica u ulju", price:120 },
+                { cat:"salate", name:"Kiseli kupus", price:260 },
+                { cat:"salate", name:"Turšija", price:260 },
+                { cat:"salate", name:"Šopska salata", price:290 },
+                { cat:"salate", name:"Srpska salata", price:270 },
+                { cat:"salate", name:"Grčka salata", price:420 },
+                { cat:"salate", name:"Belolučana paprika", price:260 },
+
+                // Obrok salate
+                { cat:"salate", name:"Cezar salata", price:650 },
+                { cat:"salate", name:"Tuna salata", price:590 },
+
+                // Hladna predjela
+                { cat:"predjela", name:"Kraljevački sir", price:200 },
+                { cat:"predjela", name:"Kraljevački kajmak", price:250 },
+                { cat:"predjela", name:"Paprika u pavlaci", price:250 },
+                { cat:"predjela", name:"Urnebes salata", price:200 },
+
+                // Topla predjela
+                { cat:"predjela", name:"Paprika na kajmaku", price:480 },
+                { cat:"predjela", name:"Pohovana paprika", price:350 },
+                { cat:"predjela", name:"Pohovani kačkavalj", price:550 },
+                { cat:"predjela", name:"Pohovana palačinka", price:480 },
+                { cat:"predjela", name:"Pohovani kajmak i sir", price:630 },
+                { cat:"predjela", name:"Grilovani kozji sir", price:450 },
+
+                // Supe i čorbe
+                { cat:"supe", name:"Pileća supa sa domaćim rezancima", price:260 },
+                { cat:"supe", name:"Teleća čorba", price:310 },
+                { cat:"supe", name:"Mađarska corba", price:320 },
+
+                // Jela sa roštilja
+                { cat:"rostilj", name:"Ćevapi 1750 gr / 5 kom", price:500 },
+                { cat:"rostilj", name:"Ćevapi 350 gr / 10 kom", price:950 },
+                { cat:"rostilj", name:"Ćevapi sa kajmakom 400 gr", price:1090 },
+                { cat:"rostilj", name:"Mlinarski ćevap 400 gr", price:720 },
+                { cat:"rostilj", name:"Punjeni ćevap 400 gr", price:1200 },
+                { cat:"rostilj", name:"Pljeskavica 350 gr", price:950 },
+                { cat:"rostilj", name:"Gurmanska pljeskavica 350 gr", price:1010 },
+                { cat:"rostilj", name:"Pljeskavica sa kozjim sirom 400 gr", price:1120 },
+                { cat:"rostilj", name:"Dimljena vešalica 350 gr", price:1130 },
+                { cat:"rostilj", name:"Bela vešalica 350 gr", price:1000 },
+                { cat:"rostilj", name:"Punjena bela vešalica sa slaninom 400 gr", price:950 },
+                { cat:"rostilj", name:"Dimljeni svinjski vrat 350 gr", price:1140 },
+                { cat:"rostilj", name:"Svinjski ražnjić 350 gr", price:1000 },
+                { cat:"rostilj", name:"Svinjski file 350 gr", price:1080 },
+                { cat:"rostilj", name:"Pileće belo na roštilju 350 gr", price:670 },
+                { cat:"rostilj", name:"Pileći raznjić 350 gr", price:710 },
+                { cat:"rostilj", name:"Dimljeni batak 350 gr", price:710 },
+                { cat:"rostilj", name:"Roštiljska kobasica 350 gr", price:870 },
+                { cat:"rostilj", name:"Kobasica sa kačkavaljem 350 gr", price:920 },
+                { cat:"rostilj", name:"Domaća ljuta kobasica 350 gr", price:890 },
+                { cat:"rostilj", name:"Mešano meso 1.2 kg", price:2790 },
+
+                // Ribe
+                { cat:"riba", name:"File smuđa 1 kg", price:5700 },
+                { cat:"riba", name:"File dimljene pastrmke 400 g", price:1600 },
+                { cat:"riba", name:"Lignje na žaru 400 g", price:1900 },
+
+                // Glavna jela
+                { cat:"specijaliteti", name:"Koš lopte 350 gr", price:750 },
+                { cat:"specijaliteti", name:"Plava traka 350 gr", price:720 },
+                { cat:"specijaliteti", name:"Pileći stapić sa susamom 350 gr", price:650 },
+                { cat:"specijaliteti", name:"Punjena rolovana piletina 450 gr", price:1200 },
+                { cat:"specijaliteti", name:"Pileća ćufta u sosu od parmezana 400 gr", price:1090 },
+                { cat:"specijaliteti", name:"Karadjordjeva šnicla 400 gr", price:980 },
+                { cat:"specijaliteti", name:"Bečka šnicla 350 gr", price:720 },
+                { cat:"specijaliteti", name:"Svinjska rebra 350 gr", price:850 },
+                { cat:"specijaliteti", name:"Šnicla u sosu sa njeguškom pršutom 350 gr", price:1450 },
+                { cat:"specijaliteti", name:"Teletina koš 1 kg", price:5500 },
+
+                // Variva
+                { cat:"prilozi", name:"Krompir koš 250 gr", price:200 },
+                { cat:"prilozi", name:"Pomfrit 250 gr", price:260 },
+                { cat:"prilozi", name:"Grilovano povrće 250 gr", price:240 },
+                { cat:"prilozi", name:"Šampinjoni na žaru 250 gr", price:260 },
+                { cat:"prilozi", name:"Pirinač 250 gr", price:220 },
+
+                // Prilozi
+                { cat:"prilozi", name:"Pomfrit 100 gr", price:150 },
+                { cat:"prilozi", name:"Krompir koš 100 gr", price:120 },
+                { cat:"prilozi", name:"Grilovano povrće 100 gr", price:140 },
+                { cat:"prilozi", name:"Grilovani šampinjoni 100 gr", price:150 },
+                { cat:"prilozi", name:"Bareni pirinač 100 gr", price:130 },
+                { cat:"prilozi", name:"Dalmatinsko varivo 100 gr", price:130 },
+                { cat:"prilozi", name:"Senf 30 gr", price:30 },
+                { cat:"prilozi", name:"Kečap 30 gr", price:30 },
+                { cat:"prilozi", name:"Majonez 30 gr", price:30 },
+
+                // Kolači
+                { cat:"deserti", name:"Baklava", price:250 },
+                { cat:"deserti", name:"Trileće", price:250 },
+                { cat:"deserti", name:"Cheesecake", price:250 },
+                { cat:"deserti", name:"Nugat bela čokolada", price:250 },
+
+                // Torte
+                { cat:"deserti", name:"Plazma torta", price:250 },
+
+                // Palačinke
+                { cat:"deserti", name:"Palačinke sa kremom", price:200 },
+                { cat:"deserti", name:"Palačinke sa kremom i plazmom", price:240 },
+                { cat:"deserti", name:"Palačinke sa džemom", price:170 },
+                { cat:"deserti", name:"Palačinke sa šećerom", price:150 },
+
+                // Dodaci za palačinke
+                { cat:"deserti", name:"Krem", price:40 },
+                { cat:"deserti", name:"Džem", price:30 },
+                { cat:"deserti", name:"Plazma", price:30 }
+            ];
+
+            const itemTranslations = {
+                "Espresso kafa": { en:"Espresso coffee", ru:"Эспрессо", tr:"Espresso kahve", zh:"浓缩咖啡" },
+                "Espresso kafa sa šlagom": { en:"Espresso with whipped cream", ru:"Эспрессо со сливками", tr:"Krem şantili espresso", zh:"奶油浓缩咖啡" },
+                "Espresso kafa sa mlekom": { en:"Espresso with milk", ru:"Эспрессо с молоком", tr:"Sütlü espresso", zh:"牛奶浓缩咖啡" },
+                "Kapućino": { en:"Cappuccino", ru:"Капучино", tr:"Cappuccino", zh:"卡布奇诺" },
+                "Late macchiato": { en:"Latte macchiato", ru:"Латте макиато", tr:"Latte macchiato", zh:"拿铁玛奇朵" },
+                "Nescafe classic": { en:"Nescafe classic", ru:"Нескафе классик", tr:"Nescafe classic", zh:"经典雀巢咖啡" },
+                "Domaća kafa": { en:"Turkish coffee", ru:"Кофе по-турецки", tr:"Türk kahvesi", zh:"土耳其咖啡" },
+                "Domaća kafa sa mlekom": { en:"Turkish coffee with milk", ru:"Кофе по-турецки с молоком", tr:"Sütlü Türk kahvesi", zh:"牛奶土耳其咖啡" },
+                "Kakao": { en:"Cocoa", ru:"Какао", tr:"Kakao", zh:"可可" },
+                "Čaj": { en:"Tea", ru:"Чай", tr:"Çay", zh:"茶" },
+                "Nesquik": { en:"Nesquik", ru:"Несквик", tr:"Nesquik", zh:"Nesquik" },
+                "Topla čokolada gusta": { en:"Thick hot chocolate", ru:"Густой горячий шоколад", tr:"Yoğun sıcak çikolata", zh:"浓热巧克力" },
+                "Kuvano vino": { en:"Mulled wine", ru:"Глинтвейн", tr:"Sıcak şarap", zh:"热红酒" },
+                "Plazma šejk": { en:"Plazma shake", ru:"Шейк Plazma", tr:"Plazma shake", zh:"Plazma奶昔" },
+                "Mleko": { en:"Milk", ru:"Молоко", tr:"Süt", zh:"牛奶" },
+                "Šlag": { en:"Whipped cream", ru:"Взбитые сливки", tr:"Krem şanti", zh:"奶油" },
+                "Sojino mleko": { en:"Soy milk", ru:"Соевое молоко", tr:"Soya sütü", zh:"豆奶" },
+
+                "Rosa gazirana flašica 0.2": { en:"Rosa sparkling water 0.2", ru:"Rosa газированная вода 0.2", tr:"Rosa gazlı su 0.2", zh:"Rosa气泡水0.2" },
+                "Rosa negazirana flašica 0.2": { en:"Rosa still water 0.2", ru:"Rosa негазированная вода 0.2", tr:"Rosa gazsız su 0.2", zh:"Rosa矿泉水0.2" },
+                "Romerquelle lemon grass 0.2": { en:"Romerquelle lemon grass 0.2", ru:"Romerquelle лемонграсс 0.2", tr:"Romerquelle limon otu 0.2", zh:"Romerquelle柠檬草0.2" },
+                "Romerquelle melisa 0.2": { en:"Romerquelle melissa 0.2", ru:"Romerquelle мелисса 0.2", tr:"Romerquelle melisa 0.2", zh:"Romerquelle香蜂草0.2" },
+                "Rosa gazirana flaša 0.75": { en:"Rosa sparkling water 0.75", ru:"Rosa газированная вода 0.75", tr:"Rosa gazlı su 0.75", zh:"Rosa气泡水0.75" },
+                "Rosa negazirana flaša 0.75": { en:"Rosa still water 0.75", ru:"Rosa негазированная вода 0.75", tr:"Rosa gazsız su 0.75", zh:"Rosa矿泉水0.75" },
+                "Coca Cola 0.25": { en:"Coca-Cola 0.25", ru:"Coca-Cola 0.25", tr:"Coca-Cola 0.25", zh:"可口可乐0.25" },
+                "Coca Cola Zero 0.25": { en:"Coca-Cola Zero 0.25", ru:"Coca-Cola Zero 0.25", tr:"Coca-Cola Zero 0.25", zh:"零度可口可乐0.25" },
+                "Fanta 0.25": { en:"Fanta 0.25", ru:"Fanta 0.25", tr:"Fanta 0.25", zh:"芬达0.25" },
+                "Sprite 0.25": { en:"Sprite 0.25", ru:"Sprite 0.25", tr:"Sprite 0.25", zh:"雪碧0.25" },
+                "Schweppes Bitter Lemon 0.25": { en:"Schweppes Bitter Lemon 0.25", ru:"Schweppes Bitter Lemon 0.25", tr:"Schweppes Bitter Lemon 0.25", zh:"Schweppes苦柠檬0.25" },
+                "Schweppes Tonic Water 0.25": { en:"Schweppes Tonic Water 0.25", ru:"Schweppes тоник 0.25", tr:"Schweppes tonik 0.25", zh:"Schweppes汤力水0.25" },
+                "Cedevita 0.2": { en:"Cedevita 0.2", ru:"Cedevita 0.2", tr:"Cedevita 0.2", zh:"Cedevita 0.2" },
+                "Next Narandža 0.2": { en:"Next orange 0.2", ru:"Next апельсин 0.2", tr:"Next portakal 0.2", zh:"Next橙汁0.2" },
+                "Next Jabuka 0.2": { en:"Next apple 0.2", ru:"Next яблоко 0.2", tr:"Next elma 0.2", zh:"Next苹果汁0.2" },
+                "Next Borovnica 0.2": { en:"Next blueberry 0.2", ru:"Next черника 0.2", tr:"Next yaban mersini 0.2", zh:"Next蓝莓汁0.2" },
+                "Next Jagoda 0.2": { en:"Next strawberry 0.2", ru:"Next клубника 0.2", tr:"Next çilek 0.2", zh:"Next草莓汁0.2" },
+                "Next Breskva 0.2": { en:"Next peach 0.2", ru:"Next персик 0.2", tr:"Next şeftali 0.2", zh:"Next桃汁0.2" },
+                "Next Ananas 0.2": { en:"Next pineapple 0.2", ru:"Next ананас 0.2", tr:"Next ananas 0.2", zh:"Next菠萝汁0.2" },
+                "Red Bull 0.25": { en:"Red Bull 0.25", ru:"Red Bull 0.25", tr:"Red Bull 0.25", zh:"红牛0.25" },
+                "Ultra Energy 0.25": { en:"Ultra Energy 0.25", ru:"Ultra Energy 0.25", tr:"Ultra Energy 0.25", zh:"Ultra能量饮料0.25" },
+                "Ceđeni mix 0.2": { en:"Fresh squeezed mixed juice 0.2", ru:"Свежевыжатый микс 0.2", tr:"Taze sıkılmış karışık meyve suyu 0.2", zh:"鲜榨混合果汁0.2" },
+                "Ceđena pomorandža 0.2": { en:"Fresh squeezed orange juice 0.2", ru:"Свежевыжатый апельсиновый сок 0.2", tr:"Taze sıkılmış portakal suyu 0.2", zh:"鲜榨橙汁0.2" },
+                "Ceđeni grejp 0.2": { en:"Fresh squeezed grapefruit juice 0.2", ru:"Свежевыжатый грейпфрутовый сок 0.2", tr:"Taze sıkılmış greyfurt suyu 0.2", zh:"鲜榨葡萄柚汁0.2" },
+                "Limunada 0.2": { en:"Lemonade 0.2", ru:"Лимонад 0.2", tr:"Limonata 0.2", zh:"柠檬水0.2" },
+
+                "Jegermeister 0.03": { en:"Jägermeister 0.03", ru:"Jägermeister 0.03", tr:"Jägermeister 0.03", zh:"野格0.03" },
+                "Absinthe 0.03": { en:"Absinthe 0.03", ru:"Абсент 0.03", tr:"Absent 0.03", zh:"苦艾酒0.03" },
+                "Gorki list 0.03": { en:"Gorki List 0.03", ru:"Gorki List 0.03", tr:"Gorki List 0.03", zh:"Gorki List 0.03" },
+                "Vermut 0.03": { en:"Vermouth 0.03", ru:"Вермут 0.03", tr:"Vermut 0.03", zh:"味美思0.03" },
+                "Vinjak Specijal 5 0.03": { en:"Vinjak Special 5 0.03", ru:"Виньяк Специал 5 0.03", tr:"Vinjak Special 5 0.03", zh:"Vinjak Special 5 0.03" },
+                "Vinjak 0.03": { en:"Vinjak 0.03", ru:"Виньяк 0.03", tr:"Vinjak 0.03", zh:"Vinjak 0.03" },
+                "London Dry gin 0.03": { en:"London Dry gin 0.03", ru:"London Dry джин 0.03", tr:"London Dry cin 0.03", zh:"London Dry金酒0.03" },
+                "Beefeater 0.03": { en:"Beefeater 0.03", ru:"Beefeater 0.03", tr:"Beefeater 0.03", zh:"Beefeater 0.03" },
+                "Baileys 0.03": { en:"Baileys 0.03", ru:"Baileys 0.03", tr:"Baileys 0.03", zh:"百利甜0.03" },
+                "Martini Bianco 0.03": { en:"Martini Bianco 0.03", ru:"Martini Bianco 0.03", tr:"Martini Bianco 0.03", zh:"马天尼白威末0.03" },
+                "Campari 0.03": { en:"Campari 0.03", ru:"Campari 0.03", tr:"Campari 0.03", zh:"金巴利0.03" },
+                "Absolut vodka 0.03": { en:"Absolut vodka 0.03", ru:"Водка Absolut 0.03", tr:"Absolut votka 0.03", zh:"绝对伏特加0.03" },
+                "Vodka 0.03": { en:"Vodka 0.03", ru:"Водка 0.03", tr:"Votka 0.03", zh:"伏特加0.03" },
+                "Olmeca Blanko 0.03": { en:"Olmeca Blanco 0.03", ru:"Olmeca Blanco 0.03", tr:"Olmeca Blanco 0.03", zh:"Olmeca白龙舌兰0.03" },
+                "Stock 84 0.03": { en:"Stock 84 0.03", ru:"Stock 84 0.03", tr:"Stock 84 0.03", zh:"Stock 84 0.03" },
+                "Chivas Regal 12yo 0.03": { en:"Chivas Regal 12yo 0.03", ru:"Chivas Regal 12 лет 0.03", tr:"Chivas Regal 12 yıllık 0.03", zh:"芝华士12年0.03" },
+                "Jack Daniel's 0.03": { en:"Jack Daniel's 0.03", ru:"Jack Daniel's 0.03", tr:"Jack Daniel's 0.03", zh:"杰克丹尼0.03" },
+                "Ballantine's 0.03": { en:"Ballantine's 0.03", ru:"Ballantine's 0.03", tr:"Ballantine's 0.03", zh:"百龄坛0.03" },
+                "Jameson 0.03": { en:"Jameson 0.03", ru:"Jameson 0.03", tr:"Jameson 0.03", zh:"尊美醇0.03" },
+                "Courvoiser 0.03": { en:"Courvoisier 0.03", ru:"Courvoisier 0.03", tr:"Courvoisier 0.03", zh:"拿破仑干邑0.03" },
+                "Martell vs Cognac 0.03": { en:"Martell VS cognac 0.03", ru:"Коньяк Martell VS 0.03", tr:"Martell VS konyak 0.03", zh:"马爹利VS干邑0.03" },
+                "Calvadren vs 0.03": { en:"Calvadren VS 0.03", ru:"Calvadren VS 0.03", tr:"Calvadren VS 0.03", zh:"Calvadren VS 0.03" },
+                "Cornus vsop 0.03": { en:"Cornus VSOP 0.03", ru:"Cornus VSOP 0.03", tr:"Cornus VSOP 0.03", zh:"Cornus VSOP 0.03" },
+                "Havana Club 0.03": { en:"Havana Club 0.03", ru:"Havana Club 0.03", tr:"Havana Club 0.03", zh:"哈瓦那俱乐部0.03" },
+
+                "Dremina šljiva 0.03": { en:"Dremina plum rakija 0.03", ru:"Dremina сливовица 0.03", tr:"Dremina erik rakısı 0.03", zh:"Dremina李子白兰地0.03" },
+                "Dremina dunja 0.03": { en:"Dremina quince rakija 0.03", ru:"Dremina айвовая ракия 0.03", tr:"Dremina ayva rakısı 0.03", zh:"Dremina榅桲白兰地0.03" },
+                "Dremina kajsija 0.03": { en:"Dremina apricot rakija 0.03", ru:"Dremina абрикосовая ракия 0.03", tr:"Dremina kayısı rakısı 0.03", zh:"Dremina杏白兰地0.03" },
+                "Dremina kruška viljamovka 0.03": { en:"Dremina Williams pear rakija 0.03", ru:"Dremina грушевая ракия 0.03", tr:"Dremina armut rakısı 0.03", zh:"Dremina梨白兰地0.03" },
+                "Kraljevski Božur - šljiva 0.03": { en:"Kraljevski Božur plum rakija 0.03", ru:"Kraljevski Božur сливовица 0.03", tr:"Kraljevski Božur erik rakısı 0.03", zh:"Kraljevski Božur李子白兰地0.03" },
+                "Đurović rakija od šljive 0.03": { en:"Đurović plum rakija 0.03", ru:"Đurović сливовица 0.03", tr:"Đurović erik rakısı 0.03", zh:"Đurović李子白兰地0.03" },
+                "Đurović rakija od dunje 0.03": { en:"Đurović quince rakija 0.03", ru:"Đurović айвовая ракия 0.03", tr:"Đurović ayva rakısı 0.03", zh:"Đurović榅桲白兰地0.03" },
+                "Đurović rakija od dunje barik 0.03": { en:"Đurović quince rakija barrique 0.03", ru:"Đurović айвовая ракия баррик 0.03", tr:"Đurović ayva rakısı barik 0.03", zh:"Đurović橡木桶榅桲白兰地0.03" },
+                "Đurović rakija od kajsije 0.03": { en:"Đurović apricot rakija 0.03", ru:"Đurović абрикосовая ракия 0.03", tr:"Đurović kayısı rakısı 0.03", zh:"Đurović杏白兰地0.03" },
+                "Đurović rakija od kruške viljamovke 0.03": { en:"Đurović Williams pear rakija 0.03", ru:"Đurović грушевая ракия 0.03", tr:"Đurović armut rakısı 0.03", zh:"Đurović梨白兰地0.03" },
+                "Đurović rakija od maline 0.03": { en:"Đurović raspberry rakija 0.03", ru:"Đurović малиновая ракия 0.03", tr:"Đurović ahududu rakısı 0.03", zh:"Đurović覆盆子白兰地0.03" },
+                "Đurović rakija medovina 0.03": { en:"Đurović honey rakija 0.03", ru:"Đurović медовая ракия 0.03", tr:"Đurović ballı rakı 0.03", zh:"Đurović蜂蜜白兰地0.03" },
+                "Loza": { en:"Grape rakija", ru:"Виноградная ракия", tr:"Üzüm rakısı", zh:"葡萄白兰地" },
+                "Meduška": { en:"Honey rakija", ru:"Медовая ракия", tr:"Ballı rakı", zh:"蜂蜜白兰地" },
+
+                "Lav pivo 0.33": { en:"Lav beer 0.33", ru:"Пиво Lav 0.33", tr:"Lav bira 0.33", zh:"Lav啤酒0.33" },
+                "Tuborg pivo 0.33": { en:"Tuborg beer 0.33", ru:"Пиво Tuborg 0.33", tr:"Tuborg bira 0.33", zh:"Tuborg啤酒0.33" },
+                "Carlsberg pivo 0.25": { en:"Carlsberg beer 0.25", ru:"Пиво Carlsberg 0.25", tr:"Carlsberg bira 0.25", zh:"嘉士伯啤酒0.25" },
+                "Budweiser pivo 0.33": { en:"Budweiser beer 0.33", ru:"Пиво Budweiser 0.33", tr:"Budweiser bira 0.33", zh:"百威啤酒0.33" },
+                "Erdinger pivo 0.33": { en:"Erdinger beer 0.33", ru:"Пиво Erdinger 0.33", tr:"Erdinger bira 0.33", zh:"Erdinger啤酒0.33" },
+                "Kronenbourg pivo 0.33": { en:"Kronenbourg beer 0.33", ru:"Пиво Kronenbourg 0.33", tr:"Kronenbourg bira 0.33", zh:"Kronenbourg啤酒0.33" },
+                "San Miguel Fresca pivo 0.33": { en:"San Miguel Fresca beer 0.33", ru:"Пиво San Miguel Fresca 0.33", tr:"San Miguel Fresca bira 0.33", zh:"San Miguel Fresca啤酒0.33" },
+                "Tuborg točeno 0.33": { en:"Tuborg draft beer 0.33", ru:"Tuborg разливное 0.33", tr:"Tuborg fıçı bira 0.33", zh:"Tuborg生啤0.33" },
+                "Tuborg točeno 0.5": { en:"Tuborg draft beer 0.5", ru:"Tuborg разливное 0.5", tr:"Tuborg fıçı bira 0.5", zh:"Tuborg生啤0.5" },
+                "Carlsberg točeno 0.33": { en:"Carlsberg draft beer 0.33", ru:"Carlsberg разливное 0.33", tr:"Carlsberg fıçı bira 0.33", zh:"嘉士伯生啤0.33" },
+                "Carlsberg točeno 0.5": { en:"Carlsberg draft beer 0.5", ru:"Carlsberg разливное 0.5", tr:"Carlsberg fıçı bira 0.5", zh:"嘉士伯生啤0.5" },
+                "Somersby 0.33": { en:"Somersby 0.33", ru:"Somersby 0.33", tr:"Somersby 0.33", zh:"Somersby 0.33" },
+
+                "Jaje na oko 3 kom": { en:"Fried eggs, 3 pcs", ru:"Яичница-глазунья, 3 шт.", tr:"Sahanda yumurta, 3 adet", zh:"煎蛋3个" },
+                "Jaja na oko sa slaninom 3 kom": { en:"Fried eggs with bacon, 3 pcs", ru:"Яичница с беконом, 3 шт.", tr:"Pastırmalı sahanda yumurta, 3 adet", zh:"培根煎蛋3个" },
+                "Jaja sa šunkom 3 kom": { en:"Eggs with ham, 3 pcs", ru:"Яйца с ветчиной, 3 шт.", tr:"Jambonlu yumurta, 3 adet", zh:"火腿鸡蛋3个" },
+                "Omlet po izboru 3 kom": { en:"Omelette of your choice, 3 eggs", ru:"Омлет на выбор, 3 яйца", tr:"Seçmeli omlet, 3 yumurta", zh:"自选煎蛋卷3个蛋" },
+                "Jaja sa kobasicom i kačkavaljem": { en:"Eggs with sausage and cheese", ru:"Яйца с колбасой и сыром", tr:"Sosisli ve kaşarlı yumurta", zh:"香肠奶酪鸡蛋" },
+                "Jaja sa roštiljskom kobasicom": { en:"Eggs with grilled sausage", ru:"Яйца с колбасой гриль", tr:"Izgara sosisli yumurta", zh:"烤香肠鸡蛋" },
+                "Jaja sa ljutom kobasicom": { en:"Eggs with spicy sausage", ru:"Яйца с острой колбасой", tr:"Acı sosisli yumurta", zh:"辣香肠鸡蛋" },
+                "Uštipci po izboru 200 gr": { en:"Fritters of your choice 200 g", ru:"Пончики на выбор 200 г", tr:"Seçmeli hamur kızartması 200 g", zh:"自选炸面团200克" },
+                "Prženice po izboru 200 gr": { en:"French toast of your choice 200 g", ru:"Гренки на выбор 200 г", tr:"Seçmeli yumurtalı ekmek 200 g", zh:"自选法式吐司200克" },
+                "Prženice koš punjene 4 kom": { en:"Koš stuffed French toast, 4 pcs", ru:"Фаршированные гренки Koš, 4 шт.", tr:"Koš dolgulu yumurtalı ekmek, 4 adet", zh:"Koš夹心法式吐司4个" },
+                "Kačamak (sir i kajmak) 300 gr": { en:"Kačamak with cheese and kajmak 300 g", ru:"Качамак с сыром и каймаком 300 г", tr:"Peynirli ve kaymaklı kačamak 300 g", zh:"玉米粥配奶酪和奶皮300克" },
+                "Koš doručak za dve osobe": { en:"Koš breakfast for two", ru:"Завтрак Koš на двоих", tr:"İki kişilik Koš kahvaltısı", zh:"Koš双人早餐" },
+                "Tortilja Koš": { en:"Koš tortilla", ru:"Тортилья Koš", tr:"Koš tortilla", zh:"Koš卷饼" },
+                "Jogurt u čaši 2 dcl": { en:"Yogurt glass 2 dcl", ru:"Йогурт в стакане 2 дл", tr:"Bardakta yoğurt 2 dl", zh:"酸奶杯2分升" },
+                "Hleb 2 kom": { en:"Bread, 2 pcs", ru:"Хлеб, 2 шт.", tr:"Ekmek, 2 adet", zh:"面包2片" },
+                "Proja 2 kom": { en:"Cornbread, 2 pcs", ru:"Проя, 2 шт.", tr:"Mısır ekmeği, 2 adet", zh:"玉米面包2块" },
+
+                "Paradajz salata": { en:"Tomato salad", ru:"Салат из помидоров", tr:"Domates salatası", zh:"番茄沙拉" },
+                "Krastavac salata": { en:"Cucumber salad", ru:"Салат из огурцов", tr:"Salatalık salatası", zh:"黄瓜沙拉" },
+                "Kupus salata": { en:"Cabbage salad", ru:"Салат из капусты", tr:"Lahana salatası", zh:"卷心菜沙拉" },
+                "Zelena salata": { en:"Green salad", ru:"Зелёный салат", tr:"Yeşil salata", zh:"绿色沙拉" },
+                "Mladi luk": { en:"Spring onion", ru:"Зелёный лук", tr:"Taze soğan", zh:"青葱" },
+                "Ljuta papričica": { en:"Hot pepper", ru:"Острый перец", tr:"Acı biber", zh:"辣椒" },
+                "Ljuta papričica u ulju": { en:"Hot pepper in oil", ru:"Острый перец в масле", tr:"Yağda acı biber", zh:"油浸辣椒" },
+                "Kiseli kupus": { en:"Sauerkraut", ru:"Квашеная капуста", tr:"Lahana turşusu", zh:"酸菜" },
+                "Turšija": { en:"Pickled vegetables", ru:"Соленья", tr:"Turşu", zh:"腌菜" },
+                "Šopska salata": { en:"Shopska salad", ru:"Шопский салат", tr:"Şopska salatası", zh:"绍普沙拉" },
+                "Srpska salata": { en:"Serbian salad", ru:"Сербский салат", tr:"Sırp salatası", zh:"塞尔维亚沙拉" },
+                "Grčka salata": { en:"Greek salad", ru:"Греческий салат", tr:"Yunan salatası", zh:"希腊沙拉" },
+                "Belolučana paprika": { en:"Pepper with garlic", ru:"Перец с чесноком", tr:"Sarımsaklı biber", zh:"蒜香辣椒" },
+                "Cezar salata": { en:"Caesar salad", ru:"Салат Цезарь", tr:"Sezar salatası", zh:"凯撒沙拉" },
+                "Tuna salata": { en:"Tuna salad", ru:"Салат с тунцом", tr:"Ton balıklı salata", zh:"金枪鱼沙拉" },
+
+                "Pileća supa sa domaćim rezancima": { en:"Chicken soup with homemade noodles", ru:"Куриный суп с домашней лапшой", tr:"Ev erişteli tavuk çorbası", zh:"家制面条鸡汤" },
+                "Teleća čorba": { en:"Veal stew soup", ru:"Телячья чорба", tr:"Dana çorbası", zh:"小牛肉浓汤" },
+                "Mađarska corba": { en:"Hungarian soup", ru:"Венгерская чорба", tr:"Macar çorbası", zh:"匈牙利汤" },
+
+                "Baklava": { en:"Baklava", ru:"Пахлава", tr:"Baklava", zh:"巴克拉瓦" },
+                "Trileće": { en:"Tres leches cake", ru:"Трилече", tr:"Trileçe", zh:"三奶蛋糕" },
+                "Cheesecake": { en:"Cheesecake", ru:"Чизкейк", tr:"Cheesecake", zh:"芝士蛋糕" },
+                "Nugat bela čokolada": { en:"White chocolate nougat", ru:"Нуга с белым шоколадом", tr:"Beyaz çikolatalı nugat", zh:"白巧克力牛轧糖" },
+                "Plazma torta": { en:"Plazma cake", ru:"Торт Plazma", tr:"Plazma pasta", zh:"Plazma蛋糕" },
+                "Palačinke sa kremom": { en:"Pancakes with cream", ru:"Блины с кремом", tr:"Kremalı krep", zh:"奶油煎饼" },
+                "Palačinke sa kremom i plazmom": { en:"Pancakes with cream and Plazma", ru:"Блины с кремом и Plazma", tr:"Kremalı ve Plazmalı krep", zh:"奶油Plazma煎饼" },
+                "Palačinke sa džemom": { en:"Pancakes with jam", ru:"Блины с джемом", tr:"Reçelli krep", zh:"果酱煎饼" },
+                "Palačinke sa šećerom": { en:"Pancakes with sugar", ru:"Блины с сахаром", tr:"Şekerli krep", zh:"糖煎饼" },
+                "Krem": { en:"Cream", ru:"Крем", tr:"Krema", zh:"奶油" },
+                "Džem": { en:"Jam", ru:"Джем", tr:"Reçel", zh:"果酱" },
+                "Plazma": { en:"Plazma biscuit", ru:"Печенье Plazma", tr:"Plazma bisküvi", zh:"Plazma饼干" }
+            };
+
+            const categoryFallback = {
+                rostilj: { en:"Grilled dish", ru:"Блюдо гриль", tr:"Izgara yemek", zh:"烧烤菜" },
+                riba: { en:"Fish dish", ru:"Рыбное блюдо", tr:"Balık yemeği", zh:"鱼类菜" },
+                specijaliteti: { en:"House specialty", ru:"Фирменное блюдо", tr:"Ev spesiyali", zh:"招牌菜" },
+                prilozi: { en:"Side dish", ru:"Гарнир", tr:"Garnitür", zh:"配菜" },
+                predjela: { en:"Appetizer", ru:"Закуска", tr:"Meze", zh:"前菜" },
+                vino: { en:"Wine", ru:"Вино", tr:"Şarap", zh:"葡萄酒" }
+            };
+
+            function getItemName(item) {
+                if (currentLang === 'sr') return item.name;
+                if (itemTranslations[item.name] && itemTranslations[item.name][currentLang]) {
+                    return itemTranslations[item.name][currentLang];
+                }
+
+                const rules = {
+                    en: {
+                        phrases: [
+                            ['sa domaćim rezancima','with homemade noodles'], ['sa njeguškom pršutom','with Njeguši prosciutto'], ['sa kozjim sirom','with goat cheese'], ['sa kačkavaljem','with yellow cheese'], ['sa šlagom','with whipped cream'], ['sa mlekom','with milk'], ['sa slaninom','with bacon'], ['sa šunkom','with ham'], ['sa roštiljskom kobasicom','with grilled sausage'], ['sa ljutom kobasicom','with spicy sausage'], ['sa kobasicom','with sausage'], ['sa kremom i plazmom','with cream and Plazma'], ['sa kremom','with cream'], ['sa džemom','with jam'], ['sa šećerom','with sugar'], ['u sosu od parmezana','in parmesan sauce'], ['u sosu','in sauce'], ['u ulju','in oil'], ['na oko','fried eggs'], ['na žaru','grilled'], ['na roštilju','grilled'], ['po izboru','of your choice'], ['za dve osobe','for two people'], ['u čaši','glass'], ['rakija od šljive','plum rakija'], ['rakija od dunje','quince rakija'], ['rakija od kajsije','apricot rakija'], ['rakija od kruške viljamovke','Williams pear rakija'], ['rakija od maline','raspberry rakija']
+                        ],
+                        words: {
+                            'kafa':'coffee','espresso':'espresso','kapućino':'cappuccino','late':'latte','macchiato':'macchiato','nescafe':'nescafe','classic':'classic','domaća':'homemade','domaći':'homemade','domaćim':'homemade','čaj':'tea','kakao':'cocoa','nesquik':'nesquik','topla':'hot','čokolada':'chocolate','gusta':'thick','kuvano':'mulled','vino':'wine','plazma':'Plazma','šejk':'shake','mleko':'milk','šlag':'whipped cream','sojino':'soy','rosa':'Rosa','gazirana':'sparkling','negazirana':'still','flašica':'small bottle','flaša':'bottle','romerquelle':'Romerquelle','lemon':'lemon','grass':'grass','melisa':'melissa','coca':'Coca','cola':'Cola','zero':'Zero','fanta':'Fanta','sprite':'Sprite','schweppes':'Schweppes','bitter':'bitter','tonic':'tonic','water':'water','cedevita':'Cedevita','next':'Next','narandža':'orange','jabuka':'apple','borovnica':'blueberry','jagoda':'strawberry','breskva':'peach','ananas':'pineapple','red':'Red','bull':'Bull','ultra':'Ultra','energy':'Energy','ceđeni':'fresh squeezed','ceđena':'fresh squeezed','mix':'mix','pomorandža':'orange','grejp':'grapefruit','limunada':'lemonade','pivo':'beer','točeno':'draft','alkohol':'alcohol','alkoholna':'alcoholic','pića':'drinks','rakija':'rakija','šljiva':'plum','dunja':'quince','kajsija':'apricot','kruška':'pear','viljamovka':'Williams pear','malina':'raspberry','medovina':'honey rakija','loza':'grape rakija','meduška':'honey rakija','jaje':'egg','jaja':'eggs','slaninom':'bacon','šunkom':'ham','kobasicom':'sausage','kobasica':'sausage','ljutom':'spicy','roštiljskom':'grilled','omlet':'omelette','uštipci':'fritters','prženice':'French toast','punjene':'stuffed','punjeni':'stuffed','kačamak':'cornmeal porridge','sir':'cheese','sirom':'cheese','kajmak':'kajmak','kajmakom':'kajmak','doručak':'breakfast','tortilja':'tortilla','jogurt':'yogurt','hleb':'bread','proja':'cornbread','svinjska':'pork','svinjski':'pork','pečenica':'smoked pork loin','goveđa':'beef','pršuta':'prosciutto','šunka':'ham','pančeta':'pancetta','kraljevački':'Kraljevo style','povrće':'vegetables','sendvič':'sandwich','pohovanom':'breaded','pohovana':'breaded','piletinom':'chicken','suvim':'smoked','vratom':'neck','daska':'platter','uz':'with','salata':'salad','paradajz':'tomato','krastavac':'cucumber','kupus':'cabbage','zelena':'green','mladi':'spring','luk':'onion','ljuta':'hot','papričica':'pepper','kiseli':'pickled','turšija':'pickled vegetables','šopska':'Shopska','srpska':'Serbian','grčka':'Greek','belolučana':'garlic','paprika':'pepper','cezar':'Caesar','tuna':'tuna','pileća':'chicken','pileće':'chicken','pileći':'chicken','supa':'soup','rezancima':'noodles','teleća':'veal','teletina':'veal','čorba':'soup','corba':'soup','mađarska':'Hungarian','ćevapi':'cevapi','ćevap':'cevap','mlinarski':'mill style','pljeskavica':'burger patty','gurmanska':'gourmet','kozjim':'goat','dimljena':'smoked','dimljeni':'smoked','dimljene':'smoked','vešalica':'pork loin','bela':'white','belo':'chicken breast','vrat':'neck','ražnjić':'skewer','raznjić':'skewer','file':'fillet','batak':'drumstick','mešano':'mixed','meso':'meat','riba':'fish','smuđa':'zander','pastrmke':'trout','lignje':'squid','žaru':'grill','specijaliteti':'specialties','lopte':'balls','plava':'blue','traka':'ribbon','stapić':'stick','susamom':'sesame','rolovana':'rolled','ćufta':'meatball','parmezana':'parmesan','karadjordjeva':'Karađorđe schnitzel','bečka':'Vienna schnitzel','šnicla':'schnitzel','rebra':'ribs','prilozi':'sides','krompir':'potatoes','pomfrit':'fries','grilovano':'grilled','grilovani':'grilled','šampinjoni':'mushrooms','pirinač':'rice','bareni':'boiled','dalmatinsko':'Dalmatian','varivo':'stew','deserti':'desserts','baklava':'baklava','trileće':'tres leches','cheesecake':'cheesecake','nugat':'nougat','torta':'cake','palačinke':'pancakes','kremom':'cream','džemom':'jam','šećerom':'sugar','krem':'cream','džem':'jam','žuti':'yellow','cvet':'flower','bonaca':'calm sea','ruža':'rose','vetrova':'of winds','divlja':'wild','svitanje':'dawn','jedne':'one','noći':'night','novi':'new','dan':'day','vladika':'Vladika'
+                        }
+                    },
+                    ru: {
+                        phrases: [['sa domaćim rezancima','с домашней лапшой'],['sa njeguškom pršutom','с негушским пршутом'],['sa kozjim sirom','с козьим сыром'],['sa kačkavaljem','с твердым сыром'],['sa šlagom','со взбитыми сливками'],['sa mlekom','с молоком'],['sa slaninom','с беконом'],['sa šunkom','с ветчиной'],['sa roštiljskom kobasicom','с колбасой гриль'],['sa ljutom kobasicom','с острой колбасой'],['sa kobasicom','с колбасой'],['sa kremom i plazmom','с кремом и Plazma'],['sa kremom','с кремом'],['sa džemom','с джемом'],['sa šećerom','с сахаром'],['u sosu od parmezana','в соусе из пармезана'],['u sosu','в соусе'],['u ulju','в масле'],['na oko','глазунья'],['na žaru','на гриле'],['na roštilju','на гриле'],['po izboru','на выбор'],['za dve osobe','на двоих'],['u čaši','стакан'],['rakija od šljive','сливовая ракия'],['rakija od dunje','айвовая ракия'],['rakija od kajsije','абрикосовая ракия'],['rakija od kruške viljamovke','грушевая ракия'],['rakija od maline','малиновая ракия']],
+                        words: {'kafa':'кофе','kapućino':'капучино','čaj':'чай','kakao':'какао','domaća':'домашний','topla':'горячий','čokolada':'шоколад','gusta':'густой','kuvano':'глинтвейн','vino':'вино','šejk':'шейк','mleko':'молоко','šlag':'сливки','sojino':'соевое','gazirana':'газированная','negazirana':'негазированная','flašica':'маленькая бутылка','flaša':'бутылка','narandža':'апельсин','jabuka':'яблоко','borovnica':'черника','jagoda':'клубника','breskva':'персик','ananas':'ананас','ceđeni':'свежевыжатый','ceđena':'свежевыжатый','pomorandža':'апельсин','grejp':'грейпфрут','limunada':'лимонад','pivo':'пиво','točeno':'разливное','alkoholna':'алкогольные','pića':'напитки','rakija':'ракия','šljiva':'слива','dunja':'айва','kajsija':'абрикос','kruška':'груша','malina':'малина','jaje':'яйцо','jaja':'яйца','omlet':'омлет','uštipci':'пончики','prženice':'гренки','punjene':'фаршированные','kačamak':'качамак','sir':'сыр','kajmak':'каймак','doručak':'завтрак','tortilja':'тортилья','jogurt':'йогурт','hleb':'хлеб','proja':'проя','svinjska':'свиная','goveđa':'говяжья','pršuta':'пршут','šunka':'ветчина','pančeta':'панчетта','povrće':'овощи','sendvič':'сэндвич','piletinom':'курицей','daska':'плато','salata':'салат','paradajz':'помидор','krastavac':'огурец','kupus':'капуста','zelena':'зеленый','luk':'лук','ljuta':'острый','papričica':'перец','kiseli':'квашеный','turšija':'соленья','šopska':'шопский','srpska':'сербский','grčka':'греческий','paprika':'перец','cezar':'Цезарь','tuna':'тунец','pileća':'куриный','pileće':'куриное','pileći':'куриный','supa':'суп','teleća':'телячий','čorba':'чорба','mađarska':'венгерская','ćevapi':'чевапи','ćevap':'чевап','pljeskavica':'плескавица','gurmanska':'гурманская','dimljena':'копченая','dimljeni':'копченый','vešalica':'вешалица','svinjski':'свиной','vrat':'ошеек','ražnjić':'шашлык','file':'филе','batak':'окорочок','mešano':'смешанное','meso':'мясо','riba':'рыба','smuđa':'судак','pastrmke':'форель','lignje':'кальмары','lopte':'шарики','traka':'лента','stapić':'палочка','rolovana':'рулет','ćufta':'тефтеля','parmezana':'пармезан','bečka':'венская','šnicla':'шницель','rebra':'ребра','teletina':'телятина','krompir':'картофель','pomfrit':'картофель фри','grilovano':'гриль','šampinjoni':'шампиньоны','pirinač':'рис','bareni':'отварной','varivo':'рагу','baklava':'пахлава','trileće':'трилече','nugat':'нуга','torta':'торт','palačinke':'блины','krem':'крем','džem':'джем','žuti':'желтый','cvet':'цветок','ruža':'роза','divlja':'дикая','svitanje':'рассвет','novi':'новый','dan':'день'}
+                    },
+                    tr: {
+                        phrases: [['sa domaćim rezancima','ev yapımı erişte ile'],['sa njeguškom pršutom','Njeguši prosciutto ile'],['sa kozjim sirom','keçi peyniri ile'],['sa kačkavaljem','kaşar ile'],['sa šlagom','krem şanti ile'],['sa mlekom','süt ile'],['sa slaninom','pastırma ile'],['sa šunkom','jambon ile'],['sa roštiljskom kobasicom','ızgara sosis ile'],['sa ljutom kobasicom','acı sosis ile'],['sa kobasicom','sosis ile'],['sa kremom i plazmom','krema ve Plazma ile'],['sa kremom','krema ile'],['sa džemom','reçel ile'],['sa šećerom','şeker ile'],['u sosu od parmezana','parmesan sosunda'],['u sosu','sos içinde'],['u ulju','yağda'],['na oko','sahanda yumurta'],['na žaru','ızgara'],['na roštilju','ızgara'],['po izboru','seçmeli'],['za dve osobe','iki kişilik'],['u čaši','bardakta']],
+                        words: {'kafa':'kahve','kapućino':'cappuccino','čaj':'çay','kakao':'kakao','domaća':'ev yapımı','topla':'sıcak','čokolada':'çikolata','gusta':'yoğun','kuvano':'sıcak','vino':'şarap','šejk':'shake','mleko':'süt','šlag':'krem şanti','sojino':'soya','gazirana':'gazlı','negazirana':'gazsız','flašica':'küçük şişe','flaša':'şişe','narandža':'portakal','jabuka':'elma','borovnica':'yaban mersini','jagoda':'çilek','breskva':'şeftali','ananas':'ananas','ceđeni':'taze sıkılmış','ceđena':'taze sıkılmış','pomorandža':'portakal','grejp':'greyfurt','limunada':'limonata','pivo':'bira','točeno':'fıçı','rakija':'rakı','šljiva':'erik','dunja':'ayva','kajsija':'kayısı','kruška':'armut','malina':'ahududu','jaje':'yumurta','jaja':'yumurta','omlet':'omlet','uštipci':'hamur kızartması','prženice':'yumurtalı ekmek','punjene':'dolgulu','kačamak':'kaçamak','sir':'peynir','kajmak':'kaymak','doručak':'kahvaltı','tortilja':'tortilla','jogurt':'yoğurt','hleb':'ekmek','proja':'mısır ekmeği','svinjska':'domuz','goveđa':'dana','pršuta':'prosciutto','šunka':'jambon','pančeta':'pancetta','povrće':'sebze','sendvič':'sandviç','piletinom':'tavuk','daska':'tabak','salata':'salata','paradajz':'domates','krastavac':'salatalık','kupus':'lahana','zelena':'yeşil','luk':'soğan','ljuta':'acı','papričica':'biber','turšija':'turşu','šopska':'Şopska','srpska':'Sırp','grčka':'Yunan','paprika':'biber','cezar':'Sezar','tuna':'ton balığı','pileća':'tavuk','pileće':'tavuk','pileći':'tavuk','supa':'çorba','teleća':'dana','čorba':'çorba','mađarska':'Macar','ćevapi':'ćevapi','ćevap':'ćevap','pljeskavica':'köfte burger','gurmanska':'gurme','dimljena':'füme','dimljeni':'füme','vešalica':'domuz fileto','svinjski':'domuz','vrat':'boyun','ražnjić':'şiş','file':'fileto','batak':'but','mešano':'karışık','meso':'et','riba':'balık','smuđa':'sudak','pastrmke':'alabalık','lignje':'kalamar','lopte':'topları','traka':'şerit','stapić':'çubuk','rolovana':'rulo','ćufta':'köfte','parmezana':'parmesan','bečka':'Viyana','šnicla':'şinitzel','rebra':'kaburga','teletina':'dana eti','krompir':'patates','pomfrit':'patates kızartması','grilovano':'ızgara','šampinjoni':'mantar','pirinač':'pirinç','bareni':'haşlanmış','varivo':'yahni','baklava':'baklava','trileće':'trileçe','nugat':'nugat','torta':'pasta','palačinke':'krep','krem':'krema','džem':'reçel','žuti':'sarı','cvet':'çiçek','ruža':'gül','divlja':'yabani','svitanje':'şafak','novi':'yeni','dan':'gün'}
+                    },
+                    zh: {
+                        phrases: [['sa domaćim rezancima','配家制面条'],['sa kozjim sirom','配山羊奶酪'],['sa kačkavaljem','配黄奶酪'],['sa šlagom','配奶油'],['sa mlekom','加牛奶'],['sa slaninom','配培根'],['sa šunkom','配火腿'],['sa kobasicom','配香肠'],['sa kremom','配奶油'],['sa džemom','配果酱'],['sa šećerom','配糖'],['na oko','煎蛋'],['na žaru','烤制'],['na roštilju','烤制'],['po izboru','自选'],['za dve osobe','双人份'],['u čaši','杯装']],
+                        words: {'kafa':'咖啡','kapućino':'卡布奇诺','čaj':'茶','kakao':'可可','domaća':'家制','topla':'热','čokolada':'巧克力','gusta':'浓','vino':'葡萄酒','šejk':'奶昔','mleko':'牛奶','šlag':'奶油','sojino':'豆奶','gazirana':'气泡','negazirana':'无气','flašica':'小瓶','flaša':'瓶','narandža':'橙','jabuka':'苹果','borovnica':'蓝莓','jagoda':'草莓','breskva':'桃','ananas':'菠萝','ceđeni':'鲜榨','ceđena':'鲜榨','pomorandža':'橙','grejp':'葡萄柚','limunada':'柠檬水','pivo':'啤酒','točeno':'生啤','rakija':'白兰地','šljiva':'李子','dunja':'榅桲','kajsija':'杏','kruška':'梨','malina':'覆盆子','jaje':'鸡蛋','jaja':'鸡蛋','omlet':'煎蛋卷','uštipci':'炸面团','prženice':'法式吐司','punjene':'夹心','kačamak':'玉米粥','sir':'奶酪','kajmak':'奶皮','doručak':'早餐','tortilja':'卷饼','jogurt':'酸奶','hleb':'面包','proja':'玉米面包','svinjska':'猪肉','goveđa':'牛肉','pršuta':'火腿','šunka':'火腿','pančeta':'培根','povrće':'蔬菜','sendvič':'三明治','piletinom':'鸡肉','daska':'拼盘','salata':'沙拉','paradajz':'番茄','krastavac':'黄瓜','kupus':'卷心菜','zelena':'绿色','luk':'洋葱','ljuta':'辣','papričica':'辣椒','turšija':'腌菜','šopska':'绍普','srpska':'塞尔维亚','grčka':'希腊','paprika':'辣椒','cezar':'凯撒','tuna':'金枪鱼','pileća':'鸡','pileće':'鸡肉','pileći':'鸡','supa':'汤','teleća':'小牛肉','čorba':'浓汤','mađarska':'匈牙利','ćevapi':'烤肉卷','ćevap':'烤肉卷','pljeskavica':'肉饼','gurmanska':'美食','dimljena':'烟熏','dimljeni':'烟熏','vešalica':'猪里脊','svinjski':'猪肉','vrat':'颈肉','ražnjić':'肉串','file':'菲力','batak':'鸡腿','mešano':'混合','meso':'肉','riba':'鱼','smuđa':'梭鲈','pastrmke':'鳟鱼','lignje':'鱿鱼','lopte':'球','traka':'带','stapić':'条','rolovana':'卷','ćufta':'肉丸','parmezana':'帕玛森','bečka':'维也纳','šnicla':'炸肉排','rebra':'排骨','teletina':'小牛肉','krompir':'土豆','pomfrit':'薯条','grilovano':'烤','šampinjoni':'蘑菇','pirinač':'米饭','bareni':'煮','varivo':'炖菜','baklava':'巴克拉瓦','trileće':'三奶蛋糕','nugat':'牛轧糖','torta':'蛋糕','palačinke':'煎饼','krem':'奶油','džem':'果酱','žuti':'黄色','cvet':'花','ruža':'玫瑰','divlja':'野生','svitanje':'黎明','novi':'新','dan':'天'}
+                    }
+                };
+
+                const langRules = rules[currentLang];
+                let text = item.name.toLowerCase();
+                langRules.phrases.forEach(pair => {
+                    text = text.split(pair[0]).join(pair[1]);
+                });
+
+                ['/', '-', '–', ',', '(', ')'].forEach(ch => text = text.split(ch).join(' '));
+                let parts = text.split(' ').filter(Boolean).map(part => {
+                    if (part === 'gr') return 'g';
+                    if (part === 'kom') return currentLang === 'en' ? 'pcs' : currentLang === 'ru' ? 'шт.' : currentLang === 'tr' ? 'adet' : '个';
+                    if (part === 'dcl') return currentLang === 'en' ? 'dl' : currentLang === 'ru' ? 'дл' : currentLang === 'tr' ? 'dl' : '分升';
+                    if (langRules.words[part]) return langRules.words[part];
+                    if (/^[0-9.]+$/.test(part)) return part;
+                    if (part.length <= 2) return part;
+                    return part.charAt(0).toUpperCase() + part.slice(1);
+                });
+
+                return parts.join(currentLang === 'zh' ? '' : ' ');
+            }
+
+
+            Object.assign(itemTranslations, {
+                "Svinjska pečenica 50 gr": { en:"Smoked pork loin 50 g", ru:"Копченая свиная корейка 50 г", tr:"Füme domuz filetosu 50 g", zh:"烟熏猪里脊50克" },
+                "Goveđa pršuta 50 gr": { en:"Beef prosciutto 50 g", ru:"Говяжий пршут 50 г", tr:"Dana prosciutto 50 g", zh:"牛肉风干火腿50克" },
+                "Šunka 50 gr": { en:"Ham 50 g", ru:"Ветчина 50 г", tr:"Jambon 50 g", zh:"火腿50克" },
+                "Pančeta 50 gr": { en:"Pancetta 50 g", ru:"Панчетта 50 г", tr:"Pancetta 50 g", zh:"意式培根50克" },
+                "Kraljevački sir 50 gr": { en:"Kraljevo-style white cheese 50 g", ru:"Кралевский белый сыр 50 г", tr:"Kraljevo usulü beyaz peynir 50 g", zh:"Kraljevo风味白奶酪50克" },
+                "Kraljevački kajmak 50 gr": { en:"Kajmak, traditional Serbian cream cheese 50 g", ru:"Каймак, традиционный сербский сливочный сыр 50 г", tr:"Kaymak, geleneksel Sırp kaymak peyniri 50 g", zh:"Kajmak塞尔维亚传统奶皮50克" },
+                "Povrće 50 gr": { en:"Vegetables 50 g", ru:"Овощи 50 г", tr:"Sebze 50 g", zh:"蔬菜50克" },
+                "Koš sendvič 300 gr": { en:"Koš sandwich 300 g", ru:"Сэндвич Koš 300 г", tr:"Koš sandviç 300 g", zh:"Koš三明治300克" },
+                "Sendvič sa pohovanom piletinom 300 gr": { en:"Sandwich with breaded chicken 300 g", ru:"Сэндвич с панированной курицей 300 г", tr:"Pane tavuklu sandviç 300 g", zh:"炸鸡三明治300克" },
+                "Sendvič sa suvim vratom 300 gr": { en:"Sandwich with smoked pork neck 300 g", ru:"Сэндвич с копченым свиным ошейком 300 г", tr:"Füme domuz boyunlu sandviç 300 g", zh:"烟熏猪颈肉三明治300克" },
+                "Tortilja sa šunkom i kačkavaljem 300 gr": { en:"Tortilla with ham and yellow cheese 300 g", ru:"Тортилья с ветчиной и твердым сыром 300 г", tr:"Jambonlu ve kaşarlı tortilla 300 g", zh:"火腿黄奶酪卷饼300克" },
+                "Tortilja sa pohovanom piletinom 300 gr": { en:"Tortilla with breaded chicken 300 g", ru:"Тортилья с панированной курицей 300 г", tr:"Pane tavuklu tortilla 300 g", zh:"炸鸡卷饼300克" },
+                "Daska koš": { en:"Koš platter", ru:"Плато Koš", tr:"Koš tabağı", zh:"Koš拼盘" },
+                "Daska uz pivo": { en:"Beer platter", ru:"Плато к пиву", tr:"Bira tabağı", zh:"啤酒拼盘" },
+                "Daska uz vino": { en:"Wine platter", ru:"Плато к вину", tr:"Şarap tabağı", zh:"葡萄酒拼盘" },
+                "Pohovana daska": { en:"Breaded platter", ru:"Панированное плато", tr:"Pane tabağı", zh:"炸物拼盘" },
+
+                "Ćevapi 1750 gr / 5 kom": { en:"Ćevapi, traditional Balkan minced meat rolls 175 g / 5 pcs", ru:"Чевапи, традиционные балканские мясные колбаски 175 г / 5 шт.", tr:"Ćevapi, geleneksel Balkan köfteleri 175 g / 5 adet", zh:"Ćevapi巴尔干烤肉卷175克/5个" },
+                "Ćevapi 350 gr / 10 kom": { en:"Ćevapi, traditional Balkan minced meat rolls 350 g / 10 pcs", ru:"Чевапи, традиционные балканские мясные колбаски 350 г / 10 шт.", tr:"Ćevapi, geleneksel Balkan köfteleri 350 g / 10 adet", zh:"Ćevapi巴尔干烤肉卷350克/10个" },
+                "Ćevapi sa kajmakom 400 gr": { en:"Ćevapi with kajmak, traditional Serbian cream cheese 400 g", ru:"Чевапи с каймаком, традиционным сербским сливочным сыром 400 г", tr:"Kajmaklı ćevapi, geleneksel Sırp kaymak peyniri ile 400 g", zh:"Ćevapi配Kajmak传统塞尔维亚奶皮400克" },
+                "Mlinarski ćevap 400 gr": { en:"Mlinarski ćevap, house-style stuffed minced meat roll 400 g", ru:"Млинарский чевап, фирменный фаршированный мясной рулет 400 г", tr:"Mlinarski ćevap, ev usulü dolgulu köfte 400 g", zh:"Mlinarski ćevap特色夹心烤肉卷400克" },
+                "Punjeni ćevap 400 gr": { en:"Stuffed ćevap 400 g", ru:"Фаршированный чевап 400 г", tr:"Dolgulu ćevap 400 g", zh:"夹心Ćevap 400克" },
+                "Pljeskavica 350 gr": { en:"Pljeskavica, Serbian grilled burger patty 350 g", ru:"Плескавица, сербская котлета гриль 350 г", tr:"Pljeskavica, Sırp ızgara köftesi 350 g", zh:"Pljeskavica塞尔维亚烤肉饼350克" },
+                "Gurmanska pljeskavica 350 gr": { en:"Gourmet pljeskavica 350 g", ru:"Гурманская плескавица 350 г", tr:"Gurme pljeskavica 350 g", zh:"美食Pljeskavica肉饼350克" },
+                "Pljeskavica sa kozjim sirom 400 gr": { en:"Pljeskavica with goat cheese 400 g", ru:"Плескавица с козьим сыром 400 г", tr:"Keçi peynirli pljeskavica 400 g", zh:"山羊奶酪Pljeskavica肉饼400克" },
+                "Dimljena vešalica 350 gr": { en:"Smoked pork loin steak 350 g", ru:"Копченая свиная вешалица 350 г", tr:"Füme domuz fileto 350 g", zh:"烟熏猪里脊350克" },
+                "Bela vešalica 350 gr": { en:"Pork loin steak 350 g", ru:"Свиная вешалица 350 г", tr:"Domuz fileto 350 g", zh:"猪里脊350克" },
+                "Punjena bela vešalica sa slaninom 400 gr": { en:"Stuffed pork loin steak with bacon 400 g", ru:"Фаршированная свиная вешалица с беконом 400 г", tr:"Pastırmalı dolgulu domuz fileto 400 g", zh:"培根夹心猪里脊400克" },
+                "Dimljeni svinjski vrat 350 gr": { en:"Smoked pork neck 350 g", ru:"Копченый свиной ошеек 350 г", tr:"Füme domuz boynu 350 g", zh:"烟熏猪颈肉350克" },
+                "Svinjski ražnjić 350 gr": { en:"Pork skewer 350 g", ru:"Свиной шашлык 350 г", tr:"Domuz şiş 350 g", zh:"猪肉串350克" },
+                "Svinjski file 350 gr": { en:"Pork fillet 350 g", ru:"Свиное филе 350 г", tr:"Domuz fileto 350 g", zh:"猪菲力350克" },
+                "Pileće belo na roštilju 350 gr": { en:"Grilled chicken breast 350 g", ru:"Куриная грудка гриль 350 г", tr:"Izgara tavuk göğsü 350 g", zh:"烤鸡胸肉350克" },
+                "Pileći raznjić 350 gr": { en:"Chicken skewer 350 g", ru:"Куриный шашлык 350 г", tr:"Tavuk şiş 350 g", zh:"鸡肉串350克" },
+                "Dimljeni batak 350 gr": { en:"Smoked chicken drumstick 350 g", ru:"Копченый куриный окорочок 350 г", tr:"Füme tavuk budu 350 g", zh:"烟熏鸡腿350克" },
+                "Roštiljska kobasica 350 gr": { en:"Grill sausage 350 g", ru:"Колбаса гриль 350 г", tr:"Izgara sosis 350 g", zh:"烤香肠350克" },
+                "Kobasica sa kačkavaljem 350 gr": { en:"Sausage with yellow cheese 350 g", ru:"Колбаса с твердым сыром 350 г", tr:"Kaşarlı sosis 350 g", zh:"黄奶酪香肠350克" },
+                "Domaća ljuta kobasica 350 gr": { en:"Homemade spicy sausage 350 g", ru:"Домашняя острая колбаса 350 г", tr:"Ev yapımı acı sosis 350 g", zh:"家制辣香肠350克" },
+                "Mešano meso 1.2 kg": { en:"Mixed grilled meat 1.2 kg", ru:"Мясное ассорти гриль 1.2 кг", tr:"Karışık ızgara et 1.2 kg", zh:"混合烤肉1.2公斤" },
+
+                "File smuđa 1 kg": { en:"Zander fillet 1 kg", ru:"Филе судака 1 кг", tr:"Sudak fileto 1 kg", zh:"梭鲈鱼菲力1公斤" },
+                "File dimljene pastrmke 400 g": { en:"Smoked trout fillet 400 g", ru:"Филе копченой форели 400 г", tr:"Füme alabalık fileto 400 g", zh:"烟熏鳟鱼菲力400克" },
+                "Lignje na žaru 400 g": { en:"Grilled squid 400 g", ru:"Кальмары на гриле 400 г", tr:"Izgara kalamar 400 g", zh:"烤鱿鱼400克" },
+
+                "Koš lopte 350 gr": { en:"Koš balls, house meat specialty 350 g", ru:"Шарики Koš, фирменное мясное блюдо 350 г", tr:"Koš topları, ev özel et yemeği 350 g", zh:"Koš特色肉丸350克" },
+                "Plava traka 350 gr": { en:"Plava traka, house breaded meat specialty 350 g", ru:"Плава трака, фирменное панированное мясное блюдо 350 г", tr:"Plava traka, ev özel pane et yemeği 350 g", zh:"Plava traka特色炸肉350克" },
+                "Pileći stapić sa susamom 350 gr": { en:"Chicken sticks with sesame 350 g", ru:"Куриные палочки с кунжутом 350 г", tr:"Susamlı tavuk çubukları 350 g", zh:"芝麻鸡肉条350克" },
+                "Punjena rolovana piletina 450 gr": { en:"Stuffed rolled chicken 450 g", ru:"Фаршированная куриная рулета 450 г", tr:"Dolgulu tavuk rulosu 450 g", zh:"夹心鸡肉卷450克" },
+                "Pileća ćufta u sosu od parmezana 400 gr": { en:"Chicken meatballs in parmesan sauce 400 g", ru:"Куриные тефтели в соусе из пармезана 400 г", tr:"Parmesan soslu tavuk köftesi 400 g", zh:"帕玛森酱鸡肉丸400克" },
+                "Karadjordjeva šnicla 400 gr": { en:"Karađorđeva schnitzel, stuffed Serbian rolled schnitzel 400 g", ru:"Карагеоргиева шницла, фаршированный сербский рулет 400 г", tr:"Karađorđeva şinitzel, dolgulu Sırp rulo şinitzel 400 g", zh:"Karađorđeva塞尔维亚夹心炸肉卷400克" },
+                "Bečka šnicla 350 gr": { en:"Vienna schnitzel 350 g", ru:"Венский шницель 350 г", tr:"Viyana şinitzel 350 g", zh:"维也纳炸肉排350克" },
+                "Svinjska rebra 350 gr": { en:"Pork ribs 350 g", ru:"Свиные ребра 350 г", tr:"Domuz kaburga 350 g", zh:"猪排骨350克" },
+                "Šnicla u sosu sa njeguškom pršutom 350 gr": { en:"Schnitzel in sauce with Njeguši prosciutto 350 g", ru:"Шницель в соусе с негушским пршутом 350 г", tr:"Njeguši prosciutto soslu şinitzel 350 g", zh:"Njeguši火腿酱汁炸肉排350克" },
+                "Teletina koš 1 kg": { en:"Koš veal specialty 1 kg", ru:"Фирменная телятина Koš 1 кг", tr:"Koš dana eti spesiyali 1 kg", zh:"Koš特色小牛肉1公斤" },
+
+                "Krompir koš 250 gr": { en:"Koš potatoes 250 g", ru:"Картофель Koš 250 г", tr:"Koš patates 250 g", zh:"Koš土豆250克" },
+                "Pomfrit 250 gr": { en:"French fries 250 g", ru:"Картофель фри 250 г", tr:"Patates kızartması 250 g", zh:"薯条250克" },
+                "Grilovano povrće 250 gr": { en:"Grilled vegetables 250 g", ru:"Овощи гриль 250 г", tr:"Izgara sebze 250 g", zh:"烤蔬菜250克" },
+                "Šampinjoni na žaru 250 gr": { en:"Grilled mushrooms 250 g", ru:"Шампиньоны на гриле 250 г", tr:"Izgara mantar 250 g", zh:"烤蘑菇250克" },
+                "Pirinač 250 gr": { en:"Rice 250 g", ru:"Рис 250 г", tr:"Pirinç 250 g", zh:"米饭250克" },
+                "Pomfrit 100 gr": { en:"French fries 100 g", ru:"Картофель фри 100 г", tr:"Patates kızartması 100 g", zh:"薯条100克" },
+                "Krompir koš 100 gr": { en:"Koš potatoes 100 g", ru:"Картофель Koš 100 г", tr:"Koš patates 100 g", zh:"Koš土豆100克" },
+                "Grilovano povrće 100 gr": { en:"Grilled vegetables 100 g", ru:"Овощи гриль 100 г", tr:"Izgara sebze 100 g", zh:"烤蔬菜100克" },
+                "Grilovani šampinjoni 100 gr": { en:"Grilled mushrooms 100 g", ru:"Шампиньоны гриль 100 г", tr:"Izgara mantar 100 g", zh:"烤蘑菇100克" },
+                "Bareni pirinač 100 gr": { en:"Boiled rice 100 g", ru:"Отварной рис 100 г", tr:"Haşlanmış pirinç 100 g", zh:"白米饭100克" },
+                "Dalmatinsko varivo 100 gr": { en:"Dalmatian-style stew 100 g", ru:"Далматинское рагу 100 г", tr:"Dalmaçya usulü yahni 100 g", zh:"达尔马提亚炖菜100克" },
+
+                "Aleksić Žuti cvet 0.187": { en:"Aleksić Žuti Cvet wine 0.187", ru:"Вино Aleksić Žuti Cvet 0.187", tr:"Aleksić Žuti Cvet şarap 0.187", zh:"Aleksić Žuti Cvet葡萄酒0.187" },
+                "Plantaže 13.jul Chardonnay 0.187": { en:"Plantaže 13. Jul Chardonnay 0.187", ru:"Plantaže 13. Jul Chardonnay 0.187", tr:"Plantaže 13. Jul Chardonnay 0.187", zh:"Plantaže 13. Jul霞多丽0.187" },
+                "Aleksić Žuti cvet 0.75": { en:"Aleksić Žuti Cvet wine 0.75", ru:"Вино Aleksić Žuti Cvet 0.75", tr:"Aleksić Žuti Cvet şarap 0.75", zh:"Aleksić Žuti Cvet葡萄酒0.75" },
+                "Dremina Tamjanika 0.75": { en:"Dremina Tamjanika white wine 0.75", ru:"Белое вино Dremina Tamjanika 0.75", tr:"Dremina Tamjanika beyaz şarap 0.75", zh:"Dremina Tamjanika白葡萄酒0.75" },
+                "Aleksić Bonaca 0.75": { en:"Aleksić Bonaca wine 0.75", ru:"Вино Aleksić Bonaca 0.75", tr:"Aleksić Bonaca şarap 0.75", zh:"Aleksić Bonaca葡萄酒0.75" },
+                "Kovačević Chardonnay 0.75": { en:"Kovačević Chardonnay 0.75", ru:"Kovačević Chardonnay 0.75", tr:"Kovačević Chardonnay 0.75", zh:"Kovačević霞多丽0.75" },
+                "Drašković Chardonnay 0.75": { en:"Drašković Chardonnay 0.75", ru:"Drašković Chardonnay 0.75", tr:"Drašković Chardonnay 0.75", zh:"Drašković霞多丽0.75" },
+                "Tikveš Alexandria belo Classic 0.75": { en:"Tikveš Alexandria Classic white wine 0.75", ru:"Tikveš Alexandria Classic белое вино 0.75", tr:"Tikveš Alexandria Classic beyaz şarap 0.75", zh:"Tikveš Alexandria经典白葡萄酒0.75" },
+                "Radovanović Rizling rajnski 0.75": { en:"Radovanović Rhine Riesling 0.75", ru:"Radovanović Рейнский рислинг 0.75", tr:"Radovanović Ren Riesling 0.75", zh:"Radovanović雷司令0.75" },
+                "Dremina Blanc Coupage 0.75": { en:"Dremina Blanc Coupage white wine 0.75", ru:"Белое вино Dremina Blanc Coupage 0.75", tr:"Dremina Blanc Coupage beyaz şarap 0.75", zh:"Dremina Blanc Coupage白葡萄酒0.75" },
+                "Drašković beli Pinot 0.75": { en:"Drašković white Pinot 0.75", ru:"Drašković белый Pinot 0.75", tr:"Drašković beyaz Pinot 0.75", zh:"Drašković白皮诺0.75" },
+                "Drašković ruža Vetrova–Muskat Otonel 0.75": { en:"Drašković Ruža Vetrova Muscat Ottonel 0.75", ru:"Drašković Ruža Vetrova Мускат Оттонель 0.75", tr:"Drašković Ruža Vetrova Muskat Ottonel 0.75", zh:"Drašković Ruža Vetrova麝香0.75" },
+                "Plantaže 13.jul Novi dan Moscato Bianco 0.75": { en:"Plantaže 13. Jul Novi Dan Moscato Bianco 0.75", ru:"Plantaže 13. Jul Novi Dan Moscato Bianco 0.75", tr:"Plantaže 13. Jul Novi Dan Moscato Bianco 0.75", zh:"Plantaže 13. Jul Moscato Bianco 0.75" },
+                "Plantaže 13.jul Malvazija 0.75": { en:"Plantaže 13. Jul Malvasia 0.75", ru:"Plantaže 13. Jul Мальвазия 0.75", tr:"Plantaže 13. Jul Malvazija 0.75", zh:"Plantaže 13. Jul玛尔维萨0.75" },
+                "Plantaže 13.jul Chardonnay 0.75": { en:"Plantaže 13. Jul Chardonnay 0.75", ru:"Plantaže 13. Jul Chardonnay 0.75", tr:"Plantaže 13. Jul Chardonnay 0.75", zh:"Plantaže 13. Jul霞多丽0.75" },
+                "Plantaže 13.jul Val Brut 0.75": { en:"Plantaže 13. Jul Val Brut sparkling wine 0.75", ru:"Игристое вино Plantaže 13. Jul Val Brut 0.75", tr:"Plantaže 13. Jul Val Brut köpüklü şarap 0.75", zh:"Plantaže 13. Jul Val Brut起泡酒0.75" },
+                "Prosecco 0.75": { en:"Prosecco 0.75", ru:"Просекко 0.75", tr:"Prosecco 0.75", zh:"普罗塞克0.75" },
+                "Plantaže 13.jul Vranac 0.187": { en:"Plantaže 13. Jul Vranac red wine 0.187", ru:"Красное вино Plantaže 13. Jul Vranac 0.187", tr:"Plantaže 13. Jul Vranac kırmızı şarap 0.187", zh:"Plantaže 13. Jul Vranac红葡萄酒0.187" },
+                "Aleksić Kardaš 0.75": { en:"Aleksić Kardaš red wine 0.75", ru:"Красное вино Aleksić Kardaš 0.75", tr:"Aleksić Kardaš kırmızı şarap 0.75", zh:"Aleksić Kardaš红葡萄酒0.75" },
+                "Radovanović Cabernet Sauvignon Classic 0.75": { en:"Radovanović Cabernet Sauvignon Classic 0.75", ru:"Radovanović Cabernet Sauvignon Classic 0.75", tr:"Radovanović Cabernet Sauvignon Classic 0.75", zh:"Radovanović赤霞珠经典0.75" },
+                "Dremina Cabernet Sauvignon 0.75": { en:"Dremina Cabernet Sauvignon 0.75", ru:"Dremina Cabernet Sauvignon 0.75", tr:"Dremina Cabernet Sauvignon 0.75", zh:"Dremina赤霞珠0.75" },
+                "Tikveš Alexandria crveno Classic 0.75": { en:"Tikveš Alexandria Classic red wine 0.75", ru:"Tikveš Alexandria Classic красное вино 0.75", tr:"Tikveš Alexandria Classic kırmızı şarap 0.75", zh:"Tikveš Alexandria经典红葡萄酒0.75" },
+                "Plantaže 13.jul Vranac 0.75": { en:"Plantaže 13. Jul Vranac red wine 0.75", ru:"Красное вино Plantaže 13. Jul Vranac 0.75", tr:"Plantaže 13. Jul Vranac kırmızı şarap 0.75", zh:"Plantaže 13. Jul Vranac红葡萄酒0.75" },
+                "Plantaže 13.jul Vladika Cabernet Merlot 0.75": { en:"Plantaže 13. Jul Vladika Cabernet Merlot 0.75", ru:"Plantaže 13. Jul Vladika Cabernet Merlot 0.75", tr:"Plantaže 13. Jul Vladika Cabernet Merlot 0.75", zh:"Plantaže 13. Jul Vladika赤霞珠梅洛0.75" },
+                "Plantaže 13.jul Jedne noći Cabernet Merlot 0.75": { en:"Plantaže 13. Jul Jedne Noći Cabernet Merlot 0.75", ru:"Plantaže 13. Jul Jedne Noći Cabernet Merlot 0.75", tr:"Plantaže 13. Jul Jedne Noći Cabernet Merlot 0.75", zh:"Plantaže 13. Jul Jedne Noći赤霞珠梅洛0.75" },
+                "Dremina Prokupac 0.75": { en:"Dremina Prokupac red wine 0.75", ru:"Красное вино Dremina Prokupac 0.75", tr:"Dremina Prokupac kırmızı şarap 0.75", zh:"Dremina Prokupac红葡萄酒0.75" },
+                "Drašković Mahago 0.75": { en:"Drašković Mahago red wine 0.75", ru:"Красное вино Drašković Mahago 0.75", tr:"Drašković Mahago kırmızı şarap 0.75", zh:"Drašković Mahago红葡萄酒0.75" },
+                "Drašković Frankovka 0.75": { en:"Drašković Frankovka red wine 0.75", ru:"Красное вино Drašković Frankovka 0.75", tr:"Drašković Frankovka kırmızı şarap 0.75", zh:"Drašković Frankovka红葡萄酒0.75" },
+                "Plantaže 13.jul Rose 0.187": { en:"Plantaže 13. Jul Rosé 0.187", ru:"Plantaže 13. Jul розе 0.187", tr:"Plantaže 13. Jul roze 0.187", zh:"Plantaže 13. Jul桃红0.187" },
+                "Dremina Rose 0.75": { en:"Dremina Rosé 0.75", ru:"Dremina розе 0.75", tr:"Dremina roze 0.75", zh:"Dremina桃红0.75" },
+                "Aleksić Barbara 0.75": { en:"Aleksić Barbara Rosé 0.75", ru:"Aleksić Barbara розе 0.75", tr:"Aleksić Barbara roze 0.75", zh:"Aleksić Barbara桃红0.75" },
+                "Drašković Rose 0.75": { en:"Drašković Rosé 0.75", ru:"Drašković розе 0.75", tr:"Drašković roze 0.75", zh:"Drašković桃红0.75" },
+                "Drašković Divlja ruža 0.75": { en:"Drašković Divlja Ruža Rosé 0.75", ru:"Drašković Divlja Ruža розе 0.75", tr:"Drašković Divlja Ruža roze 0.75", zh:"Drašković Divlja Ruža桃红0.75" },
+                "Radovanović Rose 0.75": { en:"Radovanović Rosé 0.75", ru:"Radovanović розе 0.75", tr:"Radovanović roze 0.75", zh:"Radovanović桃红0.75" },
+                "Plantaže 13.jul U svitanje Cabernet 0.75": { en:"Plantaže 13. Jul U Svitanje Cabernet Rosé 0.75", ru:"Plantaže 13. Jul U Svitanje Cabernet розе 0.75", tr:"Plantaže 13. Jul U Svitanje Cabernet roze 0.75", zh:"Plantaže 13. Jul U Svitanje赤霞珠桃红0.75" },
+                "Plantaže 13.jul Rose 0.75": { en:"Plantaže 13. Jul Rosé 0.75", ru:"Plantaže 13. Jul розе 0.75", tr:"Plantaže 13. Jul roze 0.75", zh:"Plantaže 13. Jul桃红0.75" }
+            });
+
+            const itemDetails = {
+                "Espresso kafa": {
+                    image: "",
+                    desc: {
+                        sr: "Klasičan espresso punog ukusa i bogate arome.",
+                        en: "Classic espresso with rich aroma and full flavor.",
+                        ru: "Классический эспрессо с насыщенным вкусом и ароматом.",
+                        tr: "Zengin aromalı klasik espresso.",
+                        zh: "经典浓缩咖啡，香气浓郁。"
+                    }
+                },
+                "Ćevapi 1750 gr / 5 kom": {
+                    image: "",
+                    desc: {
+                        sr: "Tradicionalni ćevapi od mlevenog mesa, pečeni na roštilju. Jedno od najpoznatijih jela domaće kuhinje.",
+                        en: "Traditional Balkan minced meat rolls grilled over high heat. One of the most recognizable local specialties.",
+                        ru: "Традиционные балканские чевапи из рубленого мяса, приготовленные на гриле.",
+                        tr: "Izgarada pişirilen geleneksel Balkan kıyma köfteleri.",
+                        zh: "传统巴尔干烤肉卷，经过炭火烤制，是当地经典菜品。"
+                    }
+                },
+                "Ćevapi 350 gr / 10 kom": {
+                    image: "",
+                    desc: {
+                        sr: "Veća porcija tradicionalnih ćevapa sa roštilja, idealna za ljubitelje domaćeg ukusa.",
+                        en: "A larger portion of traditional grilled ćevapi, ideal for lovers of authentic Balkan flavor.",
+                        ru: "Большая порция традиционных чевапи на гриле.",
+                        tr: "Geleneksel ızgara ćevapi’nin büyük porsiyonu.",
+                        zh: "大份传统Ćevapi烤肉卷，适合喜欢巴尔干风味的客人。"
+                    }
+                },
+                "Ćevapi sa kajmakom 400 gr": {
+                    image: "",
+                    desc: {
+                        sr: "Ćevapi servirani uz kajmak, tradicionalni mlečni specijalitet kremaste teksture i bogatog ukusa.",
+                        en: "Ćevapi served with kajmak, a traditional creamy Serbian dairy specialty.",
+                        ru: "Чевапи с каймаком — традиционным сербским сливочным молочным деликатесом.",
+                        tr: "Geleneksel Sırp kaymağı ile servis edilen ćevapi.",
+                        zh: "Ćevapi搭配Kajmak传统塞尔维亚奶皮，口感浓郁。"
+                    }
+                },
+                "Pljeskavica 350 gr": {
+                    image: "",
+                    desc: {
+                        sr: "Tradicionalna pljeskavica sa roštilja, sočna i bogatog ukusa.",
+                        en: "Traditional Serbian grilled meat patty, juicy and full of flavor.",
+                        ru: "Традиционная сербская плескавица на гриле, сочная и насыщенная вкусом.",
+                        tr: "Geleneksel Sırp ızgara köftesi, sulu ve lezzetli.",
+                        zh: "传统塞尔维亚烤肉饼，多汁美味。"
+                    }
+                },
+                "Karadjordjeva šnicla 400 gr": {
+                    image: "",
+                    desc: {
+                        sr: "Poznati srpski specijalitet: rolovana i pohovana šnicla, bogatog i punog ukusa.",
+                        en: "A famous Serbian specialty: rolled and breaded schnitzel with rich flavor.",
+                        ru: "Известный сербский специалитет: рулет из шницеля в панировке.",
+                        tr: "Ünlü Sırp spesiyali: dolgulu ve pane rulo şinitzel.",
+                        zh: "著名塞尔维亚特色菜：夹心裹粉炸肉卷。"
+                    }
+                },
+                "Baklava": {
+                    image: "",
+                    desc: {
+                        sr: "Tradicionalni slatki desert sa korama, orasima i sirupom.",
+                        en: "Traditional sweet dessert with pastry layers, nuts and syrup.",
+                        ru: "Традиционный сладкий десерт с тестом, орехами и сиропом.",
+                        tr: "Yufka, ceviz ve şerbet ile hazırlanan geleneksel tatlı.",
+                        zh: "传统甜点，由酥皮、坚果和糖浆制成。"
+                    }
+                }
+            };
+
+            const modalText = {
+                sr: { label: "Detalji", noDesc: "Opis jela trenutno nije dodat. Ovde kasnije može da se upiše sastav, način pripreme ili preporuka konobara.", tapHint: "Dodirnite za detalje" },
+                en: { label: "Details", noDesc: "Description is not available yet. Ingredients, preparation notes or waiter recommendations can be added here later.", tapHint: "Tap for details" },
+                ru: { label: "Детали", noDesc: "Описание пока не добавлено. Здесь позже можно добавить состав, способ приготовления или рекомендацию официанта.", tapHint: "Нажмите для деталей" },
+                tr: { label: "Detaylar", noDesc: "Açıklama henüz eklenmedi. İçerik, hazırlama şekli veya garson önerisi daha sonra eklenebilir.", tapHint: "Detaylar için dokunun" },
+                zh: { label: "详情", noDesc: "菜品描述暂未添加。稍后可在此添加配料、制作方式或服务员推荐。", tapHint: "点击查看详情" }
+            };
+
+            function getCategoryImage(catId) {
+                const cat = categories.find(c => c.id === catId);
+                return cat && cat.img ? cat.img : "";
+            }
+
+            function getPlaceholderImage(title) {
+                const safeTitle = String(title).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0%' stop-color='%23231c16'/><stop offset='100%' stop-color='%23120f0c'/></linearGradient></defs><rect width='600' height='400' fill='url(%23g)'/><rect x='25' y='25' width='550' height='350' rx='28' fill='none' stroke='%23d8b27a' stroke-opacity='0.35' stroke-width='2'/><text x='50%' y='45%' dominant-baseline='middle' text-anchor='middle' fill='%23d8b27a' font-size='30' font-family='Georgia, serif'>Fotografija jela</text><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' fill='%23f7f2ea' fill-opacity='0.72' font-size='20' font-family='Arial'>${safeTitle}</text></svg>`;
+                return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+            }
+
+            function getItemVisual(item) {
+                const details = itemDetails[item.name] || {};
+                const image = details.image && details.image.trim() !== "" ? details.image : (getCategoryImage(item.cat) || getPlaceholderImage(getItemName(item)));
+                const desc = details.desc && details.desc[currentLang] ? details.desc[currentLang] : (details.desc && details.desc.sr ? details.desc.sr : modalText[currentLang].noDesc);
+                return { image, desc };
+            }
+
+            window.openItemModal = function(index) {
+                const item = menuData[index];
+                if (!item) return;
+                const visual = getItemVisual(item);
+                document.getElementById('modalItemImage').src = visual.image;
+                document.getElementById('modalItemImage').alt = getItemName(item);
+                document.getElementById('modalItemLabel').innerText = modalText[currentLang].label;
+                document.getElementById('modalItemTitle').innerText = getItemName(item);
+                document.getElementById('modalItemPrice').innerText = item.price + ' RSD';
+                document.getElementById('modalItemDesc').innerText = visual.desc;
+                document.getElementById('itemModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.forceCloseItemModal = function() {
+                document.getElementById('itemModal').classList.remove('show');
+                document.body.style.overflow = '';
+            };
+
+            window.closeItemModal = function(event) {
+                if (event.target.id === 'itemModal') forceCloseItemModal();
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') forceCloseItemModal();
+            });
+
+            const categories = [
+                { id:"topli_napici", img:"https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=900&auto=format&fit=crop", icon:"☕", names:{ sr:"Topli napici", en:"Hot drinks", ru:"Горячие напитки", tr:"Sıcak içecekler", zh:"热饮" } },
+                { id:"bezalkoholna", img:"https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=900&auto=format&fit=crop", icon:"🥤", names:{ sr:"Bezalkoholna pića", en:"Soft drinks", ru:"Безалкогольные", tr:"Alkolsüz içecekler", zh:"软饮" } },
+                { id:"alkohol", img:"https://images.unsplash.com/photo-1569529465841-dfecdab7503b?q=80&w=900&auto=format&fit=crop", icon:"🥃", names:{ sr:"Alkoholna pića", en:"Spirits", ru:"Крепкий алкоголь", tr:"Alkollü içkiler", zh:"烈酒" } },
+                { id:"rakija", img:"https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=900&auto=format&fit=crop", icon:"🍇", names:{ sr:"Rakija", en:"Rakija", ru:"Ракия", tr:"Rakı", zh:"水果白兰地" } },
+                { id:"pivo", img:"https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=900&auto=format&fit=crop", icon:"🍺", names:{ sr:"Pivo", en:"Beer", ru:"Пиво", tr:"Bira", zh:"啤酒" } },
+                { id:"vino", img:"https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=900&auto=format&fit=crop", icon:"🍷", names:{ sr:"Vino", en:"Wine", ru:"Вино", tr:"Şarap", zh:"葡萄酒" } },
+                { id:"dorucak", img:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=900&auto=format&fit=crop", icon:"🍳", names:{ sr:"Doručak", en:"Breakfast", ru:"Завтрак", tr:"Kahvaltı", zh:"早餐" } },
+                { id:"predjela", img:"https://images.unsplash.com/photo-1541014741259-de529411b96a?q=80&w=900&auto=format&fit=crop", icon:"🧀", names:{ sr:"Predjela i plate", en:"Appetizers & platters", ru:"Закуски", tr:"Mezeler", zh:"前菜" } },
+                { id:"salate", img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=900&auto=format&fit=crop", icon:"🥗", names:{ sr:"Salate", en:"Salads", ru:"Салаты", tr:"Salatalar", zh:"沙拉" } },
+                { id:"supe", img:"https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=900&auto=format&fit=crop", icon:"🍜", names:{ sr:"Supe i čorbe", en:"Soups", ru:"Супы", tr:"Çorbalar", zh:"汤" } },
+                { id:"rostilj", img:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=900&auto=format&fit=crop", icon:"🥩", names:{ sr:"Roštilj", en:"Grill", ru:"Гриль", tr:"Izgara", zh:"烧烤" } },
+                { id:"riba", img:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=900&auto=format&fit=crop", icon:"🐟", names:{ sr:"Riba", en:"Fish", ru:"Рыба", tr:"Balık", zh:"鱼" } },
+                { id:"specijaliteti", img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=900&auto=format&fit=crop", icon:"🍽️", names:{ sr:"Specijaliteti", en:"Specials", ru:"Фирменные блюда", tr:"Spesiyaller", zh:"特色菜" } },
+                { id:"prilozi", img:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=900&auto=format&fit=crop", icon:"🍟", names:{ sr:"Prilozi", en:"Sides", ru:"Гарниры", tr:"Garnitür", zh:"配菜" } },
+                { id:"deserti", img:"https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=900&auto=format&fit=crop", icon:"🍰", names:{ sr:"Deserti", en:"Desserts", ru:"Десерты", tr:"Tatlılar", zh:"甜点" } }
+            ];
+
+            function hideAll() {
+                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            }
+
+            function showScreen(id, addToHistory = true) {
+                hideAll();
+                document.getElementById(id).style.display = 'block';
+                window.scrollTo(0, 0);
+
+                if (addToHistory) {
+                    const state = { screen: id };
+                    history.pushState(state, '', '#' + id.replace('screen', '').toLowerCase());
+                }
+            }
+
+            window.showLangScreen = function() { showScreen('screenLang'); };
+            window.goHomeFromMenu = function() { history.back(); };
+
+            window.setLang = function(lang) {
+                currentLang = lang;
+                updateUILanguage();
+                showScreen('screenHome');
+            };
+
+            document.addEventListener('click', function(e) {
+                const langButton = e.target.closest('[data-lang]');
+                if (langButton) {
+                    e.preventDefault();
+                    window.setLang(langButton.getAttribute('data-lang'));
+                }
+            });
+
+            function updateUILanguage() {
+                const u = ui[currentLang];
+                document.getElementById('homeSub').innerText = u.homeSub;
+                document.getElementById('btnMenu').innerText = u.menu;
+                document.getElementById('btnMenuSub').innerText = u.menuSub;
+                document.getElementById('btnRes').innerText = u.res;
+                document.getElementById('btnResSub').innerText = u.resSub;
+                document.getElementById('btnRev').innerText = u.rev;
+                document.getElementById('btnRevSub').innerText = u.revSub;
+                document.getElementById('backFromHome').innerText = u.back;
+                document.getElementById('backFromMenu').innerText = u.back;
+                document.getElementById('searchInput').placeholder = u.searchPlaceholder;
+                document.getElementById('menuSubtitle').innerText = u.menuSubtitle;
+                if (document.getElementById('screenMenu').style.display === 'block') {
+                    renderCategoryGrid();
+                }
+            }
+
+            window.openMenu = function(addToHistory = true) {
+                showScreen('screenMenu', addToHistory);
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchResults').style.display = 'none';
+                document.getElementById('categoryGrid').style.display = 'grid';
+                renderCategoryGrid();
+            };
+
+            function renderCategoryGrid() {
+                const grid = document.getElementById('categoryGrid');
+                grid.innerHTML = '';
+                categories.forEach(cat => {
+                    const card = document.createElement('div');
+                    card.className = 'category-card';
+                    if (cat.img) {
+                        card.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.72)), url('${cat.img}')`;
+                    }
+                    card.innerHTML = `<span class="category-name">${cat.names[currentLang] || cat.names.sr}</span>`;
+                    card.onclick = () => showCategoryItems(cat.id, true);
+                    grid.appendChild(card);
+                });
+            }
+
+            function showCategoryItems(catId, addToHistory = true) {
+                if (addToHistory) {
+                    history.pushState({ screen: 'screenMenu', category: catId }, '', '#menu-' + catId);
+                }
+                const items = menuData.filter(item => item.cat === catId);
+                const resultsDiv = document.getElementById('searchResults');
+                document.getElementById('categoryGrid').style.display = 'none';
+                resultsDiv.style.display = 'block';
+                const catObj = categories.find(c => c.id === catId);
+                const title = (catObj ? catObj.names[currentLang] : catId) || catId;
+                let html = `<h3 style="font-family:'Cormorant Garamond',serif; color:var(--primary); margin:8px 0 14px; font-size:26px; letter-spacing:1px;">${title}</h3>`;
+                items.forEach(item => {
+                    const itemIndex = menuData.indexOf(item);
+                    const visual = getItemVisual(item);
+                    html += `<button type="button" class="food-item food-item-btn" onclick="openItemModal(${itemIndex})"><span class="item-photo"><img src="${visual.image}" alt="${getItemName(item)}"></span><span class="food-item-content"><span class="item-name">${getItemName(item)}</span><span class="food-item-hint">${modalText[currentLang].tapHint}</span></span><span class="item-price">${item.price} RSD</span></button>`;
+                });
+                
+                resultsDiv.innerHTML = html;
+                
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim().toLowerCase();
+                    const resultsDiv = document.getElementById('searchResults');
+                    const grid = document.getElementById('categoryGrid');
+                    if (query === '') {
+                        grid.style.display = 'grid';
+                        resultsDiv.style.display = 'none';
+                        return;
+                    }
+                    grid.style.display = 'none';
+                    resultsDiv.style.display = 'block';
+                    const filtered = menuData.filter(item => {
+                        const originalName = item.name.toLowerCase();
+                        const translatedName = getItemName(item).toLowerCase();
+                        return originalName.includes(query) || translatedName.includes(query);
+                    });
+                    if (filtered.length === 0) {
+                        resultsDiv.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 12px;">Nema rezultata za "${query}"</p>`;
+                        return;
+                    }
+                    let html = '';
+                    filtered.forEach(item => {
+                        const itemIndex = menuData.indexOf(item);
+                    const visual = getItemVisual(item);
+                    html += `<button type="button" class="food-item food-item-btn" onclick="openItemModal(${itemIndex})"><span class="item-photo"><img src="${visual.image}" alt="${getItemName(item)}"></span><span class="food-item-content"><span class="item-name">${getItemName(item)}</span><span class="food-item-hint">${modalText[currentLang].tapHint}</span></span><span class="item-price">${item.price} RSD</span></button>`;
+                    });
+                    resultsDiv.innerHTML = html;
+                });
+            });
+
+            window.handleReservation = function() {
+                window.location.href = "tel:0365101414";
+            };
+
+            window.openReviews = function() {
+                window.open("https://www.google.com/search?q=restoran+ko%C5%A1&sca_esv=3b079a2c9f79cf39&sxsrf=ANbL-n74ddx7HKIuPNKYHEh6Hs-K7w9s5A%3A1778315810299&ei=IvL-acHxEauPi-gP5uvjqAw&biw=1536&bih=844&ved=0ahUKEwjBiq_R5quUAxWrxwIHHeb1GMUQ4dUDCBE&uact=5&oq=restoran+ko%C5%A1&gs_lp=Egxnd3Mtd2l6LXNlcnAiDXJlc3RvcmFuIGtvxaEyBRAAGIAEMggQABiABBjLATIIEAAYgAQYywEyCBAAGIAEGMsBMgUQABiABDIFEAAYgAQyCBAAGIAEGMsBMgUQABiABDIIEAAYgAQYywEyBRAAGIAESJoJUJYFWKEHcAF4AZABAJgBUqABlwGqAQEyuAEDyAEA-AEBmAIDoAK1AcICChAAGEcY1gQYsAPCAgQQIxgnmAMAiAYBkAYFkgcBM6AHvguyBwEyuAesAcIHBTItMi4xyAcZgAgB&sclient=gws-wiz-serp#lrd=0x47570168759d6a1b:0x7214f9c03e69666b,3,,,,", '_blank');
+            };
+
+            history.replaceState({ screen: 'screenLang' }, '', '#lang');
+
+            window.addEventListener('popstate', function(event) {
+                const state = event.state || { screen: 'screenLang' };
+
+                if (state.category) {
+                    showScreen('screenMenu', false);
+                    document.getElementById('searchInput').value = '';
+                    showCategoryItems(state.category, false);
+                    return;
+                }
+
+                if (state.screen === 'screenMenu') {
+                    window.openMenu(false);
+                    return;
+                }
+
+                if (state.screen === 'screenHome') {
+                    showScreen('screenLang', false);
+                    return;
+                }
+
+                showScreen('screenHome', false);
+            });
+
+            updateUILanguage();
+        })();
+    </script>
+        <div id="itemModal" class="item-modal" onclick="closeItemModal(event)">
+        <div class="item-modal-card">
+            <button type="button" class="item-modal-close" onclick="forceCloseItemModal()">×</button>
+            <div class="item-modal-image-wrap">
+                <img id="modalItemImage" src="" alt="Jelo">
+            </div>
+            <div class="item-modal-label" id="modalItemLabel">Detalji</div>
+            <div class="item-modal-title" id="modalItemTitle">Naziv jela</div>
+            <div class="item-modal-price" id="modalItemPrice">0 RSD</div>
+            <div class="item-modal-desc" id="modalItemDesc">Opis jela trenutno nije dodat.</div>
+        </div>
     </div>
+    <script>
+        /* FINALNI FIX ZA JEZIKE — ne dira meni, samo garantuje da klik radi */
+        document.addEventListener('DOMContentLoaded', function () {
+            function hideAllScreensFinal() {
+                document.querySelectorAll('.screen').forEach(function (screen) {
+                    screen.style.display = 'none';
+                });
+            }
 
-    <div id="screen-cats" class="screen">
-      <div class="section-head">
-        <h2 class="cat-title" id="cats-title">Meni</h2>
-      </div>
-      <div class="search-wrap"><input id="cat-search" type="text" placeholder="Pretraži kategorije..." oninput="filterCategories()"></div>
-      <div id="cats-box"></div>
-      <button class="back-fixed" id="back-home" onclick="goHome()">Nazad</button>
-    </div>
+            function showHomeFinal() {
+                const home = document.getElementById('screenHome');
+                if (!home) return;
+                hideAllScreensFinal();
+                home.style.display = 'block';
+                window.scrollTo(0, 0);
+                try {
+                    history.pushState({ screen: 'screenHome' }, '', '#home');
+                } catch (e) {}
+            }
 
-    <div id="screen-items" class="screen">
-      <div class="section-head">
-        <h2 class="cat-title" id="items-title"></h2>
-      </div>
-      <div class="search-wrap"><input id="item-search" type="text" placeholder="Pretraži stavke..." oninput="filterItems()"></div>
-      <div id="items-box"></div>
-      <button class="back-fixed" id="back-cats" onclick="showCategories()">Meni</button>
-    </div>
-  </div>
+            document.querySelectorAll('#screenLang button').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-  <script>
-    let lang = 'sr';
-    let currentCategoryKey = null;
+                    const lang = btn.getAttribute('data-lang') ||
+                        (btn.getAttribute('onclick') || '').match(/setLang\('([^']+)'\)/)?.[1] ||
+                        'sr';
 
-    const ui = {
-      sr: {
-        home: 'Tradicija ukusa',
-        menu: 'Meni', menuSub: 'Hrana i piće',
-        res: 'Rezervacije', resSub: 'Pozovite nas',
-        rev: 'Oceni nas', revSub: 'Google recenzije',
-        backLang: 'Jezik', backHome: 'Nazad', backMenu: 'Meni',
-        catsTitle: 'Meni',
-        catsSearch: 'Pretraži kategorije...',
-        itemsSearch: 'Pretraži stavke...',
-        view: 'Pogledaj ponudu'
-      },
-      en: {
-        home: 'Tradition of Taste',
-        menu: 'Menu', menuSub: 'Food & Drinks',
-        res: 'Reservations', resSub: 'Call us',
-        rev: 'Review us', revSub: 'Google reviews',
-        backLang: 'Language', backHome: 'Back', backMenu: 'Menu',
-        catsTitle: 'Menu',
-        catsSearch: 'Search categories...',
-        itemsSearch: 'Search items...',
-        view: 'View selection'
-      },
-      ru: {
-        home: 'Традиция вкуса',
-        menu: 'Меню', menuSub: 'Еда и напитки',
-        res: 'Бронирование', resSub: 'Позвоните нам',
-        rev: 'Оцените нас', revSub: 'Отзывы Google',
-        backLang: 'Язык', backHome: 'Назад', backMenu: 'Меню',
-        catsTitle: 'Меню',
-        catsSearch: 'Поиск категорий...',
-        itemsSearch: 'Поиск позиций...',
-        view: 'Посмотреть'
-      }
-    };
+                    if (typeof window.setLang === 'function') {
+                        try {
+                            window.setLang(lang);
+                            const home = document.getElementById('screenHome');
+                            if (home && home.style.display !== 'block') {
+                                showHomeFinal();
+                            }
+                            return;
+                        } catch (err) {
+                            showHomeFinal();
+                            return;
+                        }
+                    }
 
-    // Item names are kept in Serbian for clarity inside the menu.
-    const data = {
-      sokovi: {
-        title: { sr: 'Bezalkoholna pića', en: 'Soft Drinks', ru: 'Безалкогольные напитки' },
-        items: [
-          { n: 'Coca Cola 0.25', p: '190' },
-          { n: 'Coca Cola Zero 0.25', p: '220' },
-          { n: 'Fanta 0.25', p: '220' },
-          { n: 'Sprite 0.25', p: '220' },
-          { n: 'Schweppes Bitter Lemon 0.25', p: '220' },
-          { n: 'Schweppes Tonic Water 0.25', p: '220' },
-          { n: 'Cedevita 0.2', p: '220' },
-          { n: 'Next flašica Narandža 0.2', p: '220' },
-          { n: 'Next flašica Jabuka 0.2', p: '220' },
-          { n: 'Next flašica Borovnica 0.2', p: '220' },
-          { n: 'Next flašica Jagoda 0.2', p: '220' },
-          { n: 'Next flašica Breskva 0.2', p: '220' },
-          { n: 'Next flašica Ananas 0.2', p: '220' },
-          { n: 'Red Bull 0.25', p: '400' },
-          { n: 'Ultra Energy 0.25', p: '230' },
-          { n: 'Ceđeni mix 0.2', p: '370' },
-          { n: 'Ceđena pomorandža 0.2', p: '340' },
-          { n: 'Ceđeni grejp 0.2', p: '350' },
-          { n: 'Limunada 0.2', p: '210' }
-        ]
-      },
-      kafa: {
-        title: { sr: 'Kafe i topli napici', en: 'Coffee & Hot Drinks', ru: 'Кофе и горячие напитки' },
-        items: [
-          { n: 'Espresso kafa', p: '160' },
-          { n: 'Espresso kafa sa šlagom', p: '200' },
-          { n: 'Espresso kafa sa mlekom', p: '170' },
-          { n: 'Kapućino', p: '180' },
-          { n: 'Late macchiato', p: '210' },
-          { n: 'Nescafe classic', p: '190' },
-          { n: 'Domaća kafa', p: '120' },
-          { n: 'Domaća kafa sa mlekom', p: '130' },
-          { n: 'Kakao', p: '150' },
-          { n: 'Čaj', p: '170' },
-          { n: 'Nesquik', p: '190' },
-          { n: 'Topla čokolada gusta', p: '240' },
-          { n: 'Kuvano vino', p: '240' },
-          { n: 'Plazma šejk', p: '350' },
-          { n: 'Mleko', p: '60' },
-          { n: 'Šlag', p: '100' },
-          { n: 'Sojino mleko', p: '100' }
-        ]
-      },
-      vode: {
-        title: { sr: 'Vode', en: 'Waters', ru: 'Воды' },
-        items: [
-          { n: 'Rosa gazirana flašica 0.2', p: '150' },
-          { n: 'Rosa negazirana flašica 0.2', p: '150' },
-          { n: 'Romerquelle lemon grass 0.2', p: '190' },
-          { n: 'Romerquelle melisa 0.2', p: '190' },
-          { n: 'Rosa gazirana flaša 0.75', p: '290' },
-          { n: 'Rosa negazirana flaša 0.75', p: '290' }
-        ]
-      },
-      dorucak: {
-        title: { sr: 'Doručak', en: 'Breakfast', ru: 'Завтрак' },
-        items: [
-          { n: 'Jaje na oko 3 kom', p: '160' },
-          { n: 'Jaja na oko sa slaninom 3 kom', p: '360' },
-          { n: 'Jaja sa šunkom 3 kom', p: '280' },
-          { n: 'Omlet po izboru 3 kom', p: '160' },
-          { n: 'Jaja sa kobasicom i kačkavaljem', p: '390' },
-          { n: 'Jaja sa roštiljskom kobasicom', p: '390' },
-          { n: 'Jaja sa ljutom kobasicom', p: '390' },
-          { n: 'Uštipci po izboru 200 gr', p: '220' },
-          { n: 'Prženice po izboru 200 gr', p: '210' },
-          { n: 'Prženice Koš punjene 4 kom', p: '550' },
-          { n: 'Kačamak (sir i kajmak) 300 gr', p: '200' },
-          { n: 'Koš doručak za dve osobe', p: '860' },
-          { n: 'Tortilja Koš', p: '550' }
-        ]
-      },
-      dodaci_dorucak: {
-        title: { sr: 'Dodaci za doručak', en: 'Breakfast Extras', ru: 'Добавки к завтраку' },
-        items: [
-          { n: 'Jogurt u čaši 2 dcl', p: '90' },
-          { n: 'Mleko 2 dcl', p: '90' },
-          { n: 'Hleb 2 kom', p: '40' },
-          { n: 'Proja 2 kom', p: '40' },
-          { n: 'Svinjska pečenica 50 gr', p: '150' },
-          { n: 'Goveđa pršuta 50 gr', p: '250' },
-          { n: 'Šunka 50 gr', p: '100' },
-          { n: 'Pančeta 50 gr', p: '120' },
-          { n: 'Kraljevački sir 50 gr', p: '120' },
-          { n: 'Kraljevački kajmak 50 gr', p: '150' },
-          { n: 'Povrće 50 gr', p: '150' }
-        ]
-      },
-      sendvici: {
-        title: { sr: 'Sendviči i tortilje', en: 'Sandwiches & Tortillas', ru: 'Сэндвичи и тортильи' },
-        items: [
-          { n: 'Koš sendvič 300 gr', p: '450' },
-          { n: 'Sendvič sa pohovanom piletinom 300 gr', p: '420' },
-          { n: 'Sendvič sa suvim vratom 300 gr', p: '380' },
-          { n: 'Tortilja sa šunkom i kačkavaljem 300 gr', p: '410' },
-          { n: 'Tortilja sa pohovanom piletinom 300 gr', p: '410' }
-        ]
-      },
-      daske: {
-        title: { sr: 'Daske', en: 'Platters', ru: 'Доски' },
-        items: [
-          { n: 'Daska Koš', p: '1700' },
-          { n: 'Daska uz pivo', p: '1950' },
-          { n: 'Daska uz vino', p: '1010' },
-          { n: 'Pohovana daska', p: '5500' }
-        ]
-      },
-      salate: {
-        title: { sr: 'Salate', en: 'Salads', ru: 'Салаты' },
-        items: [
-          { n: 'Paradajz salata', p: '260' },
-          { n: 'Krastavac salata', p: '260' },
-          { n: 'Kupus salata', p: '260' },
-          { n: 'Zelena salata', p: '260' },
-          { n: 'Mladi luk', p: '260' },
-          { n: 'Ljuta papričica', p: '120' },
-          { n: 'Ljuta papričica u ulju', p: '120' },
-          { n: 'Kiseli kupus', p: '260' },
-          { n: 'Turšija', p: '260' },
-          { n: 'Šopska salata', p: '290' },
-          { n: 'Srpska salata', p: '270' },
-          { n: 'Grčka salata', p: '420' },
-          { n: 'Belolučana paprika', p: '260' },
-          { n: 'Cezar salata', p: '650' },
-          { n: 'Tuna salata', p: '590' }
-        ]
-      },
-      posebne_salate: {
-        title: { sr: 'Dodaci i specijaliteti', en: 'Extras & Specialties', ru: 'Добавки и специалитеты' },
-        items: [
-          { n: 'Kraljevački sir', p: '200' },
-          { n: 'Kraljevački kajmak', p: '250' },
-          { n: 'Paprika u pavlaci', p: '250' },
-          { n: 'Urnebes salata', p: '200' },
-          { n: 'Paprika na kajmaku', p: '480' },
-          { n: 'Pohovana paprika', p: '350' },
-          { n: 'Pohovani kačkavalj', p: '550' },
-          { n: 'Pohovana palačinka', p: '480' },
-          { n: 'Pohovani kajmak i sir', p: '630' },
-          { n: 'Grilovani kozji sir', p: '450' }
-        ]
-      },
-      supe: {
-        title: { sr: 'Supe i čorbe', en: 'Soups & Stews', ru: 'Супы и чорбы' },
-        items: [
-          { n: 'Pileća supa sa domaćim rezancima', p: '260' },
-          { n: 'Teleća čorba', p: '310' },
-          { n: 'Mađarska čorba', p: '320' }
-        ]
-      },
-      glavna: {
-        title: { sr: 'Glavna jela', en: 'Main Courses', ru: 'Основные блюда' },
-        items: [
-          { n: 'Koš lopte 350 gr', p: '750' },
-          { n: 'Plava traka 350 gr', p: '720' },
-          { n: 'Pileći stapić sa susamom 350 gr', p: '650' },
-          { n: 'Punjena rolovana piletina 450 gr', p: '1200' },
-          { n: 'Pileća ćufta u sosu od parmezana 400 gr', p: '1090' },
-          { n: 'Karadjordjeva šnicla 400 gr', p: '980' },
-          { n: 'Bečka šnicla 350 gr', p: '720' },
-          { n: 'Svinjska rebra 350 gr', p: '850' },
-          { n: 'Šnicla u sosu sa njeguškom pršutom 350 gr', p: '1450' },
-          { n: 'Teletina Koš 1 kg', p: '5500' }
-        ]
-      },
-      prilozi: {
-        title: { sr: 'Prilozi', en: 'Side Dishes', ru: 'Гарниры' },
-        items: [
-          { n: 'Krompir Koš 250 gr', p: '200' },
-          { n: 'Pomfrit 250 gr', p: '260' },
-          { n: 'Grilovano povrće 250 gr', p: '240' },
-          { n: 'Šampinjoni na žaru 250 gr', p: '260' },
-          { n: 'Pirinač 250 gr', p: '220' },
-          { n: 'Pomfrit 100 gr', p: '150' },
-          { n: 'Krompir Koš 100 gr', p: '120' },
-          { n: 'Grilovano povrće 100 gr', p: '140' },
-          { n: 'Grilovani šampinjoni 100 gr', p: '150' },
-          { n: 'Bareni pirinač 100 gr', p: '130' },
-          { n: 'Dalmatinsko varivo 100 gr', p: '130' },
-          { n: 'Senf 30 gr', p: '30' },
-          { n: 'Kečap 30 gr', p: '30' },
-          { n: 'Majonez 30 gr', p: '30' }
-        ]
-      },
-      dezerti: {
-        title: { sr: 'Dezerti', en: 'Desserts', ru: 'Десерты' },
-        items: [
-          { n: 'Baklava', p: '250' },
-          { n: 'Trileće', p: '200' },
-          { n: 'Cheesecake', p: '240' },
-          { n: 'Nugat bela čokolada', p: '170' },
-          { n: 'Plazma torta', p: '150' },
-          { n: 'Palačinke sa kremom', p: '250' },
-          { n: 'Palačinke sa kremom i plazmom', p: '250' },
-          { n: 'Palačinke sa džemom', p: '250' },
-          { n: 'Palačinke sa šećerom', p: '250' },
-          { n: 'Krem', p: '40' },
-          { n: 'Džem', p: '30' },
-          { n: 'Plazma', p: '30' }
-        ]
-      },
-      rostilj: {
-        title: { sr: 'Roštilj', en: 'Grill', ru: 'Гриль' },
-        items: [
-          { n: 'Ćevapi 5 kom', p: '500' },
-          { n: 'Ćevapi 10 kom', p: '950' },
-          { n: 'Ćevapi sa kajmakom 400 gr', p: '1090' },
-          { n: 'Mlinarski ćevap 400 gr', p: '720' },
-          { n: 'Punjeni ćevap 400 gr', p: '1002' },
-          { n: 'Pljeskavica 350 gr', p: '1095' },
-          { n: 'Gurmanska pljeskavica 350 gr', p: '1010' },
-          { n: 'Pljeskavica sa kozjim sirom 400 gr', p: '1120' },
-          { n: 'Dimljena vešalica 350 gr', p: '1130' },
-          { n: 'Bela vešalica 350 gr', p: '1000' },
-          { n: 'Punjena bela vešalica sa slaninom 400 gr', p: '950' },
-          { n: 'Dimljeni svinjski vrat 350 gr', p: '1040' },
-          { n: 'Svinjski ražnjić 350 gr', p: '1000' },
-          { n: 'Svinjski file 350 gr', p: '1080' },
-          { n: 'Pileće belo na roštilju 350 gr', p: '670' },
-          { n: 'Pileći ražnjić 350 gr', p: '710' },
-          { n: 'Dimljeni batak 350 gr', p: '780' },
-          { n: 'Roštiljska kobasica 350 gr', p: '920' },
-          { n: 'Kobasica sa kačkavaljem 350 gr', p: '890' },
-          { n: 'Domaća ljuta kobasica 350 gr', p: '950' },
-          { n: 'Mešano meso 1.2 kg', p: '2790' }
-        ]
-      },
-      riba: {
-        title: { sr: 'Riba i morski specijaliteti', en: 'Fish & Seafood', ru: 'Рыба и морепродукты' },
-        items: [
-          { n: 'File smuđa 1 kg', p: '5700' },
-          { n: 'File dimljene pastrmke 400 g', p: '1600' },
-          { n: 'Lignje na žaru 400 g', p: '1900' }
-        ]
-      },
-      rakije: {
-        title: { sr: 'Rakije', en: 'Rakija', ru: 'Ракии' },
-        items: [
-          { n: 'Dremina šljiva 0.03', p: '210' },
-          { n: 'Dremina dunja 0.03', p: '250' },
-          { n: 'Dremina kajsija 0.03', p: '230' },
-          { n: 'Dremina kruška viljamovka 0.03', p: '230' },
-          { n: 'Kraljevski Božur - šljiva 0.03', p: '180' },
-          { n: 'Đurović rakija od šljive 0.03', p: '230' },
-          { n: 'Đurović rakija od dunje 0.03', p: '250' },
-          { n: 'Đurović rakija od dunje barik 0.03', p: '260' },
-          { n: 'Đurović rakija od kajsije 0.03', p: '250' },
-          { n: 'Đurović rakija od kruške viljamovke 0.03', p: '230' },
-          { n: 'Đurović rakija od maline 0.03', p: '230' },
-          { n: 'Đurović rakija medovina 0.03', p: '230' },
-          { n: 'Loza', p: '180' },
-          { n: 'Meduška', p: '210' }
-        ]
-      },
-      zestina: {
-        title: { sr: 'Žestina i likeri', en: 'Spirits & Liqueurs', ru: 'Крепкий алкоголь и ликёры' },
-        items: [
-          { n: 'Jegermeister 0.03', p: '250' },
-          { n: 'Absinthe 0.03', p: '180' },
-          { n: 'Gorki list 0.03', p: '190' },
-          { n: 'Vermut 0.03', p: '150' },
-          { n: 'Vinjak Specijal 5 0.03', p: '190' },
-          { n: 'Vinjak 0.03', p: '160' },
-          { n: 'London Dry gin 0.03', p: '160' },
-          { n: 'Beefeater 0.03', p: '210' },
-          { n: 'Baileys 0.03', p: '220' },
-          { n: 'Martini Bianco 0.03', p: '170' },
-          { n: 'Campari 0.03', p: '240' },
-          { n: 'Absolut vodka 0.03', p: '240' },
-          { n: 'Vodka 0.03', p: '160' },
-          { n: 'Olmeca Blanko 0.03', p: '250' },
-          { n: 'Stock 84 0.03', p: '250' },
-          { n: 'Chivas Regal 12yo 0.03', p: '450' },
-          { n: "Jack Danijel's 0.03", p: '340' },
-          { n: "Ballantine's 0.03", p: '250' },
-          { n: 'Jameson 0.03', p: '290' },
-          { n: 'Courvoiser 0.03', p: '350' },
-          { n: 'Martell vs Cognac 0.03', p: '330' },
-          { n: 'Calvadren vs 0.03', p: '470' },
-          { n: 'Cornus vsop 0.03', p: '550' },
-          { n: 'Havana Club 0.03', p: '210' }
-        ]
-      },
-      bela_vina: {
-        title: { sr: 'Bela vina', en: 'White Wines', ru: 'Белые вина' },
-        items: [
-          { n: 'Aleksić Žuti cvet 0.187 flašica', p: '360' },
-          { n: 'Plantaže 13. jul Chardonnay 0.187 flašica', p: '340' },
-          { n: 'Aleksić Žuti cvet 0.75', p: '2050' },
-          { n: 'Dremina Tamjanika 0.75', p: '2500' },
-          { n: 'Aleksić Bonaca 0.75', p: '1850' },
-          { n: 'Kovačević Chardonnay 0.75', p: '2600' },
-          { n: 'Drasković Chardonnay 0.75', p: '1100' },
-          { n: 'Tikveš Alexandria belo Classic 0.75', p: '1200' },
-          { n: 'Radovanović Rizling rajnski 0.75', p: '2050' },
-          { n: 'Dremina Blanc Coupage 0.75', p: '2500' },
-          { n: 'Drašković beli Pinot 0.75', p: '2200' },
-          { n: 'Drašković ruža Vetrova – Muskat Otonel 0.75', p: '1900' },
-          { n: 'Plantaže 13. jul Novi dan Moscato Bianco 0.75', p: '2500' },
-          { n: 'Plantaže 13. jul Malvazija 0.75', p: '2150' },
-          { n: 'Plantaže 13. jul Chardonnay 0.75', p: '1100' },
-          { n: 'Plantaže 13. jul Val Brut 0.75', p: '2950' },
-          { n: 'Prosecco 0.75', p: '2400' }
-        ]
-      },
-      crvena_vina: {
-        title: { sr: 'Crvena vina', en: 'Red Wines', ru: 'Красные вина' },
-        items: [
-          { n: 'Plantaže 13. jul Vranac 0.187 flašica', p: '340' },
-          { n: 'Aleksić Kardaš 0.75', p: '1850' },
-          { n: 'Radovanović Cabernet Sauvignon Classic 0.75', p: '2500' },
-          { n: 'Dremina Cabernet Sauvignon 0.75', p: '3300' },
-          { n: 'Tikveš Alexandria crveno Classic 0.75', p: '1200' },
-          { n: 'Plantaže 13. jul Vranac 0.75', p: '1200' },
-          { n: 'Plantaže 13. jul Vladika Cabernet Merlot 0.75', p: '3000' },
-          { n: 'Plantaže 13. jul Jedne noći Cabernet Merlot 0.75', p: '2500' },
-          { n: 'Dremina Prokupac 0.75', p: '3100' },
-          { n: 'Drasković Mahago 0.75', p: '1900' },
-          { n: 'Drasković Frankovka 0.75', p: '1200' }
-        ]
-      },
-      rose: {
-        title: { sr: 'Rose vina', en: 'Rosé Wines', ru: 'Розовые вина' },
-        items: [
-          { n: 'Plantaže 13. jul Rose 0.187 flašica', p: '330' },
-          { n: 'Dremina Rose 0.75', p: '2400' },
-          { n: 'Aleksić Barbara 0.75', p: '1600' },
-          { n: 'Drašković Rose 0.75', p: '1200' },
-          { n: 'Drašković Divlja ruža 0.75', p: '1800' },
-          { n: 'Radovanović Rose 0.75', p: '1900' },
-          { n: 'Plantaže 13. jul U svitanje Cabernet 0.75', p: '2500' },
-          { n: 'Plantaže 13. jul Rose 0.75', p: '1200' }
-        ]
-      },
-      piva: {
-        title: { sr: 'Piva', en: 'Beer', ru: 'Пиво' },
-        items: [
-          { n: 'Lav pivo 0.33', p: '220' },
-          { n: 'Tuborg pivo 0.33', p: '270' },
-          { n: 'Carlsberg pivo 0.25', p: '320' },
-          { n: 'Budweiser pivo 0.33', p: '330' },
-          { n: 'Erdinger pivo 0.33', p: '510' },
-          { n: 'Kronenbourg pivo 0.33', p: '340' },
-          { n: 'San Miguel Fresca pivo 0.33', p: '440' },
-          { n: 'Tuborg pivo točeno 0.33', p: '230' },
-          { n: 'Tuborg pivo točeno 0.5', p: '270' },
-          { n: 'Carlsberg pivo točeno 0.33', p: '260' },
-          { n: 'Carlsberg pivo točeno 0.5', p: '300' },
-          { n: 'Somersby 0.33', p: '330' }
-        ]
-      }
-    };
-
-    const order = [
-      'sokovi', 'kafa', 'vode', 'dorucak', 'dodaci_dorucak', 'sendvici', 'daske',
-      'salate', 'posebne_salate', 'supe', 'glavna', 'prilozi', 'dezerti', 'rostilj',
-      'riba', 'rakije', 'zestina', 'bela_vina', 'crvena_vina', 'rose', 'piva'
-    ];
-
-    const cache = {
-      categories: '',
-      items: ''
-    };
-
-    function hideAll(){ document.querySelectorAll('.screen').forEach(s => s.style.display='none'); window.scrollTo(0,0); }
-    function showLang(){ hideAll(); document.getElementById('screen-lang').style.display='block'; }
-    function goHome(){ hideAll(); document.getElementById('screen-home').style.display='block'; }
-
-    function setLang(l){
-      lang = l;
-      document.getElementById('home-sub').innerText = ui[l].home;
-      document.getElementById('menu-t').innerText = ui[l].menu;
-      document.getElementById('menu-s').innerText = ui[l].menuSub;
-      document.getElementById('res-t').innerText = ui[l].res;
-      document.getElementById('res-s').innerText = ui[l].resSub;
-      document.getElementById('rev-t').innerText = ui[l].rev;
-      document.getElementById('rev-s').innerText = ui[l].revSub;
-      document.getElementById('back-lang').innerText = ui[l].backLang;
-      document.getElementById('back-home').innerText = ui[l].backHome;
-      document.getElementById('back-cats').innerText = ui[l].backMenu;
-      document.getElementById('cats-title').innerText = ui[l].catsTitle;
-      document.getElementById('cat-search').placeholder = ui[l].catsSearch;
-      document.getElementById('item-search').placeholder = ui[l].itemsSearch;
-      renderCategories();
-      goHome();
-    }
-
-    function callReservation(){ window.location.href = 'tel:+381365101414'; }
-    function openReview(){ window.open('https://www.google.com/search?q=restoran+kos+kraljevo+ocene', '_blank'); }
-
-    function initials(text){
-      const parts = String(text).trim().split(/\s+/).filter(Boolean);
-      if(parts.length === 1) return parts[0].slice(0,2);
-      return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-    }
-
-    function svgThumb(label){
-      const safe = String(label || 'KOŠ')
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const i = initials(label || 'Koš');
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#3b2a1d"/>
-              <stop offset="100%" stop-color="#120e0b"/>
-            </linearGradient>
-            <radialGradient id="r" cx="50%" cy="40%" r="65%">
-              <stop offset="0%" stop-color="#f0d7a1" stop-opacity=".25"/>
-              <stop offset="100%" stop-color="#d4b06a" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="220" height="220" rx="28" fill="url(#g)"/>
-          <rect x="14" y="14" width="192" height="192" rx="24" fill="none" stroke="rgba(212,176,106,.22)"/>
-          <circle cx="110" cy="86" r="42" fill="url(#r)"/>
-          <path d="M110 58c-17 14-27 32-27 47 0 18 13 32 27 32s27-14 27-32c0-15-10-33-27-47zm0 63c-10 0-18-9-18-18 0-10 7-20 18-29 11 9 18 19 18 29 0 9-8 18-18 18z" fill="#d4b06a" opacity=".9"/>
-          <text x="110" y="170" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#f6efe6" letter-spacing="2">${safe}</text>
-          <text x="110" y="192" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="10" fill="#d4b06a" letter-spacing="2">${i}</text>
-        </svg>`;
-      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-    }
-
-    function showCategories(){
-      hideAll();
-      document.getElementById('screen-cats').style.display='block';
-      renderCategories();
-    }
-
-    function renderCategories(){
-      const box = document.getElementById('cats-box');
-      const q = (document.getElementById('cat-search')?.value || '').toLowerCase().trim();
-      let html = '';
-      order.forEach(key => {
-        const cat = data[key];
-        const title = cat.title[lang] || cat.title.sr;
-        if(q && !title.toLowerCase().includes(q)) return;
-        html += `<button class="btn" onclick="showItems('${key}')"><div class="txt"><b>${title}</b><span>${ui[lang].view}</span></div><div class="icon">→</div></button>`;
-      });
-      box.innerHTML = html;
-    }
-
-    function showItems(key){
-      currentCategoryKey = key;
-      hideAll();
-      const cat = data[key];
-      document.getElementById('items-title').innerText = cat.title[lang] || cat.title.sr;
-      document.getElementById('item-search').value = '';
-      document.getElementById('screen-items').style.display='block';
-      renderItems();
-    }
-
-    function renderItems(){
-      const box = document.getElementById('items-box');
-      const q = (document.getElementById('item-search')?.value || '').toLowerCase().trim();
-      const cat = data[currentCategoryKey];
-      let html = '';
-      cat.items.forEach(item => {
-        if(q && !String(item.n).toLowerCase().includes(q) && !String(item.p).toLowerCase().includes(q)) return;
-        html += `
-          <div class="item">
-            <img class="thumb" src="${svgThumb(item.n)}" alt="${item.n}">
-            <div class="info"><h4>${item.n}</h4></div>
-            <div class="price">${item.p}<span>RSD</span></div>
-          </div>`;
-      });
-      box.innerHTML = html || '<div style="color:#b9afa3; text-align:center; padding:24px 10px;">Nema rezultata</div>';
-    }
-
-    function filterCategories(){ renderCategories(); }
-    function filterItems(){ renderItems(); }
-
-    // Initial labels
-    document.getElementById('home-sub').innerText = ui.sr.home;
-    document.getElementById('menu-t').innerText = ui.sr.menu;
-    document.getElementById('menu-s').innerText = ui.sr.menuSub;
-    document.getElementById('res-t').innerText = ui.sr.res;
-    document.getElementById('res-s').innerText = ui.sr.resSub;
-    document.getElementById('rev-t').innerText = ui.sr.rev;
-    document.getElementById('rev-s').innerText = ui.sr.revSub;
-    document.getElementById('back-lang').innerText = ui.sr.backLang;
-    document.getElementById('back-home').innerText = ui.sr.backHome;
-    document.getElementById('back-cats').innerText = ui.sr.backMenu;
-    document.getElementById('cats-title').innerText = ui.sr.catsTitle;
-    document.getElementById('cat-search').placeholder = ui.sr.catsSearch;
-    document.getElementById('item-search').placeholder = ui.sr.itemsSearch;
-  </script>
+                    showHomeFinal();
+                }, true);
+            });
+        });
+    </script>
 </body>
 </html>
